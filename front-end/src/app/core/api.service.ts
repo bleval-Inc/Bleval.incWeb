@@ -5,11 +5,11 @@ import { environment } from '../../environments/environment'
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
-  private http = inject(HttpClient)
+  private http    = inject(HttpClient)
   private baseUrl = environment.apiUrl
   private headers = new HttpHeaders({
     'Content-Type': 'application/json',
-    'X-Client-ID': environment.clientId,
+    'X-Client-ID':  environment.clientId,
   })
 
   private get<T>(path: string): Observable<T> {
@@ -20,40 +20,31 @@ export class ApiService {
     return this.http.post<T>(`${this.baseUrl}${path}`, body, { headers: this.headers })
   }
 
-  // Contact
-  submitContact(data: {
-    name: string
-    email: string
-    phone?: string
-    message: string
-  }): Observable<{ success: boolean; id: string }> {
+  submitContact(data: { name: string; email: string; phone?: string; message: string }): Observable<{ success: boolean; id: string }> {
     return this.post('/contact', data)
   }
 
-  // Blog
-  getBlogPosts(limit = 10, offset = 0, tag?: string): Observable<{ posts: any[] }> {
-    const params = new URLSearchParams({ limit: String(limit), offset: String(offset) })
-    if (tag) params.set('tag', tag)
-    return this.get(`/blog?${params}`)
+  sendChat(message: string, sessionKey?: string): Observable<{ reply: string; session_key: string }> {
+    return this.post('/chat', { message, session_key: sessionKey })
   }
 
-  getBlogPost(slug: string): Observable<any> {
-    return this.get(`/blog/${slug}`)
+  getBookingServices(): Observable<{ services: any[] }> {
+    return this.get('/bookings/services')
   }
 
-  // Bookings
   getAvailableSlots(serviceId: string, date: string): Observable<{ slots: string[] }> {
     return this.get(`/bookings/slots/${serviceId}?date=${date}`)
   }
 
-  createBooking(data: {
-    service_id: string
-    contact_name: string
-    contact_email: string
-    contact_phone?: string
-    start_time: string
-    notes?: string
-  }): Observable<any> {
+  createBooking(data: { service_id: string; contact_name: string; contact_email: string; contact_phone?: string; start_time: string; notes?: string }): Observable<any> {
     return this.post('/bookings', data)
+  }
+
+  requestQuote(data: { name: string; email: string; phone?: string; service: string; budget?: string; message: string }): Observable<{ success: boolean }> {
+    return this.post('/contact', { ...data, source: 'quote_request' })
+  }
+
+  getBlogPosts(limit = 6): Observable<{ posts: any[] }> {
+    return this.get(`/blog?limit=${limit}`)
   }
 }

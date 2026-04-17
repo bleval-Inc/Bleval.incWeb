@@ -4,6 +4,7 @@ import { chatRouter     } from '../services/chatbot/chatRouter.js'
 import { blogRouter     } from '../services/blog/blogRouter.js'
 import { quotesRouter   } from '../services/quotes/quotesRouter.js'
 import { bookingsRouter } from '../services/bookings/bookingsRouter.js'
+import { leadsRouter    } from '../services/leads/leadsRouter.js'
 // import { paymentsRouter } from '../services/payments/paymentsRouter.js' // TODO: Create when payments complete
 
 export const router = Router()
@@ -16,10 +17,10 @@ export const router = Router()
  router.use('/chat',     chatRouter)
  router.use('/quotes',   quotesRouter)
  router.use('/bookings', bookingsRouter)
- //router.use('/leads',    leadsRouter) // TODO: Create leadsRouter
+ router.use('/leads',    leadsRouter) 
  //router.use('/payments', paymentsRouter) // TODO
 
 router.get('/', (req, res) => {
-  res.json({ client: req.client.id, features: req.client.features })
+  res.json({ client: req.client.id, features: req.client.features, status: 'running', version: '1.0.0' })
 })
 

@@ -3,10 +3,12 @@ import { RouterOutlet, RouterLink } from '@angular/router';
 import { Navbar } from './navbar/navbar';
 import { Footer } from './footer/footer';
 import { ScrollRevealDirective } from './scroll-reveal';
+import { ChatbotComponent } from './chatbot/chatbot';
+import { BookingFormComponent } from './booking-form/booking-form';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, Navbar, Footer, ScrollRevealDirective],
+  imports: [RouterOutlet, RouterLink, Navbar, Footer, ScrollRevealDirective, ChatbotComponent, BookingFormComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

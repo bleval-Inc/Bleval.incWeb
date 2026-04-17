@@ -1,5 +1,6 @@
 import { db } from '../../db/index.js'
 import { emailQueue } from '../../queue/index.js'
+import { enrollLead } from '../leads/leadService.js'
 
 export async function submitContact({ client, name, email, phone, message, source = 'contact_form' }) {
   // 1. Save to DB
@@ -10,6 +11,7 @@ export async function submitContact({ client, name, email, phone, message, sourc
     [client.id, name, email, phone || null, message, source]
   )
   const contactId = rows[0].id
+    await enrollLead({ client, name, email, source, contactId })
 
   // 2. Also upsert as a lead
   await db.query(

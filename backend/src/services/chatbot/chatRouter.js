@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import { z } from 'zod'
 import { randomUUID } from 'crypto'
-import { chat } from './chatservices.js'
+import { chat } from './chatService.js'
 
 export const chatRouter = Router()
 
@@ -13,19 +13,14 @@ const schema = z.object({
 chatRouter.post('/', async (req, res, next) => {
   try {
     const { message, session_key } = schema.parse(req.body)
-    const sessionKey = session_key || randomUUID()
-
     const result = await chat({
-      client: req.client,
-      sessionKey,
+      client:      req.client,
+      sessionKey:  session_key || randomUUID(),
       userMessage: message,
     })
-
     res.json(result)
   } catch (err) {
-    if (err.name === 'ZodError') {
-      return res.status(400).json({ error: 'Validation failed', details: err.flatten() })
-    }
+    if (err.name === 'ZodError') return res.status(400).json({ error: err.flatten() })
     next(err)
   }
 })

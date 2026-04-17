@@ -1,53 +1,58 @@
 import { Router } from 'express'
 import { z } from 'zod'
-import { getAvailableSlots, createBooking } from './bookingsService.js'
+import { getServices, getAvailableSlots, createBooking, cancelBooking } from './bookingService.js'
+import { requireMasterKey } from '../../middleware/auth.js'
 
 export const bookingsRouter = Router()
 
-// Query schema for available slots
-const slotsQuerySchema = z.object({
-  serviceId: z.string(),
-  date:      z.string().pipe(z.coerce.date()),
-})
-
-// Body schema for creating booking (matches service params)
-const createBookingSchema = z.object({
-  serviceId:     z.string(),
-  contactName:   z.string().min(1).max(200),
-  contactEmail:  z.string().email(),
-  contactPhone:  z.string().optional(),
-  startTime:     z.string(),  // ISO datetime string
-//   notes:         z.string().optional().max(1000),
-})
-
-// GET /?serviceId=...&date=... → list available time slots
-bookingsRouter.get('/', async (req, res, next) => {
+bookingsRouter.get('/services', async (req, res, next) => {
   try {
-    const { serviceId, date } = slotsQuerySchema.parse(req.query)
-    const slots = await getAvailableSlots(req.client, serviceId, date)
-    res.json({ slots })
-  } catch (err) {
-    if (err.name === 'ZodError') {
-      return res.status(400).json({ error: 'Validation failed', details: err.flatten() })
-    }
-    next(err)
-  }
+    const services = await getServices(req.client.id)
+    res.json({ services })
+  } catch (err) { next(err) }
 })
 
-// POST / → create a booking
+bookingsRouter.get('/slots/:serviceId', async (req, res, next) => {
+  try {
+    const { date } = req.query
+    if (!date) return res.status(400).json({ error: 'date query param required (YYYY-MM-DD)' })
+    const slots = await getAvailableSlots(req.client, req.params.serviceId, date)
+    res.json({ slots })
+  } catch (err) { next(err) }
+})
+
+const bookingSchema = z.object({
+  service_id:     z.string().uuid(),
+  contact_name:   z.string().min(1),
+  contact_email:  z.string().email(),
+  contact_phone:  z.string().optional(),
+  start_time:     z.string(),
+  notes:          z.string().optional(),
+})
+
 bookingsRouter.post('/', async (req, res, next) => {
   try {
-    const data = createBookingSchema.parse(req.body)
-    const booking = await createBooking({ 
-      client: req.client, 
-      ...data 
+    const data    = bookingSchema.parse(req.body)
+    const booking = await createBooking({
+      client:        req.client,
+      serviceId:     data.service_id,
+      contactName:   data.contact_name,
+      contactEmail:  data.contact_email,
+      contactPhone:  data.contact_phone,
+      startTime:     data.start_time,
+      notes:         data.notes,
     })
-    res.status(201).json({ success: true, booking })
+    res.status(201).json(booking)
   } catch (err) {
-    if (err.name === 'ZodError') {
-      return res.status(400).json({ error: 'Validation failed', details: err.flatten() })
-    }
+    if (err.name === 'ZodError') return res.status(400).json({ error: err.flatten() })
     next(err)
   }
 })
 
+bookingsRouter.delete('/:id', requireMasterKey, async (req, res, next) => {
+  try {
+    const booking = await cancelBooking(req.params.id, req.client.id)
+    if (!booking) return res.status(404).json({ error: 'Booking not found' })
+    res.json({ cancelled: true })
+  } catch (err) { next(err) }
+})

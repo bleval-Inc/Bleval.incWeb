@@ -9,11 +9,10 @@
   <button class="fab fab-scroll" title="Scroll to top" (click)="scrollToTop()" [style.opacity]="isScrolled() ? '1' : '0'">
     <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 5l-7 7h4v7h6v-7h4l-7-7z"/></svg>
   </button>
-  <button class="fab fab-chat" title="Chatbot" (click)="openChatbot()">
-    💬
-  </button>
+  <app-chatbot></app-chatbot>
   <a routerLink="/contact" class="fab fab-contact" title="Contact">
     📧
   </a>
+  <app-booking-form></app-booking-form>
 </div>
 <app-footer></app-footer>

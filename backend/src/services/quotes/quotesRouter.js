@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { z } from 'zod'
-import { createQuote, sendQuote, listQuotes } from './quotesService.js'
+import { createQuote, sendQuote, listQuotes, getQuote } from './quoteService.js'
 import { requireMasterKey } from '../../middleware/auth.js'
 
 export const quotesRouter = Router()
@@ -27,9 +27,17 @@ quotesRouter.get('/', requireMasterKey, async (req, res, next) => {
   } catch (err) { next(err) }
 })
 
+quotesRouter.get('/:id', requireMasterKey, async (req, res, next) => {
+  try {
+    const quote = await getQuote(req.params.id, req.client.id)
+    if (!quote) return res.status(404).json({ error: 'Not found' })
+    res.json(quote)
+  } catch (err) { next(err) }
+})
+
 quotesRouter.post('/', requireMasterKey, async (req, res, next) => {
   try {
-    const data = createSchema.parse(req.body)
+    const data  = createSchema.parse(req.body)
     const quote = await createQuote({
       client:       req.client,
       contactName:  data.contact_name,
@@ -50,5 +58,16 @@ quotesRouter.post('/:id/send', requireMasterKey, async (req, res, next) => {
   try {
     const result = await sendQuote(req.params.id, req.client)
     res.json(result)
+  } catch (err) { next(err) }
+})
+
+// Public endpoint — client accepts quote via link
+quotesRouter.patch('/:id/accept', async (req, res, next) => {
+  try {
+    await db.query(
+      `UPDATE quotes SET status = 'accepted', updated_at = now() WHERE id = $1 AND client_id = $2`,
+      [req.params.id, req.client.id]
+    )
+    res.json({ accepted: true })
   } catch (err) { next(err) }
 })
