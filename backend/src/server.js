@@ -1,13 +1,3 @@
-// import { createApp } from './app.js'
-// import { env } from './config/env.js'
-
-// const app = createApp()
-
-// app.listen(env.PORT, () => {
-  //   console.log(`Bleval backend running → http://localhost:${env.PORT}`)
-  //   console.log(`Environment: ${env.NODE_ENV}`)
-  // })
-
 import { createApp } from './app.js'
 import { env } from './config/env.js'
 import { db } from './db/index.js'
@@ -30,25 +20,22 @@ async function checkDependencies() {
     })()
   ])
 
-  const results = {
-    db: checks[0].status === 'fulfilled' ? checks[0].value : 'fail',
-    redis: checks[1].status === 'fulfilled' ? checks[1].value : 'fail'
+  return {
+    db: checks[0].status === 'fulfilled' ? 'ok' : 'fail',
+    redis: checks[1].status === 'fulfilled' ? 'ok' : 'fail'
   }
-
-  return results
 }
 
 /**
- * Health endpoint (system + dependencies) - never crashes
+ * Health endpoint
  */
 app.get('/api/healthz', async (req, res) => {
   try {
     const deps = await checkDependencies()
     const allOk = deps.db === 'ok' && deps.redis === 'ok'
-    const status = allOk ? 'ok' : 'degraded'
 
     res.status(allOk ? 200 : 503).json({
-      status,
+      status: allOk ? 'ok' : 'degraded',
       service: 'bleval-backend',
       environment: env.NODE_ENV,
       timestamp: new Date().toISOString(),
@@ -74,29 +61,29 @@ app.get('/', (req, res) => {
 })
 
 /**
- * Enhanced global error safety nets - log only, no immediate crash
+ * Global error safety
  */
-process.on('unhandledRejection', (reason, promise) => {
-  console.error('🚨 Unhandled Rejection at:', promise, 'reason:', reason)
-  // No process.exit - degrade
+process.on('unhandledRejection', (reason) => {
+  console.error('🚨 Unhandled Rejection:', reason)
 })
 
 process.on('uncaughtException', (err) => {
   console.error('🚨 Uncaught Exception:', err)
-  // No process.exit - log and continue if possible
 })
 
 /**
- * Start server
+ * START SERVER (RAILWAY FIX APPLIED HERE)
  */
-const server = app.listen(env.PORT, () => {
-  console.log(`\n🚀 Bleval backend running → http://localhost:${env.PORT}`)
+const PORT = env.PORT || process.env.PORT || 3000
+
+const server = app.listen(PORT, '0.0.0.0', () => {
+  console.log(`\n🚀 Bleval backend running → http://0.0.0.0:${PORT}`)
   console.log(`🌍 Environment: ${env.NODE_ENV}`)
-  console.log(`🏥 Health check: http://localhost:${env.PORT}/api/healthz\n`)
+  console.log(`🏥 Health check: /api/healthz\n`)
 })
 
 /**
- * Graceful shutdown - fixed for redis wrapper
+ * Graceful shutdown
  */
 const shutdown = async (signal) => {
   console.log(`\n🛑 Received ${signal}. Shutting down gracefully...`)
@@ -106,11 +93,13 @@ const shutdown = async (signal) => {
       console.error('Server close error:', err)
       process.exit(1)
     }
+
     try {
       await Promise.allSettled([
         db?.end?.(),
-        redis.disconnect()
+        redis?.disconnect?.()
       ])
+
       console.log('✅ Cleanup complete. Exiting.')
       process.exit(0)
     } catch (err) {
@@ -122,4 +111,3 @@ const shutdown = async (signal) => {
 
 process.on('SIGINT', () => shutdown('SIGINT'))
 process.on('SIGTERM', () => shutdown('SIGTERM'))
-
