@@ -1,0 +1,102 @@
+<section class="hero" appScrollReveal>
+  <div class="orb-cyan" style="top: 20%; right: 10%;"></div>
+  <div class="orb-uv" style="bottom: 20%; left: 10%;"></div>
+  <div class="hero-content container">
+    <p class="overline">Contact</p>
+    <h1 class="h1">Let's build something<br>remarkable.</h1>
+    <p class="body">We reply within 24 hours. No hard sell. Just a conversation about your project and how we can help bring it to life.</p>
+  </div>
+</section>
+
+<section class="contact-layout" appScrollReveal>
+  <div class="container">
+    <div class="contact-grid">
+      <div class="contact-form-section">
+        <div class="form-card glass-surface">
+          <h2 class="h2">Start your project</h2>
+          <form (ngSubmit)="onSubmit()" #contactForm="ngForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="name">Name *</label>
+                <input type="text" id="name" name="name" [(ngModel)]="formData.name" required>
+              </div>
+              <div class="form-group">
+                <label for="email">Email *</label>
+                <input type="email" id="email" name="email" [(ngModel)]="formData.email" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="company">Company (optional)</label>
+              <input type="text" id="company" name="company" [(ngModel)]="formData.company">
+            </div>
+            <div class="form-group">
+              <label for="projectType">Project Type *</label>
+              <select id="projectType" name="projectType" [(ngModel)]="formData.projectType" required>
+                <option value="">Select project type</option>
+                <option value="web-design">Web Design</option>
+                <option value="web-development">Web Development</option>
+                <option value="e-commerce">E-Commerce</option>
+                <option value="redesign">Website Redesign</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="budget">Budget Range *</label>
+              <select id="budget" name="budget" [(ngModel)]="formData.budget" required>
+                <option value="">Select budget range</option>
+                <option value="under-5k">Under $5,000</option>
+                <option value="5k-15k">$5,000 - $15,000</option>
+                <option value="15k-30k">$15,000 - $30,000</option>
+                <option value="over-30k">Over $30,000</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="message">Message *</label>
+              <textarea id="message" name="message" [(ngModel)]="formData.message" required rows="4" placeholder="Tell us about your project..."></textarea>
+            </div>
+            <button type="submit" class="btn-primary" [disabled]="!contactForm.form.valid">Send Enquiry →</button>
+          </form>
+        </div>
+      </div>
+      <div class="contact-info-section">
+        <div class="contact-info glass-surface">
+          <h3>Get in touch</h3>
+          <div class="contact-methods">
+            <a href="mailto:hello@bleval.inc" class="contact-method">
+              <span class="method-icon">✉️</span>
+              <span>hello@bleval.inc</span>
+            </a>
+            <a href="#" class="contact-method">
+              <span class="method-icon">📱</span>
+              <span>WhatsApp / Calendly</span>
+            </a>
+            <a href="#" class="contact-method">
+              <span class="method-icon">💼</span>
+              <span>LinkedIn</span>
+            </a>
+          </div>
+        </div>
+        <div class="next-steps glass-surface">
+          <h3>What happens next</h3>
+          <div class="steps">
+            <div class="step">
+              <div class="step-number">1</div>
+              <p>We review your brief and project requirements</p>
+            </div>
+            <div class="step">
+              <div class="step-number">2</div>
+              <p>We schedule a discovery call to discuss details</p>
+            </div>
+            <div class="step">
+              <div class="step-number">3</div>
+              <p>We send a tailored proposal with timeline and pricing</p>
+            </div>
+          </div>
+        </div>
+        <div class="reassurance glass-surface">
+          <p class="body">Trusted by 50+ businesses across the globe.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

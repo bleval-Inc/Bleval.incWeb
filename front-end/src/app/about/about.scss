@@ -1,0 +1,258 @@
+/* ABOUT PAGE STYLES */
+
+.hero {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding: var(--section-py) 0;
+}
+
+.hero-content {
+  text-align: center;
+  max-width: 900px;
+  margin: 0 auto;
+  z-index: 2;
+  position: relative;
+}
+
+.hero-content .overline {
+  margin-bottom: 1rem;
+}
+
+.hero-content .h1 {
+  margin-bottom: 1.5rem;
+}
+
+.hero-content .body {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* STORY */
+.story {
+  padding: var(--section-py) 0;
+}
+
+.story-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+.story-content h2 {
+  margin-bottom: 2rem;
+}
+
+.story-text h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 18px;
+  color: var(--ivory);
+  margin: 2rem 0 0.5rem;
+}
+
+.story-text h3:first-child {
+  margin-top: 0;
+}
+
+.story-text p {
+  color: var(--muted);
+  margin-bottom: 1.5rem;
+}
+
+.story-visual {
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.placeholder {
+  width: 100%;
+  height: 100%;
+  background: var(--slate-glass);
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.placholder-img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 16px;
+}
+
+
+/* VALUES */
+.values {
+  padding: var(--section-py) 0;
+  background: rgba(255,255,255,0.02);
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.section-header .overline {
+  margin-bottom: 1rem;
+}
+
+.section-header .h2 {
+  margin-bottom: 0;
+}
+
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.value {
+  text-align: center;
+  padding: 2rem;
+}
+
+.value-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.value h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 20px;
+  color: var(--ivory);
+  margin-bottom: 0.5rem;
+}
+
+.value p {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+/* TEAM */
+.team {
+  padding: var(--section-py) 0;
+}
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.team-member {
+  text-align: center;
+  padding: 2rem;
+}
+
+.team-member:nth-child(2) {
+  border: 1px solid  var(--cyan);
+  box-shadow: 0 0 20px rgba(37, 99, 235, 0.1);
+}
+
+.member-photo {
+  width: 80px;
+  height: 80px;
+  background: var(--slate-glass);
+  border-radius: 50%;
+  margin: 0 auto 1rem;
+  border: 2px solid rgba(167,139,250,0.2);
+}
+
+.team-member h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 20px;
+  color: var(--ivory);
+  margin-bottom: 0.25rem;
+}
+
+.role {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--cyan);
+  margin-bottom: 0.5rem;
+}
+
+.bio {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* STATS */
+.stats {
+  padding: var(--section-py) 0;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+}
+
+.stat {
+  background: #101828;
+  border-radius: 14px;
+  border: 1px solid rgba(96, 165, 250, 0.08);
+  box-shadow: inset 5px 5px 14px rgba(6, 12, 26, 0.6), inset -4px -4px 10px rgba(36, 58, 100, 0.3);
+  padding: 24px;
+  text-align: center;
+}
+
+.stat-number {
+  display: block;
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--cyan);
+  font-family: var(--font-display);
+  margin-bottom: 0.5rem;
+}
+
+.stat-label {
+  font-size: 14px;
+  color: var(--ivory);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* CTA SECTION */
+.cta-section {
+  padding: var(--section-py) 0;
+}
+
+.cta-content {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 3rem;
+}
+
+.cta-content .h2 {
+  margin-bottom: 2rem;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+  .story-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .values-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+
+  .team-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

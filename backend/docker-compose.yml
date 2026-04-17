@@ -1,0 +1,32 @@
+services:
+  api:
+    build: .
+    ports:
+      - "3001:3001"
+    env_file: .env
+    depends_on:
+      - postgres
+    volumes:
+      - ./src:/app/src   # hot reload in dev
+
+  worker:
+    build: .
+    command: node src/queue/worker.js
+    env_file: .env
+    depends_on:
+      - postgres
+
+  postgres:
+    image: pgvector/pgvector:pg16
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: bleval
+      POSTGRES_USER: bleval
+      POSTGRES_PASSWORD: bleval_dev
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
+

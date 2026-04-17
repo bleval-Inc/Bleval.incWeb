@@ -1,0 +1,246 @@
+/* BLOG / INSIGHTS PAGE */
+
+.hero {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding: var(--section-py) 0;
+}
+
+.hero-content {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.filter-chips {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.filter-chips .tag {
+  cursor: pointer;
+  transition: all var(--duration-short) var(--ease);
+}
+
+.filter-chips .tag.active {
+  background: var(--uv-end);
+  color: #fff;
+}
+
+/* FEATURED POST */
+.featured-post {
+  padding: var(--section-py) 0;
+}
+
+.featured-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+  padding: 3rem;
+}
+
+.featured-image {
+  height: 300px;
+  border-radius: 16px;
+  background-size: cover;
+  background-position: center;
+}
+
+.post-meta {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.read-time, .date {
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.featured-content h2 {
+  margin-bottom: 1rem;
+}
+
+.featured-content .body {
+  margin-bottom: 2rem;
+  max-width: 500px;
+}
+
+/* POSTS GRID */
+.posts-grid {
+  padding: var(--section-py) 0;
+}
+
+/* Fallback CSS vars for blog post grid */
+/* Local overrides - use global theme vars */
+
+/* Force visibility fixes */
+.posts-grid {
+  min-height: 100vh;
+}
+
+.posts-grid-container {
+  display: grid !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.post-card {
+  opacity: 1 !important;
+  transform: none !important;
+  min-height: 350px !important;
+  display: flex !important;
+}
+
+.glass-surface {
+  backdrop-filter: var(--glass-blur);
+}
+
+.posts-grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+}
+
+.post-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform var(--duration-short) var(--ease);
+}
+
+.post-card:hover {
+  transform: translateY(-4px);
+}
+
+.post-image {
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+}
+
+.post-content {
+  padding: 1.5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.post-content .tag {
+  align-self: flex-start;
+  margin-bottom: 1rem;
+}
+
+.post-content h3 {
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  line-height: 1.4;
+}
+
+.post-content p {
+  margin-bottom: 1.5rem;
+  flex: 1;
+}
+
+.post-footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: var(--ghost);
+}
+
+/* NEWSLETTER */
+.newsletter {
+  padding: var(--section-py) 0;
+}
+
+.newsletter-card {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 3rem;
+  align-items: center;
+  padding: 3rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.newsletter-content h2 {
+  margin-bottom: 0.5rem;
+}
+
+.newsletter-form {
+  display: flex;
+  gap: 1rem;
+  min-width: 300px;
+}
+
+.email-input {
+  flex: 1;
+  padding: 14px 20px;
+  border: 1px solid rgba(167, 139, 250, 0.3);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--ivory);
+  font-family: var(--font-body);
+  font-size: 16px;
+}
+
+.email-input::placeholder {
+  color: var(--ghost);
+}
+
+.email-input:focus {
+  outline: none;
+  border-color: var(--uv-end);
+}
+
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+  .featured-card {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .posts-grid-container {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+
+  .newsletter-card {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 2rem;
+  }
+
+  .newsletter-form {
+    flex-direction: column;
+    min-width: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .filter-chips {
+    gap: 0.5rem;
+  }
+
+  .filter-chips .tag {
+    font-size: 12px;
+    padding: 4px 8px;
+  }
+
+  .posts-grid-container {
+    grid-template-columns: 1fr;
+  }
+
+  .post-meta {
+    justify-content: center;
+  }
+}

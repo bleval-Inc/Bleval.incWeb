@@ -1,0 +1,438 @@
+/* PRICING PAGE STYLES */
+
+.hero {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding: var(--section-py) 0;
+}
+
+.hero-content {
+  text-align: center;
+  max-width: 900px;
+  margin: 0 auto;
+  z-index: 2;
+  position: relative;
+}
+
+.hero-content .overline {
+  margin-bottom: 1rem;
+}
+
+.hero-content .h1 {
+  margin-bottom: 1.5rem;
+}
+
+.hero-content .body {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* ==========================
+   PRICING TIERS
+========================== */
+.pricing-tiers {
+  padding: var(--section-py) 0;
+}
+
+.pricing-tiers .container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+  // max-width: 1100px;
+}
+
+/* ==========================
+   CARD
+========================== */
+.tier {
+  padding: 2.2rem;
+  text-align: center;
+  position: relative;
+  border-radius: 18px;
+  transition: all 0.3s ease;
+  background: linear-gradient(145deg, #11141F, #1A1D2B); // subtle default
+}
+
+.tier:hover {
+  transform: translateY(-6px);
+}
+
+/* ==========================
+   POPULAR CARD
+========================== */
+.tier.popular {
+  background: linear-gradient(145deg, #1E3070, #222E58);
+  border: 1px solid rgba(96, 165, 250, 0.35);
+  box-shadow: 0 10px 30px rgba(37, 99, 235, 0.15);
+  transform: scale(1.03);
+
+  position: relative;
+  overflow: hidden; // ensures sash is clipped cleanly
+}
+
+/* ==========================
+   CORNER SASH (RESPONSIVE)
+========================== */
+.tier.popular .popular-badge {
+    position: absolute;
+    top: 107px;
+    right: 0;
+    width: 171px;
+    padding: 6px 0;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #fff;
+    background: linear-gradient(135deg, var(--uv-start), var(--uv-end));
+    transform-origin: top right;
+    transform: translate(35%, -55%) rotate(45deg);
+    z-index: 3;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+    left: 269px;
+    display: none; /* Hide by default, show on larger screens */
+}
+
+/* Optional subtle fold effect for depth */
+.tier.popular .popular-badge::before,
+.tier.popular .popular-badge::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  width: 10px;
+  height: 10px;
+  background: rgba(0, 0, 0, 0.25);
+  z-index: -1;
+}
+
+.tier.popular .popular-badge::before {
+  left: 0;
+}
+
+.tier.popular .popular-badge::after {
+  right: 0;
+}
+
+/* ==========================
+   TYPOGRAPHY
+========================== */
+.tier .h3 {
+  margin-bottom: 0.4rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: #fff;
+}
+
+.tier .body {
+  margin-bottom: 1.4rem;
+  color: var(--muted);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+}
+
+/* ==========================
+   PRICE RANGE
+========================== */
+.tier .price-range {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 28px;
+  color: var(--cyan);
+  margin-bottom: 1.5rem;
+}
+
+/* ==========================
+   LIST ITEMS
+========================== */
+.tier ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem;
+  text-align: left;
+}
+
+.tier li {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 0.5rem;
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.tier li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--cyan);
+  font-weight: bold;
+}
+
+/* PRICING BLOCK */
+.pricing {
+  margin-bottom: 1.6rem;
+}
+
+.build-price {
+  font-size: 30px;
+  font-weight: 700;
+  font-family: var(--font-display);
+  color: #fff;
+}
+
+.build-label {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 0.6rem;
+}
+
+.divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 0.8rem 0;
+}
+
+.monthly-price {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--cyan);
+}
+
+.monthly-price span {
+  font-size: 13px;
+  color: var(--muted);
+  margin-left: 2px;
+}
+
+.monthly-label {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* FEATURES */
+.features {
+  list-style: none;
+  padding: 0;
+  margin: 1.4rem 0;
+  text-align: left;
+}
+
+.features li {
+  font-size: 14px;
+  color: #d1d5db;
+  margin-bottom: 0.5rem;
+  padding-left: 1.4rem;
+  position: relative;
+}
+
+.features li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--cyan);
+  font-weight: bold;
+}
+
+.features.subtle li {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+
+/* ==========================
+   PROJECT DEMOS
+========================== */
+.project-demos {
+  padding: var(--section-py) 0;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+/* HEADER */
+.section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.section-header .overline {
+  margin-bottom: 1rem;
+}
+
+.section-header .h2 {
+  margin-bottom: 0;
+}
+
+/* GRID */
+.demo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+/* CARD */
+.demo-card {
+  border-radius: 20px;
+  overflow: hidden;
+  transition: all 0.35s ease;
+  display: flex;
+  flex-direction: column;
+
+  /* Neumorphic feel */
+  background: linear-gradient(145deg, #12121A, #1A1D2B);
+  box-shadow:
+    8px 8px 20px rgba(0, 0, 0, 0.5),
+    -6px -6px 16px rgba(40, 65, 110, 0.15);
+}
+
+/* HOVER EFFECT (FLOATING CARD) */
+.demo-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow:
+    12px 12px 30px rgba(0, 0, 0, 0.6),
+    -8px -8px 20px rgba(40, 65, 110, 0.2),
+    0 0 25px rgba(37, 99, 235, 0.15);
+}
+
+/* IMAGE */
+.demo-image {
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+}
+
+.demo-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+/* IMAGE ZOOM ON HOVER */
+.demo-card:hover .demo-image img {
+  transform: scale(1.05);
+}
+
+/* CONTENT */
+.demo-content {
+  padding: 1.5rem;
+  text-align: left;
+}
+
+.demo-content .h3 {
+  margin-bottom: 0.5rem;
+}
+
+.demo-content .body {
+  margin-bottom: 1.2rem;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+
+/* FAQ ACCORDION */
+.faq {
+  padding: var(--section-py) 0;
+}
+
+.faq-accordion {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.faq-item {
+  margin-bottom: 1rem;
+  transition: all var(--duration-short) var(--ease);
+}
+
+.faq-question {
+  width: 100%;
+  background: #101828;
+  border-radius: 10px;
+  border: 1px solid rgba(96, 165, 250, 0.08);
+  box-shadow: inset 5px 5px 12px rgba(8, 14, 30, 0.55), inset -3px -3px 8px rgba(40, 65, 110, 0.28);
+  padding: 1.5rem;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 16px;
+  color: #F0ECE3;
+  transition: all var(--duration-short) var(--ease);
+}
+
+.faq-item[aria-expanded="true"] .faq-question {
+  border-color: rgba(96, 165, 250, 0.25);
+  box-shadow: 0 8px 25px rgba(37, 99, 235, 0.15), inset 3px 3px 8px rgba(40, 65, 110, 0.4);
+}
+
+.faq-question:hover {
+  color: var(--cyan);
+}
+
+.faq-icon {
+  font-size: 18px;
+  color: var(--cyan);
+  transition: transform var(--duration-short) var(--ease);
+}
+
+.faq-item[aria-expanded="true"] .faq-icon {
+  transform: rotate(45deg);
+}
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: all var(--duration-short) var(--ease);
+  padding: 0 1.5rem 0;
+}
+
+.faq-item[aria-expanded="true"] .faq-answer {
+  max-height: 500px;
+  padding: 1.5rem;
+}
+
+.faq-answer p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+/* CTA SECTION */
+.cta-section {
+  padding: var(--section-py) 0;
+}
+
+.cta-content {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 3rem;
+}
+
+.cta-content .h2 {
+  margin-bottom: 1rem;
+}
+
+.cta-content .body {
+  margin-bottom: 2rem;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .pricing-tiers .container {
+    grid-template-columns: 1fr;
+  }
+
+  .add-ons-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tier.popular {
+    transform: none;
+  }
+}

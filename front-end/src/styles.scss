@@ -1,0 +1,328 @@
+/* BLEVAL.INC DESIGN SYSTEM — OBSIDIAN NEOMORPHIC GLASS */
+
+:root {
+  --bg-page:       #1A2540;   /* Steel Blue — page body background */
+  --bg-nav:        #141E38;   /* Darker steel — nav + footer */
+  --bg-card:       #222E58;   /* Card raised surface */
+  --bg-inset:      #101828;   /* Inputs, inset wells, pressed states */
+  --bg-hover:      #263466;   /* Card hover surface */
+
+  --blue-primary:  #2563EB;   /* CTA gradient start */
+  --blue-light:    #60A5FA;   /* CTA gradient end + accents */
+  --cyan:          #00D4FF;   /* Highlight accent — tags, links */
+  --ivory:         #F0ECE3;   /* Primary headings + display text */
+  --body-text:     #A8C0E0;   /* Body copy on steel blue */
+  --muted-text:    #4A6090;   /* Placeholder, labels, overlines */
+  --border-subtle: rgba(96, 165, 250, 0.12);
+  --border-edge:   rgba(96, 165, 250, 0.35);  /* Top edge light */
+  --border-hover:  rgba(96, 165, 250, 0.55);
+
+  /* Neomorphic shadow pair — THE KEY TO THE EFFECT */
+  --neo-shadow-out:
+    8px 8px 20px rgba(8, 14, 30, 0.6),         /* dark drop */
+    -5px -5px 14px rgba(40, 65, 110, 0.35);    /* light lift */
+
+  --neo-shadow-hover:
+    12px 12px 28px rgba(8, 14, 30, 0.7),
+    -6px -6px 18px rgba(40, 65, 110, 0.4);
+
+  --neo-shadow-in:
+    inset 5px 5px 12px rgba(8, 14, 30, 0.55),  /* pressed dark */
+    inset -3px -3px 8px rgba(40, 65, 110, 0.3); /* pressed light */
+
+  --neo-inset-card:
+    inset 4px 4px 10px rgba(8, 14, 30, 0.5),
+    inset -2px -2px 6px rgba(40, 65, 110, 0.25);
+
+  --glass-blur:    blur(16px) saturate(180%);
+  --ease:          cubic-bezier(0.4, 0, 0.2, 1);
+  --radius-card:   16px;
+  --radius-btn:    10px;
+  --radius-input:  10px;
+  --radius-tag:    20px;
+
+  --gradient-cta:  linear-gradient(135deg, #1D4ED8, #60A5FA);
+  --gradient-text: linear-gradient(135deg, #60A5FA, #00D4FF);
+
+  /* TYPOGRAPHY */
+  --font-display: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* LAYOUT */
+  --section-px: clamp(24px, 5vw, 80px);
+  --section-py: clamp(64px, 10vw, 100px);
+  --container-max: 1200px;
+
+  /* ANIMATIONS */
+  --duration-short: 0.25s;
+  --duration-medium: 0.5s;
+}
+
+
+
+/* GLOBAL RESETS */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--body-text);
+  background-color: #1A2540;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* CONTAINER UTILITY */
+.container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--section-px);
+}
+
+/* GLASS SURFACE RECIPE */
+.glass-surface, .card, .service-card, .pricing-card, .project-card,
+.testimonial-card, .blog-card, .value-card, .stat-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-card);
+  border: 1px solid var(--border-subtle);
+  border-top: 1px solid var(--border-edge);  /* edge light */
+  box-shadow:
+    var(--neo-shadow-out),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  transition: all 0.28s var(--ease);
+  position: relative;
+}
+
+.glass-surface:hover, .card:hover, .service-card:hover, .project-card:hover,
+.blog-card:hover, .value-card:hover {
+  background: var(--bg-hover);
+  border-top-color: var(--border-hover);
+  transform: translateY(-5px);
+  box-shadow:
+    var(--neo-shadow-hover),
+    inset 0 1px 0 rgba(255, 255, 255, 0.09);
+}
+
+/* TYPOGRAPHY CLASSES */
+.overline {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--uv-start);
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.overline::before {
+  content: '';
+  position: absolute;
+  left: -40px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.h1 {
+      font-family: 'Syne';
+  font-weight: 800;
+  font-size: clamp(48px, 8vw, 80px);
+  line-height: 1.1;
+  background: linear-gradient(135deg, var(--uv-end), var(--cyan));
+  -webkit-background-clip: text;
+  // -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0;
+}
+
+.h2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(36px, 5vw, 48px);
+  line-height: 1.2;
+  color: var(--ivory);
+  margin: 0;
+}
+
+.h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(20px, 3vw, 24px);
+  line-height: 1.3;
+  color: var(--ivory);
+  margin: 0;
+}
+
+.body {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--muted);
+  margin: 0;
+}
+
+/* GRADIENT TEXT */
+.gradient-text {
+  background: linear-gradient(135deg, var(--uv-end), var(--cyan));
+  -webkit-background-clip: text;
+  // -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* BUTTONS */
+.btn-primary {
+  background: var(--gradient-cta);
+  color: #fff;
+  padding: 14px 32px;
+  border-radius: var(--radius-btn);
+  border: none;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow:
+    0 6px 24px rgba(29, 78, 216, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    2px 2px 6px rgba(8, 14, 30, 0.3);
+  transition: all 0.25s var(--ease);
+  text-decoration: none;
+}
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 10px 32px rgba(29, 78, 216, 0.65),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    3px 3px 8px rgba(8, 14, 30, 0.35);
+}
+.btn-primary:active {
+  transform: translateY(0);
+  box-shadow:
+    0 2px 8px rgba(29, 78, 216, 0.4),
+    inset 2px 2px 6px rgba(8, 14, 30, 0.4),
+    inset -1px -1px  Asc 3px rgba(40, 65, 110, 0.2);
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 32px;
+  border-radius: 10px;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 14px;
+  text-decoration: none;
+  color: var(--uv-end);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(167, 139, 250, 0.3);
+  transition: all var(--duration-short) var(--ease);
+  cursor: pointer;
+}
+
+.btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(167, 139, 250, 0.5);
+  transform: translateY(-2px);
+}
+
+/* TAGS / CHIPS */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 12px;
+  border-radius: 20px;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+}
+
+.tag-cyan {
+  background: rgba(0, 212, 255, 0.08);
+  border: 1px solid rgba(0, 212, 255, 0.18);
+  color: var(--cyan);
+}
+
+.tag-uv {
+  background: rgba(167, 139, 250, 0.1);
+  border: 1px solid rgba(167, 139, 250, 0.2);
+  color: var(--uv-end);
+}
+
+/* ORBS FOR ATMOSPHERE */
+.orb-cyan {
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+  width: 600px;
+  height: 400px;
+  background: radial-gradient(ellipse 600px 400px at 70% 50%, rgba(0, 212, 255, 0.06), transparent);
+}
+
+.orb-uv {
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(ellipse 500px 500px at 20% 80%, rgba(123, 94, 167, 0.08), transparent);
+}
+
+/* SCROLL REVEAL ANIMATIONS */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all var(--duration-medium) var(--ease);
+}
+
+.scroll-reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* FOCUS VISIBLE */
+*:focus-visible {
+  outline: 2px solid var(--uv-end);
+  outline-offset: 2px;
+}
+
+/* PREFERS REDUCED MOTION */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* RESPONSIVE UTILITIES */
+@media (max-width: 768px) {
+  :root {
+    --neo-shadow-out: 5px 5px 12px rgba(8,14,30,0.5), -3px -3px 8px rgba(40,65,110,0.28);
+  }
+  .container {
+    padding: 0 24px;
+  }
+
+  .overline::before {
+    display: none;
+  }
+}
+

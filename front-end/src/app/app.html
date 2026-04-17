@@ -1,0 +1,19 @@
+<div class="background-mesh"></div>
+<div class="cursor" id="cursor"></div>
+<app-navbar></app-navbar>
+<main class="page-enter">
+  <router-outlet></router-outlet>
+</main>
+
+<div class="floating-actions">
+  <button class="fab fab-scroll" title="Scroll to top" (click)="scrollToTop()" [style.opacity]="isScrolled() ? '1' : '0'">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 5l-7 7h4v7h6v-7h4l-7-7z"/></svg>
+  </button>
+  <button class="fab fab-chat" title="Chatbot" (click)="openChatbot()">
+    💬
+  </button>
+  <a routerLink="/contact" class="fab fab-contact" title="Contact">
+    📧
+  </a>
+</div>
+<app-footer></app-footer>
