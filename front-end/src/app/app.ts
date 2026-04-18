@@ -8,7 +8,7 @@ import { BookingFormComponent } from './booking-form/booking-form';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, Navbar, Footer, ScrollRevealDirective, ChatbotComponent, BookingFormComponent],
+  imports: [RouterOutlet, RouterLink, Navbar, Footer, ChatbotComponent, BookingFormComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
