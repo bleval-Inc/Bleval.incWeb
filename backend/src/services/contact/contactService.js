@@ -1,6 +1,6 @@
 import { db } from '../../db/index.js'
 import { emailQueue } from '../../queue/index.js'
-import { enrollLead } from '../leads/leadService.js'
+import { enrollLead } from '../leads/leadsService.js'
 
 export async function submitContact({ client, name, email, phone, message, source = 'contact_form' }) {
   // 1. Save to DB

@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { z } from 'zod'
-import { createQuote, sendQuote, listQuotes, getQuote } from './quoteService.js'
+import { createQuote, sendQuote, listQuotes, getQuote } from './quotesService.js'
 import { requireMasterKey } from '../../middleware/auth.js'
 
 export const quotesRouter = Router()

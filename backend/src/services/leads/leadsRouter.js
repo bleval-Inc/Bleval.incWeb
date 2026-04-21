@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { getLeads, updateLeadStatus } from './leadService.js'
+import { getLeads, updateLeadStatus } from './leadsService.js'
 import { requireMasterKey } from '../../middleware/auth.js'
 
 export const leadsRouter = Router()

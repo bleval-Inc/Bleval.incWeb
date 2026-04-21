@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import { z } from 'zod'
 import { randomUUID } from 'crypto'
-import { chat } from './chatService.js'
+import { chat } from './chatservices.js'
 
 export const chatRouter = Router()
 

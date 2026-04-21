@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { z } from 'zod'
-import { getServices, getAvailableSlots, createBooking, cancelBooking } from './bookingService.js'
+import { getServices, getAvailableSlots, createBooking, cancelBooking } from './bookingsService.js'
 import { requireMasterKey } from '../../middleware/auth.js'
 
 export const bookingsRouter = Router()

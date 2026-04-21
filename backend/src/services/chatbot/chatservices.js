@@ -1,4 +1,4 @@
-import { intents, fallbackResponse } from './responses.js'
+import { intents, fallbackResponse } from './response.js'
 import { redis } from '../../db/redis.js'
 
 function matchIntent(message) {
