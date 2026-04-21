@@ -1,6 +1,6 @@
 [build]
   command = "npm run build"
-  publish = "dist/bleval-inc"
+  publish = "dist/bleval-inc/browser"
 
 [[redirects]]
   from = "/*"
