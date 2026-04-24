@@ -1,13 +1,11 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ApiService } from '../core/api.service';
-import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
-import { CommonModule } from '@angular/common'
-import { ContactFormComponent } from '../contact-form/contact-form';
+import { ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-contact',
-  imports: [FormsModule, ReactiveFormsModule, CommonModule, ContactFormComponent],
+  imports: [FormsModule, ReactiveFormsModule, CommonModule],
   templateUrl: './contact.html',
   styleUrl: './contact.scss'
 })
@@ -21,8 +19,13 @@ export class Contact {
     message: ''
   };
 
+  formSubmitted = false;
+  formSuccess = false;
+
   onSubmit() {
     console.log('Form submitted:', this.formData);
+    this.formSubmitted = true;
+    this.formSuccess = true;
     // Handle form submission, e.g., send to backend
     alert('Thank you for your enquiry. We will respond within 24 hours.');
   }
