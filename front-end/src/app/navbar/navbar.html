@@ -27,13 +27,9 @@
     </button>
   </div>
 
-  <!-- Mobile overlay menu -->
-  <div #mobileMenu class="mobile-menu" id="mobileMenu" role="dialog" aria-label="Mobile navigation">
-    <button #closeMenu class="close-menu" aria-label="Close menu">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-        <path d="M18 6L6 18M6 6l12 12"/>
-      </svg>
-    </button>
+<!-- Mobile overlay menu -->
+  <div #mobileMenu class="mobile-menu" [class.open]="isMenuOpen" id="mobileMenu" role="dialog" aria-label="Mobile navigation">
+    <!-- Close mechanism handled by hamburger toggle (animates to X) -->
 
     <ul role="menubar">
       <li role="none"><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" role="menuitem" (click)="closeMenuFn()">Home</a></li>

@@ -14,7 +14,6 @@ export class Navbar implements AfterViewInit {
 
   @ViewChild('mobileToggle') mobileToggle!: ElementRef<HTMLElement>;
   @ViewChild('mobileMenu') mobileMenu!: ElementRef<HTMLElement>;
-  @ViewChild('closeMenu') closeBtn!: ElementRef<HTMLElement>;
 
   isScrolled = false;
   isMenuOpen = false;
@@ -45,9 +44,6 @@ export class Navbar implements AfterViewInit {
     if (this.mobileToggle?.nativeElement) {
       this.mobileToggle.nativeElement.addEventListener('click', () => this.toggleMenu());
     }
-    if (this.closeBtn?.nativeElement) {
-      this.closeBtn.nativeElement.addEventListener('click', () => this.closeMenuFn());
-    }
     // Close on outside click
     if (this.elementRef.nativeElement) {
       this.elementRef.nativeElement.addEventListener('click', (e: MouseEvent) => {
@@ -67,6 +63,10 @@ export class Navbar implements AfterViewInit {
     if (this.mobileToggle?.nativeElement) {
       this.mobileToggle.nativeElement.setAttribute('aria-expanded', String(this.isMenuOpen));
     }
+    // Update aria-label for hamburger/close state
+    if (this.mobileToggle?.nativeElement) {
+      this.mobileToggle.nativeElement.setAttribute('aria-label', this.isMenuOpen ? 'Close menu' : 'Open menu');
+    }
     // Lock body scroll when menu open
     if (typeof document !== 'undefined') {
       document.body.style.overflow = this.isMenuOpen ? 'hidden' : '';
@@ -80,6 +80,7 @@ export class Navbar implements AfterViewInit {
     }
     if (this.mobileToggle?.nativeElement) {
       this.mobileToggle.nativeElement.setAttribute('aria-expanded', 'false');
+      this.mobileToggle.nativeElement.setAttribute('aria-label', 'Open menu');
     }
     if (typeof document !== 'undefined') {
       document.body.style.overflow = '';

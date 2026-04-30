@@ -160,7 +160,7 @@ body {
    ═══════════════════════════════════════════════════════════════ */
 section {
   position: relative;
-  padding-block: var(--section-py);
+  // padding-block: var(--section-py);
 }
 
 /* Comic panel edge highlight — top */
@@ -454,14 +454,14 @@ button:disabled {
 }
 
 /* ═══ PRIMARY CTA — Maximum Impact ═══ */
-.btn-primary {
-  background: linear-gradient(135deg, var(--primary), var(--uv-end));
-  color: var(--text);
-  box-shadow:
-    0 0 20px var(--glow-primary),
-    0 4px 12px rgba(124, 58, 237, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
+// .btn-primary {
+//   background: linear-gradient(135deg, var(--primary), var(--uv-end));
+//   color: var(--text);
+//   box-shadow:
+//     0 0 20px var(--glow-primary),
+//     0 4px 12px rgba(124, 58, 237, 0.3);
+//   border: 1px solid rgba(255, 255, 255, 0.1);
+// }
 
 .btn-primary:hover {
   transform: translateY(-3px) scale(1.02);

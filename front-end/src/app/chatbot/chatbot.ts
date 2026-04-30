@@ -11,10 +11,9 @@ interface Message { role: 'user' | 'bot'; text: string }
   imports: [CommonModule, ReactiveFormsModule],
   template: `
     <div class="chat-widget" [class.open]="isOpen()">
-      <button type="button" class="chat-launcher" (click)="toggle()" [attr.aria-expanded]="isOpen()" aria-label="Open chatbot">
+<button type="button" class="chat-launcher" (click)="toggle()" [attr.aria-expanded]="isOpen()" aria-label="Open chatbot">
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-          <path d="M4 4h16v12H7.5L4 19.5V4z" fill="none"/>
-          <path d="M5 5v10.5L7.5 15H19V5H5zm4.5 3.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm3 0c.83 0 1.5-.67 1.5-1.5S13.33 6.5 12.5 6.5 11 7.17 11 8s.67 1.5 1.5 1.5zm3.12 3.07c.35-.36.92-.39 1.31-.08.39.32.48.93.19 1.34l-1.6 2.1c-.26.35-.74.45-1.12.23-.36-.2-.5-.65-.29-1.01l.59-1.04-.59-1.04c-.2-.36-.06-.8.29-1zm-5.7 4.38a3.5 3.5 0 0 1 6.06 0 .75.75 0 0 1-1.3.8 2 2 0 0 0-3.45 0 .75.75 0 1 1-1.3-.8z"/>
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
         </svg>
       </button>
 
