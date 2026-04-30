@@ -8,33 +8,36 @@ import { ApiService } from '../core/api.service'
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   template: `
-    <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
-      <div class="form-group">
-        <input formControlName="name" placeholder="Your name" [class.error]="isInvalid('name')" />
-        <span class="error-msg" *ngIf="isInvalid('name')">Name is required</span>
-      </div>
-      <div class="form-group">
-        <input formControlName="email" type="email" placeholder="Email address" [class.error]="isInvalid('email')" />
-        <span class="error-msg" *ngIf="isInvalid('email')">Valid email required</span>
-      </div>
-      <div class="form-group">
-        <input formControlName="phone" placeholder="Phone number (optional)" />
-      </div>
-      <div class="form-group">
-        <textarea formControlName="message" placeholder="Tell us about your project" rows="5" [class.error]="isInvalid('message')"></textarea>
-        <span class="error-msg" *ngIf="isInvalid('message')">Message is required</span>
-      </div>
-      <button type="submit" [disabled]="loading" class="btn-primary">
-        {{ loading ? 'Sending...' : 'Send Message' }}
-      </button>
-      <div class="success-msg" *ngIf="success">
-        Message sent! We'll be in touch within 1 business day.
-      </div>
-      <div class="error-banner" *ngIf="error">
-        Something went wrong. Please email us directly at hello@bleval.inc
-      </div>
-    </form>
-  `
+    <div class="contact-form-container">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+        <div class="form-group">
+          <input formControlName="name" placeholder="Your name" [class.error]="isInvalid('name')" />
+          <span class="error-msg" *ngIf="isInvalid('name')">Name is required</span>
+        </div>
+        <div class="form-group">
+          <input formControlName="email" type="email" placeholder="Email address" [class.error]="isInvalid('email')" />
+          <span class="error-msg" *ngIf="isInvalid('email')">Valid email required</span>
+        </div>
+        <div class="form-group">
+          <input formControlName="phone" placeholder="Phone number (optional)" />
+        </div>
+        <div class="form-group">
+          <textarea formControlName="message" placeholder="Tell us about your project" rows="5" [class.error]="isInvalid('message')"></textarea>
+          <span class="error-msg" *ngIf="isInvalid('message')">Message is required</span>
+        </div>
+        <button type="submit" [disabled]="loading" class="btn-primary">
+          {{ loading ? 'Sending...' : 'Send Message' }}
+        </button>
+        <div class="success-msg" *ngIf="success">
+          Message sent! We'll be in touch within 1 business day.
+        </div>
+        <div class="error-banner" *ngIf="error">
+          Something went wrong. Please email us directly at hello@bleval.inc
+        </div>
+      </form>
+    </div>
+  `,
+  styleUrls: ['./contact-form.scss']
 })
 export class ContactFormComponent {
   private api = inject(ApiService)

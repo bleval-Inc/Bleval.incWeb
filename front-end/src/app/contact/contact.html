@@ -2,11 +2,54 @@
 <section class="hero" appScrollReveal>
   <div class="container">
     <h1 class="h1">Let's Build Something That Breaks the Internet</h1>
-    <p class="body">We reply within 24 hours. No fluff. Just strategy.</p>
+    <p class="body hero-subtitle">We reply within 24 hours. Serious questions deserve serious answers. No templates, no fluff — just strategy.</p>
   </div>
 </section>
 
 <div class="line"></div>
+
+<!-- WHAT HAPPENS NEXT SECTION -->
+<section class="what-happens-next" appScrollReveal>
+  <div class="container">
+    <div class="section-header scroll-reveal">
+      <p class="overline">Our Process</p>
+      <h2 class="h2">What Happens Next</h2>
+      <p class="body">We're transparent about how we work. Here's exactly what to expect when you reach out.</p>
+    </div>
+
+    <div class="process-flow stagger-children">
+      <div class="flow-step glass-surface scroll-reveal">
+        <div class="step-number">1</div>
+        <h3>You Submit</h3>
+        <p>Fill out the form with details about your project, goals, and vision. The more detail, the better we can help.</p>
+      </div>
+
+      <div class="flow-arrow">→</div>
+
+      <div class="flow-step glass-surface scroll-reveal">
+        <div class="step-number">2</div>
+        <h3>We Review</h3>
+        <p>Our team reviews your inquiry within 24 hours. We analyze your needs and think about how we can help.</p>
+      </div>
+
+      <div class="flow-arrow">→</div>
+
+      <div class="flow-step glass-surface scroll-reveal">
+        <div class="step-number">3</div>
+        <h3>We Connect</h3>
+        <p>We schedule a strategy call to discuss your vision, goals, and approach. This is a no-pressure conversation.</p>
+      </div>
+
+      <div class="flow-arrow">→</div>
+
+      <div class="flow-step glass-surface scroll-reveal">
+        <div class="step-number">4</div>
+        <h3>We Propose</h3>
+        <p>Based on our conversation, we create a tailored proposal with scope, timeline, and investment. Then we build together.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- CONTACT FORM SECTION -->
 <section class="contact-section" appScrollReveal>
@@ -60,14 +103,10 @@
             <textarea id="message" name="message" placeholder="What are you building? What's your goal?" [(ngModel)]="formData.message" rows="6" required></textarea>
           </div>
 
-          <button type="submit" class="btn btn-primary" [disabled]="!contactForm.valid">
-            Send Inquiry
+          <button type="submit" class="btn btn-primary" [disabled]="!contactForm.valid || formSubmitted">
+            {{ formSubmitted ? 'Sending...' : 'Send Inquiry' }}
           </button>
         </form>
-
-        <div *ngIf="formSubmitted" class="form-message" [ngClass]="formSuccess ? 'success' : 'error'">
-          {{ formSuccess ? 'Message sent! We\'ll be in touch within 24 hours.' : 'Error sending message. Please try again.' }}
-        </div>
       </div>
 
       <div class="contact-info">

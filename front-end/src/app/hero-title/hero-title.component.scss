@@ -1,0 +1,45 @@
+﻿/* ═══════════════════════════════════════════════════════════════════════
+   HERO TYPOGRAPHY — CLEAN OVERLAP SYSTEM
+   Line 1 sits on top. Line 2 overlaps from below.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.hero-title {
+  position: relative;
+  display: inline-block;
+  line-height: 1;
+  text-align: center;
+}
+
+.hero-title .line {
+  display: block;
+  font-family: var(--font-display), 'Orbitron', sans-serif;
+  font-weight: 800;
+  line-height: 1;
+  margin: 0;
+  padding: 0;
+  white-space: normal;
+}
+
+.hero-title .line-1 {
+  position: relative;
+  z-index: 2;
+}
+
+.hero-title .line-2 {
+  position: absolute;
+  left: 50%;
+  top: 80%;
+  transform: translateX(-50%);
+  z-index: 1;
+  opacity: 0.95;
+}
+
+@media (max-width: 720px) {
+  .hero-title .line-2 {
+    position: relative;
+    left: auto;
+    top: 0;
+    transform: none;
+    margin-top: 0.35em;
+  }
+}

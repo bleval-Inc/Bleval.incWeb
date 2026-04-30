@@ -1,37 +1,50 @@
 <nav class="navbar">
   <div class="navbar-container">
-    <a routerLink="/" class="logo gradient-text">bleval.inc</a>
-    <ul class="nav-links">
-      <li><a routerLink="/" routerLinkActive="active">Home</a></li>
-      <li><a routerLink="/services" routerLinkActive="active">Services</a></li>
-      <!-- <li><a routerLink="/work" routerLinkActive="active">Work</a></li> -->
-      <li><a routerLink="/pricing" routerLinkActive="active">Pricing</a></li>
-      <li><a routerLink="/about" routerLinkActive="active">About</a></li>
-      <li><a routerLink="/blog" routerLinkActive="active">Blog</a></li>
-      <li><a routerLink="/contact" routerLinkActive="active">Contact</a></li>
+    <a routerLink="/" class="logo gradient-text" aria-label="bleval.inc home">bleval.inc</a>
+
+    <ul class="nav-links" role="menubar">
+      <li role="none"><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" role="menuitem">Home</a></li>
+      <li role="none"><a routerLink="/services" routerLinkActive="active" role="menuitem">Services</a></li>
+      <li role="none"><a routerLink="/pricing" routerLinkActive="active" role="menuitem">Pricing</a></li>
+      <li role="none"><a routerLink="/about" routerLinkActive="active" role="menuitem">About</a></li>
+      <li role="none"><a routerLink="/blog" routerLinkActive="active" role="menuitem">Blog</a></li>
+      <li role="none"><a routerLink="/contact" routerLinkActive="active" role="menuitem">Contact</a></li>
     </ul>
-    <a routerLink="/contact" class="btn-primary">Get In Touch</a>
+
+    <a routerLink="/contact" class="btn-primary nav-cta">Get In Touch</a>
+
     <!-- Mobile hamburger -->
-    <button #mobileToggle class="mobile-toggle" aria-label="Menu">
+    <button
+      #mobileToggle
+      class="mobile-toggle"
+      aria-label="Open menu"
+      aria-expanded="false"
+      aria-controls="mobileMenu"
+    >
       <span></span>
       <span></span>
       <span></span>
     </button>
   </div>
+
   <!-- Mobile overlay menu -->
-  <div #mobileMenu class="mobile-menu glass-surface">
-    <!-- Close button -->
-    <button #closeMenu class="close-menu">&amp;times;</button>
-    <ul>
-      <li><a routerLink="/" routerLinkActive="active">Home</a></li>
-      <li><a routerLink="/services" routerLinkActive="active">Services</a></li>
-      <li><a routerLink="/pricing" routerLinkActive="active">Pricing</a></li>
-      <li><a routerLink="/work" routerLinkActive="active">Work</a></li>
-      <li><a routerLink="/about" routerLinkActive="active">About</a></li>
-      <li><a routerLink="/blog" routerLinkActive="active">Blog</a></li>
-      <li><a routerLink="/contact" routerLinkActive="active">Contact</a></li>
+  <div #mobileMenu class="mobile-menu" id="mobileMenu" role="dialog" aria-label="Mobile navigation">
+    <button #closeMenu class="close-menu" aria-label="Close menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M18 6L6 18M6 6l12 12"/>
+      </svg>
+    </button>
+
+    <ul role="menubar">
+      <li role="none"><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" role="menuitem" (click)="closeMenuFn()">Home</a></li>
+      <li role="none"><a routerLink="/services" routerLinkActive="active" role="menuitem" (click)="closeMenuFn()">Services</a></li>
+      <li role="none"><a routerLink="/pricing" routerLinkActive="active" role="menuitem" (click)="closeMenuFn()">Pricing</a></li>
+      <li role="none"><a routerLink="/work" routerLinkActive="active" role="menuitem" (click)="closeMenuFn()">Work</a></li>
+      <li role="none"><a routerLink="/about" routerLinkActive="active" role="menuitem" (click)="closeMenuFn()">About</a></li>
+      <li role="none"><a routerLink="/blog" routerLinkActive="active" role="menuitem" (click)="closeMenuFn()">Blog</a></li>
+      <li role="none"><a routerLink="/contact" routerLinkActive="active" role="menuitem" (click)="closeMenuFn()">Contact</a></li>
     </ul>
-    <a routerLink="/contact" class="btn-primary">Get in Touch</a>
+
+    <a routerLink="/contact" class="btn-primary" (click)="closeMenuFn()">Get in Touch</a>
   </div>
 </nav>
-

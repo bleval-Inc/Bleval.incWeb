@@ -30,6 +30,96 @@
 }
 
 /* ==========================
+   PRICING EXPLAINED SECTION
+========================== */
+.pricing-explained {
+  padding: var(--section-py) 0;
+  position: relative;
+}
+
+.section-header {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto var(--space-16);
+}
+
+.section-header .overline {
+  margin-bottom: var(--space-6);
+}
+
+.section-header .h2 {
+  margin-bottom: var(--space-8);
+}
+
+.section-header .body {
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+.pricing-breakdown {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--space-8);
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.breakdown-card {
+  padding: var(--space-12) var(--space-10);
+  border-radius: var(--radius-xl);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-8);
+  transition: all var(--duration-short) var(--ease-smooth);
+}
+
+.breakdown-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--panel-edge-cyan-hover);
+}
+
+.breakdown-icon {
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(0, 229, 255, 0.1), rgba(124, 58, 237, 0.1));
+  border: 1px solid var(--panel-edge-cyan);
+  border-radius: var(--radius-lg);
+  color: var(--cyan);
+  font-size: 32px;
+  transition: all var(--duration-short) var(--ease-smooth);
+}
+
+.breakdown-card:hover .breakdown-icon {
+  background: linear-gradient(135deg, rgba(0, 229, 255, 0.15), rgba(124, 58, 237, 0.15));
+  border-color: var(--panel-edge-cyan-hover);
+  transform: scale(1.1);
+}
+
+.breakdown-icon svg {
+  width: 36px;
+  height: 36px;
+  fill: currentColor;
+}
+
+.breakdown-card h3 {
+  font-size: clamp(18px, 2.2vw, 24px);
+  color: var(--text);
+  margin: 0;
+}
+
+.breakdown-card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+/* ==========================
    PRICING TIERS
 ========================== */
 .pricing-tiers {
@@ -424,6 +514,45 @@
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
+  .pricing-explained {
+    padding: var(--section-py) 0;
+  }
+
+  .section-header {
+    margin-bottom: var(--space-12);
+  }
+
+  .section-header .h2 {
+    font-size: clamp(24px, 3vw, 32px);
+  }
+
+  .pricing-breakdown {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+
+  .breakdown-card {
+    padding: var(--space-10) var(--space-8);
+  }
+
+  .breakdown-icon {
+    width: 56px;
+    height: 56px;
+  }
+
+  .breakdown-icon svg {
+    width: 32px;
+    height: 32px;
+  }
+
+  .breakdown-card h3 {
+    font-size: clamp(16px, 2.2vw, 20px);
+  }
+
+  .breakdown-card p {
+    font-size: 13px;
+  }
+
   .pricing-tiers .container {
     grid-template-columns: 1fr;
   }

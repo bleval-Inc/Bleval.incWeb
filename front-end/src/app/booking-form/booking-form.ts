@@ -8,57 +8,60 @@ import { ApiService } from '../core/api.service'
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   template: `
-    <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
-      <div class="form-group">
-        <label>Service</label>
-        <select formControlName="service_id" (change)="onServiceChange()">
-          <option value="">Select a service</option>
-          <option *ngFor="let s of services()" [value]="s.id">
-            {{ s.name }} {{ s.price ? '— R' + s.price : '(Free)' }}
-          </option>
-        </select>
-      </div>
+    <div class="booking-form-container">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+        <div class="form-group">
+          <label>Service</label>
+          <select formControlName="service_id" (change)="onServiceChange()">
+            <option value="">Select a service</option>
+            <option *ngFor="let s of services()" [value]="s.id">
+              {{ s.name }} {{ s.price ? '— R' + s.price : '(Free)' }}
+            </option>
+          </select>
+        </div>
 
-      <div class="form-group" *ngIf="form.value.service_id">
-        <label>Preferred Date</label>
-        <input type="date" formControlName="date" [min]="minDate" (change)="loadSlots()" />
-      </div>
+        <div class="form-group" *ngIf="form.value.service_id">
+          <label>Preferred Date</label>
+          <input type="date" formControlName="date" [min]="minDate" (change)="loadSlots()" />
+        </div>
 
-      <div class="form-group" *ngIf="slots().length">
-        <label>Available Time Slots</label>
-        <select formControlName="start_time">
-          <option value="">Select a time</option>
-          <option *ngFor="let slot of slots()" [value]="slot">
-            {{ formatSlot(slot) }}
-          </option>
-        </select>
-      </div>
+        <div class="form-group" *ngIf="slots().length">
+          <label>Available Time Slots</label>
+          <select formControlName="start_time">
+            <option value="">Select a time</option>
+            <option *ngFor="let slot of slots()" [value]="slot">
+              {{ formatSlot(slot) }}
+            </option>
+          </select>
+        </div>
 
-      <div class="form-group">
-        <input formControlName="contact_name" placeholder="Your name" />
-      </div>
-      <div class="form-group">
-        <input formControlName="contact_email" type="email" placeholder="Email address" />
-      </div>
-      <div class="form-group">
-        <input formControlName="contact_phone" placeholder="Phone (optional)" />
-      </div>
-      <div class="form-group">
-        <textarea formControlName="notes" placeholder="Anything we should know?" rows="3"></textarea>
-      </div>
+        <div class="form-group">
+          <input formControlName="contact_name" placeholder="Your name" />
+        </div>
+        <div class="form-group">
+          <input formControlName="contact_email" type="email" placeholder="Email address" />
+        </div>
+        <div class="form-group">
+          <input formControlName="contact_phone" placeholder="Phone (optional)" />
+        </div>
+        <div class="form-group">
+          <textarea formControlName="notes" placeholder="Anything we should know?" rows="3"></textarea>
+        </div>
 
-      <button type="submit" [disabled]="loading() || form.invalid" class="btn-primary">
-        {{ loading() ? 'Booking...' : 'Book Now' }}
-      </button>
+        <button type="submit" [disabled]="loading() || form.invalid" class="btn-primary">
+          {{ loading() ? 'Booking...' : 'Book Now' }}
+        </button>
 
-      <div class="success-msg" *ngIf="success()">
-        Booking confirmed! Check your email for details.
-      </div>
-      <div class="error-banner" *ngIf="error()">
-        Something went wrong. Please try again or email us.
-      </div>
-    </form>
-  `
+        <div class="success-msg" *ngIf="success()">
+          Booking confirmed! Check your email for details.
+        </div>
+        <div class="error-banner" *ngIf="error()">
+          Something went wrong. Please try again or email us.
+        </div>
+      </form>
+    </div>
+  `,
+  styleUrls: ['./booking-form.scss']
 })
 export class BookingFormComponent implements OnInit {
   private api = inject(ApiService)

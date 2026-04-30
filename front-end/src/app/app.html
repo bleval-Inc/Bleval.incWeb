@@ -1,22 +1,105 @@
+<!-- ═══════════════════════════════════════════════════════════════
+     BLEVAL.INC — MAIN APP SHELL
+     Layered footer reveal architecture
+     ═══════════════════════════════════════════════════════════════ -->
+
+<!-- Background layer (fixed, behind everything) -->
 <div class="bg">
   <div class="mesh"></div>
   <div class="glow g1"></div>
   <div class="glow g2"></div>
   <div class="glow g3"></div>
 </div>
-<app-navbar></app-navbar>
-<main class="page-enter">
-  <router-outlet></router-outlet>
-</main>
 
-<div class="floating-actions">
-  <button class="fab fab-scroll" title="Scroll to top" (click)="scrollToTop()" [style.opacity]="isScrolled() ? '1' : '0'">
-    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 5l-7 7h4v7h6v-7h4l-7-7z"/></svg>
-  </button>
-  <app-chatbot></app-chatbot>
-  <a routerLink="/contact" class="fab fab-contact" title="Contact">
-    📧
-  </a>
-  <app-booking-form></app-booking-form>
+<!-- Custom Cursor — desktop only -->
+<div id="cursor" class="cursor" aria-hidden="true"></div>
+
+<div class="page-wrapper">
+  <!-- Main content layer (slides up to reveal footer beneath) -->
+  <div class="main-content" id="mainContent">
+    <app-navbar></app-navbar>
+
+    <main class="page-enter">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+
+  <!-- Footer layer (fixed underneath, revealed as main content slides up) -->
+  <app-footer class="footer-layer" id="footerLayer"></app-footer>
 </div>
-<app-footer></app-footer>
+
+<!-- Floating Action Buttons -->
+<div class="floating-actions">
+  <app-chatbot></app-chatbot>
+
+  <button class="fab fab-booking" type="button" title="Book a service" aria-label="Book a service" (click)="toggleBookingPopup()">
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1 .9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zm-7-9h5v5h-5z"/>
+    </svg>
+  </button>
+
+  <a routerLink="/contact" class="fab fab-contact" title="Contact us" aria-label="Contact us">
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+    </svg>
+  </a>
+
+  <button
+    class="fab fab-scroll"
+    title="Scroll to top"
+    (click)="scrollToTop()"
+    [class.visible]="isScrolled()"
+    aria-label="Scroll to top"
+  >
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M12 5l-7 7h4v7h6v-7h4l-7-7z"/>
+    </svg>
+  </button>
+</div>
+
+<div class="booking-modal-backdrop" *ngIf="bookingOpen()" (click)="closeBookingPopup()">
+  <div class="booking-modal" (click)="$event.stopPropagation()">
+    <div class="booking-modal-header">
+      <div>
+        <p class="overline">Book a Service</p>
+        <h3 class="h3">Schedule a quick call</h3>
+      </div>
+      <button type="button" class="modal-close" aria-label="Close booking form" (click)="closeBookingPopup()">
+        ×
+      </button>
+    </div>
+
+    <div class="booking-modal-body">
+      <form (ngSubmit)="submitBooking()">
+        <label class="field-label">
+          Name
+          <input type="text" [(ngModel)]="bookingName" name="bookingName" required />
+        </label>
+
+        <label class="field-label">
+          Service
+          <select [(ngModel)]="bookingService" name="bookingService" required>
+            <option value="" disabled selected>Select a service</option>
+            <option *ngFor="let option of serviceOptions" [value]="option">{{ option }}</option>
+          </select>
+        </label>
+
+        <label class="field-label">
+          Date
+          <input type="date" [(ngModel)]="bookingDate" name="bookingDate" required />
+        </label>
+
+        <button type="submit" class="btn btn-primary booking-submit" [disabled]="bookingLoading() || !bookingName.trim() || !bookingService || !bookingDate">
+          {{ bookingLoading() ? 'Sending...' : bookingSuccess() ? 'Confirmed' : 'Submit Request' }}
+        </button>
+      </form>
+
+      <div class="booking-feedback" *ngIf="bookingSuccess()">
+        <p>Your booking request has been received. We will follow up shortly to confirm details.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-toast></app-toast>
+

@@ -2,27 +2,33 @@
   <div class="orb-uv" style="top: 30%; left: 20%;"></div>
   <div class="hero-content container">
     <h1 class="h1">The work speaks<br>for itself.</h1>
+    <p class="hero-subtitle">Real results from real projects. Here's how we transform businesses through digital excellence.</p>
     <div class="filter-chips">
-      <span class="tag tag-uv active">All</span>
-      <span class="tag tag-cyan">Web Design</span>
-      <span class="tag tag-uv">E-Commerce</span>
-      <span class="tag tag-cyan">Brand</span>
-      <span class="tag tag-uv">Custom</span>
+      <span
+        *ngFor="let filter of filters"
+        class="tag"
+        [ngClass]="{
+          'tag-uv': filter === 'All' || filter === 'Brand' || filter === 'Custom',
+          'tag-cyan': filter === 'Web Design' || filter === 'E-Commerce',
+          'active': activeFilter() === filter
+        }"
+        (click)="setActiveFilter(filter)"
+      >
+        {{ filter }}
+      </span>
     </div>
   </div>
 </section>
 
 <section class="featured" appScrollReveal>
   <div class="container">
-    <div class="featured-card glass-surface">
-      <div class="featured-image" style="background: linear-gradient(135deg, var(--uv-start), var(--cyan));"></div>
+    <div class="featured-card glass-surface" *ngIf="featuredProject">
+      <div class="featured-image" [style.background]="featuredProject.gradient"></div>
       <div class="featured-content">
-        <h2 class="h2">Fintech SaaS Platform</h2>
-        <p class="body">Complete redesign and development of a financial technology platform, resulting in 300% increase in user signups.</p>
+        <h2 class="h2">{{ featuredProject.title }}</h2>
+        <p class="body">{{ featuredProject.description }}</p>
         <div class="featured-tags">
-          <span class="tag tag-cyan">Web App</span>
-          <span class="tag tag-uv">React</span>
-          <span class="tag tag-cyan">Custom</span>
+          <span *ngFor="let tag of featuredProject.tags" class="tag tag-cyan">{{ tag }}</span>
         </div>
         <a href="#" class="btn-primary">View Project →</a>
       </div>
@@ -33,78 +39,21 @@
 <section class="work-grid-section" appScrollReveal>
   <div class="container">
     <div class="work-grid">
-      <div class="project-card glass-surface scroll-reveal">
-        <div class="project-image" style="background: linear-gradient(135deg, var(--deep-iris), var(--uv-start));"></div>
+      <div *ngFor="let project of filteredProjects; trackBy: trackByProject" class="project-card glass-surface scroll-reveal">
+        <div class="project-image" [style.background]="project.gradient"></div>
         <div class="project-overlay">
-          <h3>E-Commerce Brand</h3>
-          <p>Shopify store with headless architecture</p>
+          <h3>{{ project.title }}</h3>
+          <p>{{ project.description }}</p>
           <span class="view-link">View Project →</span>
         </div>
         <div class="project-tags">
-          <span class="tag tag-cyan">Shopify</span>
-          <span class="tag tag-uv">E-Commerce</span>
+          <span *ngFor="let tag of project.tags" class="tag tag-cyan">{{ tag }}</span>
         </div>
       </div>
-      <div class="project-card glass-surface scroll-reveal">
-        <div class="project-image" style="background: linear-gradient(135deg, var(--cyan), var(--deep-iris));"></div>
-        <div class="project-overlay">
-          <h3>Professional Services</h3>
-          <p>Webflow CMS for lead generation</p>
-          <span class="view-link">View Project →</span>
-        </div>
-        <div class="project-tags">
-          <span class="tag tag-cyan">Webflow</span>
-          <span class="tag tag-uv">Brand</span>
-        </div>
-      </div>
-      <div class="project-card glass-surface scroll-reveal">
-        <div class="project-image" style="background: linear-gradient(135deg, var(--uv-end), var(--cyan));"></div>
-        <div class="project-overlay">
-          <h3>Startup Landing Page</h3>
-          <p>Conversion-optimized design</p>
-          <span class="view-link">View Project →</span>
-        </div>
-        <div class="project-tags">
-          <span class="tag tag-cyan">Web Design</span>
-          <span class="tag tag-uv">Custom</span>
-        </div>
-      </div>
-      <div class="project-card glass-surface scroll-reveal">
-        <div class="project-image" style="background: linear-gradient(135deg, var(--slate-glass), var(--uv-start));"></div>
-        <div class="project-overlay">
-          <h3>Corporate Website</h3>
-          <p>Brand identity and web presence</p>
-          <span class="view-link">View Project →</span>
-        </div>
-        <div class="project-tags">
-          <span class="tag tag-cyan">Brand</span>
-          <span class="tag tag-uv">Web Design</span>
-        </div>
-      </div>
-      <div class="project-card glass-surface scroll-reveal">
-        <div class="project-image" style="background: linear-gradient(135deg, var(--deep-iris), var(--cyan));"></div>
-        <div class="project-overlay">
-          <h3>Product Showcase</h3>
-          <p>Interactive product catalog</p>
-          <span class="view-link">View Project →</span>
-        </div>
-        <div class="project-tags">
-          <span class="tag tag-cyan">E-Commerce</span>
-          <span class="tag tag-uv">Custom</span>
-        </div>
-      </div>
-      <div class="project-card glass-surface scroll-reveal">
-        <div class="project-image" style="background: linear-gradient(135deg, var(--uv-end), var(--deep-iris));"></div>
-        <div class="project-overlay">
-          <h3>Agency Portfolio</h3>
-          <p>Creative agency website</p>
-          <span class="view-link">View Project →</span>
-        </div>
-        <div class="project-tags">
-          <span class="tag tag-cyan">Web Design</span>
-          <span class="tag tag-uv">Brand</span>
-        </div>
-      </div>
+    </div>
+
+    <div *ngIf="filteredProjects.length === 0" class="no-projects">
+      <p class="body">More projects coming soon. Check back later!</p>
     </div>
   </div>
 </section>
@@ -115,6 +64,83 @@
       <p>"Bleval.inc transformed our online presence completely. The attention to detail and strategic thinking was exactly what we needed."</p>
       <cite>David Chen <span>CEO, TechCorp</span></cite>
     </blockquote>
+  </div>
+</section>
+
+<!-- CASE HIGHLIGHTS SECTION -->
+<section class="case-highlights" appScrollReveal>
+  <div class="container">
+    <div class="section-header scroll-reveal">
+      <p class="overline">Case Highlights</p>
+      <h2 class="h2">Problem → Solution → Result</h2>
+      <p class="body">Here's how we approach each project: understand the problem, architect the solution, and deliver measurable impact.</p>
+    </div>
+
+    <div class="highlights-grid stagger-children">
+      <div class="highlight-card glass-surface scroll-reveal">
+        <div class="highlight-stage">Problem</div>
+        <h3>Kova Collective</h3>
+        <p>High cart abandonment (67%) and low AOV. Complex product discovery made it hard for customers to find items.</p>
+        <div class="highlight-metrics">
+          <span class="metric">67%</span>
+          <span class="metric-label">Cart Abandonment</span>
+        </div>
+      </div>
+
+      <div class="highlight-card glass-surface solution scroll-reveal">
+        <div class="highlight-stage">Solution</div>
+        <h3>Custom Platform</h3>
+        <p>Built personalized product recommendation engine. Redesigned 2-step checkout flow. Integrated real-time inventory sync.</p>
+        <div class="highlight-tech">
+          <span class="tech-tag">Angular</span>
+          <span class="tech-tag">Node.js</span>
+          <span class="tech-tag">Stripe</span>
+        </div>
+      </div>
+
+      <div class="highlight-card glass-surface result scroll-reveal">
+        <div class="highlight-stage">Result</div>
+        <h3>75% Revenue Growth</h3>
+        <p>Cart abandonment dropped to 29%. AOV increased 38%. Sales increased 75% in first 3 months post-launch.</p>
+        <div class="highlight-metrics">
+          <span class="metric">75%</span>
+          <span class="metric-label">Revenue Growth</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlights-grid stagger-children">
+      <div class="highlight-card glass-surface scroll-reveal">
+        <div class="highlight-stage">Problem</div>
+        <h3>Rev-Line Auto</h3>
+        <p>Quote approval took 2 days. No-show rate at 31%. Manual booking process created scheduling conflicts.</p>
+        <div class="highlight-metrics">
+          <span class="metric">2 days</span>
+          <span class="metric-label">Approval Time</span>
+        </div>
+      </div>
+
+      <div class="highlight-card glass-surface solution scroll-reveal">
+        <div class="highlight-stage">Solution</div>
+        <h3>Booking Platform</h3>
+        <p>SMS-based quote approval links. Automated booking reminders. Integrated bay scheduling system to prevent conflicts.</p>
+        <div class="highlight-tech">
+          <span class="tech-tag">React</span>
+          <span class="tech-tag">Twilio</span>
+          <span class="tech-tag">Google Calendar API</span>
+        </div>
+      </div>
+
+      <div class="highlight-card glass-surface result scroll-reveal">
+        <div class="highlight-stage">Result</div>
+        <h3>28% Throughput Increase</h3>
+        <p>Approval time reduced to 47 minutes. No-show rate dropped to 4%. Workshop throughput increased 28%.</p>
+        <div class="highlight-metrics">
+          <span class="metric">28%</span>
+          <span class="metric-label">Throughput Increase</span>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 

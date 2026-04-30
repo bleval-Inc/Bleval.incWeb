@@ -29,6 +29,102 @@
   margin: 0 auto;
 }
 
+/* ── PHILOSOPHY ── How We Think */
+.philosophy {
+  padding: var(--section-py) 0;
+  position: relative;
+  background: linear-gradient(180deg, transparent 0%, rgba(0, 229, 255, 0.02) 50%, transparent 100%);
+}
+
+.philosophy-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-16);
+  align-items: start;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.philosophy-text .overline {
+  margin-bottom: var(--space-6);
+}
+
+.philosophy-text .h2 {
+  margin-bottom: var(--space-8);
+}
+
+.philosophy-text .body-xl {
+  margin-bottom: var(--space-8);
+  color: var(--text);
+  font-weight: 500;
+  line-height: 1.8;
+  font-size: clamp(16px, 1.8vw, 18px);
+}
+
+.philosophy-text .body {
+  margin-bottom: var(--space-8);
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+.philosophy-text .body:last-child {
+  margin-bottom: 0;
+}
+
+.philosophy-principles {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.principle {
+  padding: var(--space-8);
+  border-radius: var(--radius-lg);
+  background: var(--slate-glass);
+  border: 1px solid var(--panel-border);
+  transition: all var(--duration-short) var(--ease-smooth);
+  position: relative;
+  overflow: hidden;
+}
+
+.principle::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, transparent, rgba(0, 229, 255, 0.02));
+  opacity: 0;
+  transition: opacity var(--duration-short) var(--ease-smooth);
+}
+
+.principle:hover {
+  border-color: var(--panel-edge-cyan-hover);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.principle:hover::before {
+  opacity: 1;
+}
+
+.principle-icon {
+  font-size: 28px;
+  color: var(--cyan);
+  margin-bottom: var(--space-3);
+  font-weight: 700;
+}
+
+.principle h3 {
+  font-size: clamp(18px, 2.2vw, 22px);
+  color: var(--text);
+  margin: 0 0 var(--space-4) 0;
+}
+
+.principle p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
 /* STORY */
 .story {
   padding: var(--section-py) 0;
@@ -239,6 +335,15 @@
 
 /* RESPONSIVE */
 @media (max-width: 1024px) {
+  .philosophy-content {
+    grid-template-columns: 1fr;
+    gap: var(--space-12);
+  }
+
+  .philosophy-principles {
+    gap: var(--space-6);
+  }
+
   .story-grid {
     grid-template-columns: 1fr;
     gap: 2rem;
@@ -251,8 +356,102 @@
   .team-grid {
     grid-template-columns: 1fr;
   }
+}
+
+@media (max-width: 768px) {
+  .philosophy {
+    padding: var(--section-py) 0;
+  }
+
+  .philosophy-text .h2 {
+    font-size: clamp(24px, 3vw, 32px);
+  }
+
+  .philosophy-text .body-xl {
+    font-size: clamp(16px, 1.6vw, 18px);
+  }
+
+  .philosophy-text .body {
+    font-size: 14px;
+  }
+
+  .philosophy-principles {
+    gap: var(--space-4);
+  }
+
+  .principle {
+    padding: var(--space-6);
+  }
+
+  .principle-icon {
+    font-size: 24px;
+  }
+
+  .principle h3 {
+    font-size: clamp(16px, 2vw, 20px);
+  }
+
+  .principle p {
+    font-size: 13px;
+  }
+
+  .story-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+
+  .story-content h2 {
+    font-size: clamp(24px, 3vw, 32px);
+  }
+
+  .story-visual {
+    height: 300px;
+  }
+
+  .values {
+    padding: var(--section-py) 0;
+  }
+
+  .values-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+
+  .value {
+    padding: var(--space-8);
+  }
+
+  .team-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .team-member {
+    padding: var(--space-8);
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: var(--space-6);
+  }
+
+  .stat {
+    padding: var(--space-6);
+  }
+
+  .stat-number {
+    font-size: 2.5rem;
+  }
+
+  .cta-content {
+    padding: var(--space-12) var(--space-6);
+  }
+
+  .cta-content .h2 {
+    font-size: clamp(24px, 3vw, 32px);
+    margin-bottom: var(--space-8);
+  }
+}
 
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-}
