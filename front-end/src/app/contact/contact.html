@@ -1,8 +1,11 @@
 <!-- HERO SECTION -->
 <section class="hero" appScrollReveal>
-  <div class="container">
-    <h1 class="h1">Let's Build Something That Breaks the Internet</h1>
-    <p class="body hero-subtitle">We reply within 24 hours. Serious questions deserve serious answers. No templates, no fluff — just strategy.</p>
+  <div class="orb-cyan" style="top: 20%; right: 10%;"></div>
+  <div class="orb-uv" style="bottom: 20%; left: 10%;"></div>
+  <div class="hero-content container">
+<p class="overline">Get In Touch</p>
+<h1 class="hero-heading">Let's Talk About<br>Your Project</h1>
+    <p class="body hero-subtitle">24-hour response. Brief strategy discussion. Custom proposal within 48 hours.</p>
   </div>
 </section>
 
@@ -12,15 +15,15 @@
 <section class="what-happens-next" appScrollReveal>
   <div class="container">
     <div class="section-header scroll-reveal">
-      <p class="overline">Our Process</p>
-      <h2 class="h2">What Happens Next</h2>
-      <p class="body">We're transparent about how we work. Here's exactly what to expect when you reach out.</p>
+<p class="overline">Simple Process</p>
+      <h2 class="h2">Strategy Discussion</h2>
+      <p class="body">Clear path from inquiry to project start. Professional collaboration from day one.</p>
     </div>
 
     <div class="process-flow stagger-children">
       <div class="flow-step glass-surface scroll-reveal">
         <div class="step-number">1</div>
-        <h3>You Submit</h3>
+Share Details
         <p>Fill out the form with details about your project, goals, and vision. The more detail, the better we can help.</p>
       </div>
 
@@ -28,7 +31,7 @@
 
       <div class="flow-step glass-surface scroll-reveal">
         <div class="step-number">2</div>
-        <h3>We Review</h3>
+We Review
         <p>Our team reviews your inquiry within 24 hours. We analyze your needs and think about how we can help.</p>
       </div>
 
@@ -36,7 +39,7 @@
 
       <div class="flow-step glass-surface scroll-reveal">
         <div class="step-number">3</div>
-        <h3>We Connect</h3>
+Discuss Vision
         <p>We schedule a strategy call to discuss your vision, goals, and approach. This is a no-pressure conversation.</p>
       </div>
 
@@ -44,7 +47,7 @@
 
       <div class="flow-step glass-surface scroll-reveal">
         <div class="step-number">4</div>
-        <h3>We Propose</h3>
+Receive Proposal
         <p>Based on our conversation, we create a tailored proposal with scope, timeline, and investment. Then we build together.</p>
       </div>
     </div>
@@ -56,7 +59,7 @@
   <div class="container">
     <div class="contact-grid">
       <div class="form-wrapper">
-        <h2 class="h2">Start Your Project</h2>
+<h2 class="h2">Discuss Your Project</h2>
         <form (ngSubmit)="onSubmit()" #contactForm="ngForm">
           <div class="form-group">
             <label for="name">Full Name *</label>
@@ -74,7 +77,7 @@
           </div>
 
           <div class="form-group">
-            <label for="projectType">What Do You Need? *</label>
+Project Focus *
             <select id="projectType" name="projectType" [(ngModel)]="formData.projectType" required>
               <option value="">— Select —</option>
               <option value="web-design">Web Design</option>
@@ -99,12 +102,12 @@
           </div>
 
           <div class="form-group">
-            <label for="message">Tell Us About Your Vision *</label>
+Project Details *
             <textarea id="message" name="message" placeholder="What are you building? What's your goal?" [(ngModel)]="formData.message" rows="6" required></textarea>
           </div>
 
           <button type="submit" class="btn btn-primary" [disabled]="!contactForm.valid || formSubmitted">
-            {{ formSubmitted ? 'Sending...' : 'Send Inquiry' }}
+{{ formSubmitted ? 'Sending...' : 'Send Message' }}
           </button>
         </form>
       </div>

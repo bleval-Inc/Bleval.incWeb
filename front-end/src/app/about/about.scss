@@ -1,32 +1,55 @@
 /* ABOUT PAGE STYLES */
 
+/* Hero - Match Home Page Styling */
 .hero {
-  min-height: 60vh;
+  min-height: 100vh;
   display: flex;
   align-items: center;
   position: relative;
-  padding: var(--section-py) 0;
+  overflow: hidden;
 }
 
 .hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-8);
   text-align: center;
   max-width: 900px;
   margin: 0 auto;
   z-index: 2;
   position: relative;
+  padding-top: var(--space-12);
+  animation: pageEnter 0.8s var(--ease-smooth) forwards;
+}
+
+.hero-heading {
+  font-size: clamp(3.5rem, 3vw, 5.75rem);
+  line-height: 1.02;
+  font-family: var(--font-display), 'Orbitron', sans-serif;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  color: var(--text);
 }
 
 .hero-content .overline {
-  margin-bottom: 1rem;
+  margin-bottom: var(--space-6);
+  color: var(--secondary);
+  font-size: clamp(12px, 1.2vw, 14px);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  opacity: 0.85;
+  font-weight: 600;
 }
 
-.hero-content .h1 {
-  margin-bottom: 1.5rem;
-}
-
-.hero-content .body {
-  max-width: 600px;
+.hero-subtitle {
+  max-width: 700px;
   margin: 0 auto;
+  color: var(--muted);
+  font-size: clamp(16px, 1.8vw, 18px);
+  line-height: 1.85;
+  font-weight: 400;
+  letter-spacing: 0.01em;
 }
 
 /* ── PHILOSOPHY ── How We Think */

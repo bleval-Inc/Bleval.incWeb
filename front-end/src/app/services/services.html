@@ -2,208 +2,314 @@
   <div class="orb-cyan" style="top: 20%; right: 10%;"></div>
   <div class="orb-uv" style="bottom: 20%; left: 10%;"></div>
   <div class="hero-content container">
-    <p class="overline">Services</p>
-    <app-hero-title text="Productized Solutions&#10;Built for Scale."></app-hero-title>
-    <p class="body">We structure our services to fit your needs precisely. From building to optimization, every solution is designed to deliver measurable business outcomes.</p>
+    <p class="overline">Premium Services</p>
+    <h1 class="hero-heading">Exceptional Design & Development.</h1>
+    <p class="body hero-subtitle">Bleval.inc designs and develops premium websites and web applications focused on superior user experience, performance, and digital presence.</p>
   </div>
 </section>
 
-<section class="service-blocks" appScrollReveal>
-  <div class="container">
-    <div class="service-block glass-surface scroll-reveal">
-      <div class="service-content">
-        <div class="service-badge">Design</div>
-        <h2 class="h2">Web Design</h2>
-        <p class="service-tagline">Research-backed, conversion-focused interface design.</p>
-        <p class="body">Every design decision is grounded in user research and conversion principles. We create interfaces that are beautiful, intuitive, and engineered to drive measurable business results.</p>
-        
-        <div class="service-details">
-          <div class="detail">
-            <h4>What You Get</h4>
-            <ul>
-              <li>User research & competitive analysis</li>
-              <li>Wireframes & interactive prototypes</li>
-              <li>High-fidelity visual designs</li>
-              <li>Design system documentation</li>
-              <li>3 revision rounds included</li>
-            </ul>
+<!-- Web Design Service -->
+<section class="spotlight-section" appScrollReveal>
+  <div class="spotlight-inner">
+    <div class="service-spotlight glass-surface scroll-reveal">
+      <div class="spotlight-label">01 — Web Design</div>
+      <div class="service-main">
+        <div class="service-content">
+          <h2 class="h2">Web Design</h2>
+          <p class="service-tagline">Premium design that creates memorable user experiences.</p>
+          <p class="body">Strategic visual systems that elevate your brand and convert visitors into customers. We craft design languages that scale across platforms while maintaining consistency and impact.</p>
+          
+          <div class="reveal-section">
+            <div class="reveal-row" (click)="toggleReveal(0, 0)" [class.active]="services[0].reveals[0]">
+              What You Get
+              <span class="reveal-icon">+</span>
+            </div>
+            <div class="reveal-content" [class.expanded]="services[0].reveals[0]">
+              <ul>
+                <li>Wireframes & interactive prototypes</li>
+                <li>High-fidelity visual designs</li>
+                <li>Design system documentation</li>
+                <li>3 revision rounds included</li>
+              </ul>
+            </div>
           </div>
-          <div class="detail">
-            <h4>Tech Stack</h4>
-            <ul>
-              <li>Figma design system</li>
-              <li>User testing tools</li>
-              <li>Accessibility standards (WCAG 2.1)</li>
-              <li>Design handoff documentation</li>
-            </ul>
+          
+          <div class="reveal-section">
+            <div class="reveal-row" (click)="toggleReveal(0, 1)" [class.active]="services[0].reveals[1]">
+              Tech Stack
+              <span class="reveal-icon">+</span>
+            </div>
+            <div class="reveal-content" [class.expanded]="services[0].reveals[1]">
+              <ul>
+                <li>Figma design system</li>
+                <li>User testing tools</li>
+                <li>Accessibility standards (WCAG 2.1)</li>
+                <li>Design handoff documentation</li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="reveal-section">
+            <div class="reveal-row" (click)="toggleReveal(0, 2)" [class.active]="services[0].reveals[2]">
+              Who This Is For
+              <span class="reveal-icon">+</span>
+            </div>
+            <div class="reveal-content" [class.expanded]="services[0].reveals[2]">
+              <ul>
+                <li>Brands seeking visual distinction</li>
+                <li>Companies prioritizing user experience</li>
+                <li>Startups building MVP design systems</li>
+                <li>Enterprises standardizing design language</li>
+              </ul>
+            </div>
+          </div>
+
+          <a routerLink="/contact" class="btn-primary">Build Your Interface System</a>
+        </div>
+        <div class="service-visual">
+          <img src="/assets/Web-design-2.jpg" alt="Web design process and workspace" />
+          <div class="support-highlights">
+            <span>User research & competitive analysis</span>
+            <span>Interactive prototypes</span>
+            <span>High-fidelity visual designs</span>
           </div>
         </div>
-
-        <div class="service-details-alt">
-          <div class="detail">
-            <h4>Who This Is For</h4>
-            <ul>
-              <li>Businesses needing brand consistency</li>
-              <li>Companies launching new products</li>
-              <li>E-commerce platforms</li>
-              <li>Digital transformation projects</li>
-            </ul>
-          </div>
-        </div>
-
-        <a routerLink="/contact" class="btn-primary">Start Your Project</a>
       </div>
-      <div class="service-visual">
-        <img src="/assets/Web-design-2.jpg" alt="Web design process and workspace" />
-      </div>
-    </div>
-
-    <div class="service-block glass-surface reverse scroll-reveal">
-      <div class="service-content">
-        <div class="service-badge">Development</div>
-        <h2 class="h2">Web Development</h2>
-        <p class="service-tagline">Scalable, performant code built on modern architecture.</p>
-        <p class="body">We build with performance, security, and maintainability at the core. Our development process ensures your digital product can scale with your business growth while maintaining premium user experience.</p>
-        
-        <div class="service-details">
-          <div class="detail">
-            <h4>What You Get</h4>
-            <ul>
-              <li>Component-driven architecture</li>
-              <li>Database design & optimization</li>
-              <li>API development & integration</li>
-              <li>Mobile-responsive implementation</li>
-              <li>Automated testing & CI/CD setup</li>
-            </ul>
-          </div>
-          <div class="detail">
-            <h4>Tech Stack</h4>
-            <ul>
-              <li>Angular/React/Next.js frameworks</li>
-              <li>Node.js & Express backend</li>
-              <li>PostgreSQL & Redis databases</li>
-              <li>AWS/Netlify deployment</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="service-details-alt">
-          <div class="detail">
-            <h4>Who This Is For</h4>
-            <ul>
-              <li>Fast-growing startups</li>
-              <li>E-commerce businesses</li>
-              <li>SaaS platforms</li>
-              <li>Digital agencies</li>
-            </ul>
-          </div>
-        </div>
-
-        <a routerLink="/contact" class="btn-primary">Start Your Project</a>
-      </div>
-      <div class="service-visual">
-        <img src="/assets/web-dev.2.jpg" alt="Web development coding environment" />
-      </div>
-    </div>
-
-    <div class="service-block glass-surface scroll-reveal">
-      <div class="service-content">
-        <div class="service-badge">E-Commerce</div>
-        <h2 class="h2">E-Commerce Solutions</h2>
-        <p class="service-tagline">Conversion-first platforms that maximize revenue.</p>
-        <p class="body">We build e-commerce experiences that don't just look good — they sell. From streamlined checkout flows to intelligent product discovery, every element is optimized for revenue growth.</p>
-        
-        <div class="service-details">
-          <div class="detail">
-            <h4>What You Get</h4>
-            <ul>
-              <li>Shopify/WooCommerce customization</li>
-              <li>Custom storefront development</li>
-              <li>Payment gateway integration</li>
-              <li>Inventory management system</li>
-              <li>Conversion optimization</li>
-            </ul>
-          </div>
-          <div class="detail">
-            <h4>Tech Stack</h4>
-            <ul>
-              <li>Shopify Liquid templating</li>
-              <li>WooCommerce custom plugins</li>
-              <li>Stripe/PayPal integration</li>
-              <li>Google Analytics & GA4</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="service-details-alt">
-          <div class="detail">
-            <h4>Who This Is For</h4>
-            <ul>
-              <li>Retail & product businesses</li>
-              <li>Direct-to-consumer brands</li>
-              <li>Marketplaces</li>
-              <li>Existing stores needing upgrades</li>
-            </ul>
-          </div>
-        </div>
-
-        <a routerLink="/contact" class="btn-primary">Start Your Project</a>
-      </div>
-      <div class="service-visual">
-        <img src="/assets/E-commerce.jpg" alt="E-commerce product catalog and dashboard" />
-      </div>
-    </div>
-
-    <div class="service-block glass-surface reverse scroll-reveal">
-      <div class="service-content">
-        <div class="service-badge">Growth</div>
-        <h2 class="h2">Growth & Maintenance</h2>
-        <p class="service-tagline">Ongoing optimization for sustained competitive advantage.</p>
-        <p class="body">Launch is just the beginning. We provide comprehensive support, monitoring, and optimization to ensure your digital product continues to perform at peak efficiency and drive business growth.</p>
-        
-        <div class="service-details">
-          <div class="detail">
-            <h4>What You Get</h4>
-            <ul>
-              <li>24/7 uptime monitoring</li>
-              <li>Weekly performance reports</li>
-              <li>Security patching & updates</li>
-              <li>Conversion optimization sprints</li>
-              <li>Content & feature updates</li>
-            </ul>
-          </div>
-          <div class="detail">
-            <h4>Tech Stack</h4>
-            <ul>
-              <li>Advanced analytics (GA4)</li>
-              <li>A/B testing platforms</li>
-              <li>Security monitoring tools</li>
-              <li>Performance optimization tools</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="service-details-alt">
-          <div class="detail">
-            <h4>Who This Is For</h4>
-            <ul>
-              <li>Businesses wanting long-term support</li>
-              <li>Growing digital products</li>
-              <li>Performance-focused teams</li>
-              <li>Enterprise organizations</li>
-            </ul>
-          </div>
-        </div>
-
-        <a routerLink="/contact" class="btn-primary">Start Your Project</a>
-      </div>
-      <div class="service-visual">
-        <img src="/assets/growthandAnalytics.jpg" alt="Growth analytics dashboard and metrics" />
+      <div class="service-support">
+        <div class="support-col"></div>
+        <div class="support-col"></div>
       </div>
     </div>
   </div>
+  <div class="gradient-divider"></div>
 </section>
 
+<!-- Web Development Service -->
+<section class="spotlight-section reverse" appScrollReveal>
+  <div class="spotlight-inner">
+    <div class="service-spotlight glass-surface scroll-reveal">
+      <div class="spotlight-label">02 — Web Development</div>
+      <div class="service-main">
+        <div class="service-content">
+          <h2 class="h2">Web Development</h2>
+          <p class="service-tagline">High-performance code with modern technologies.</p>
+          <p class="body">Performance-first architecture that scales to millions. We build systems that handle growth without compromise — engineered for reliability, speed, and extensibility.</p>
+          
+          <div class="reveal-section">
+            <div class="reveal-row" (click)="toggleReveal(1, 0)" [class.active]="services[1].reveals[0]">
+              What You Get
+              <span class="reveal-icon">+</span>
+            </div>
+            <div class="reveal-content" [class.expanded]="services[1].reveals[0]">
+              <ul>
+                <li>Component-driven architecture</li>
+                <li>Database design & optimization</li>
+                <li>API development & integration</li>
+                <li>Mobile-responsive implementation</li>
+                <li>Automated testing & CI/CD setup</li>
+              </ul>
+            </div>
+          </div>
+          <div class="reveal-section">
+            <div class="reveal-row" (click)="toggleReveal(1, 1)" [class.active]="services[1].reveals[1]">
+              Tech Stack
+              <span class="reveal-icon">+</span>
+            </div>
+            <div class="reveal-content" [class.expanded]="services[1].reveals[1]">
+              <ul>
+                <li>Angular/React/Next.js frameworks</li>
+                <li>Node.js & Express backend</li>
+                <li>PostgreSQL & Redis databases</li>
+                <li>AWS/Netlify deployment</li>
+              </ul>
+            </div>
+          </div>
+          <div class="reveal-section">
+            <div class="reveal-row" (click)="toggleReveal(1, 2)" [class.active]="services[1].reveals">
+              Who This Is For
+              <span class="reveal-icon">+</span>
+            </div>
+            <div class="reveal-content" [class.expanded]="services[1].reveals[2]">
+              <ul>
+                <li>10x traffic capacity without degradation</li>
+                <li>Sub-2s page loads guaranteed</li>
+                <li>Zero-downtime deployments</li>
+                <li>Future-proof extensibility</li>
+              </ul>
+            </div>
+          </div>
+
+          <a routerLink="/contact" class="btn-primary">Build Scalable Foundation</a>
+        </div>
+        <div class="service-visual">
+          <img src="/assets/web-dev.2.jpg" alt="Web development coding environment" />
+          <div class="support-highlights">
+            <span>Component-driven architecture</span>
+            <span>Database design & optimization</span>
+            <span>API development & integration</span>
+          </div>
+        </div>
+      </div>
+      <div class="service-support">
+        <div class="support-col"></div>
+        <div class="support-col"></div>
+      </div>
+    </div>
+  </div>
+  <div class="gradient-divider"></div>
+</section>
+
+<!-- E-Commerce Service -->
+<section class="spotlight-section" appScrollReveal>
+  <div class="spotlight-inner">
+    <div class="service-spotlight glass-surface scroll-reveal">
+      <div class="spotlight-label">03 — E-Commerce Solutions</div>
+      <div class="service-main">
+        <div class="service-content">
+          <h2 class="h2">E-Commerce Solutions</h2>
+          <p class="service-tagline">Conversion-first platforms that maximize revenue.</p>
+          <p class="body">We build e-commerce experiences that don't just look good — they sell. From streamlined checkout flows to intelligent product discovery, every element is optimized for revenue growth.</p>
+          
+          <div class="reveal-section">
+            <div class="reveal-row" (click)="toggleReveal(2, 0)" [class.active]="services[2].reveals[0]">
+              What You Get
+              <span class="reveal-icon">+</span>
+            </div>
+            <div class="reveal-content" [class.expanded]="services[2].reveals[0]">
+              <ul>
+                <li>Shopify/WooCommerce customization</li>
+                <li>Custom storefront development</li>
+                <li>Payment gateway integration</li>
+                <li>Inventory management system</li>
+                <li>Conversion optimization</li>
+              </ul>
+            </div>
+          </div>
+          <div class="reveal-section">
+            <div class="reveal-row" (click)="toggleReveal(2, 1)" [class.active]="services[2].reveals[1]">
+              Tech Stack
+              <span class="reveal-icon">+</span>
+            </div>
+            <div class="reveal-content" [class.expanded]="services[2].reveals[1]">
+              <ul>
+                <li>Shopify Liquid templating</li>
+                <li>WooCommerce custom plugins</li>
+                <li>Stripe/PayPal integration</li>
+                <li>Google Analytics & GA4</li>
+              </ul>
+            </div>
+          </div>
+          <div class="reveal-section">
+            <div class="reveal-row" (click)="toggleReveal(2, 2)" [class.active]="services[2].reveals[2]">
+              Who This Is For
+              <span class="reveal-icon">+</span>
+            </div>
+            <div class="reveal-content" [class.expanded]="services[2].reveals[2]">
+              <ul>
+                <li>Retail & product businesses</li>
+                <li>Direct-to-consumer brands</li>
+                <li>Marketplaces</li>
+                <li>Existing stores needing upgrades</li>
+              </ul>
+            </div>
+          </div>
+
+          <a routerLink="/contact" class="btn-primary">Start Your E-Commerce Project</a>
+        </div>
+        <div class="service-visual">
+          <img src="/assets/E-commerce.jpg" alt="E-commerce product catalog and dashboard" />
+          <div class="support-highlights">
+            <span>Shopify/WooCommerce customization</span>
+            <span>Custom storefront development</span>
+            <span>Payment gateway integration</span>
+          </div>
+        </div>
+      </div>
+      <div class="service-support">
+        <div class="support-col"></div>
+        <div class="support-col"></div>
+      </div>
+    </div>
+  </div>
+  <div class="gradient-divider"></div>
+</section>
+
+<!-- Growth & Maintenance Service -->
+<section class="spotlight-section reverse" appScrollReveal>
+  <div class="spotlight-inner">
+    <div class="service-spotlight glass-surface scroll-reveal">
+      <div class="spotlight-label">04 — Growth & Maintenance</div>
+      <div class="service-main">
+        <div class="service-content">
+          <h2 class="h2">Growth & Maintenance</h2>
+          <p class="service-tagline">Ongoing optimization for sustained competitive advantage.</p>
+          <p class="body">Launch is just the beginning. We provide comprehensive support, monitoring, and optimization to ensure your digital product continues to perform at peak efficiency and drive business growth.</p>
+          
+          <div class="reveal-section">
+            <div class="reveal-row" (click)="toggleReveal(3, 0)" [class.active]="services[3].reveals[0]">
+              What You Get
+              <span class="reveal-icon">+</span>
+            </div>
+            <div class="reveal-content" [class.expanded]="services[3].reveals[0]">
+              <ul>
+                <li>24/7 uptime monitoring</li>
+                <li>Weekly performance reports</li>
+                <li>Security patching & updates</li>
+                <li>Conversion optimization sprints</li>
+                <li>Content & feature updates</li>
+              </ul>
+            </div>
+          </div>
+          <div class="reveal-section">
+            <div class="reveal-row" (click)="toggleReveal(3, 1)" [class.active]="services[3].reveals[1]">
+              Tech Stack
+              <span class="reveal-icon">+</span>
+            </div>
+            <div class="reveal-content" [class.expanded]="services[3].reveals[1]">
+              <ul>
+                <li>Advanced analytics (GA4)</li>
+                <li>A/B testing platforms</li>
+                <li>Security monitoring tools</li>
+                <li>Performance optimization tools</li>
+              </ul>
+            </div>
+          </div>
+          <div class="reveal-section">
+            <div class="reveal-row" (click)="toggleReveal(3, 2)" [class.active]="services[3].reveals[2]">
+              Who This Is For
+              <span class="reveal-icon">+</span>
+            </div>
+            <div class="reveal-content" [class.expanded]="services[3].reveals[2]">
+              <ul>
+                <li>Businesses wanting long-term support</li>
+                <li>Growing digital products</li>
+                <li>Performance-focused teams</li>
+                <li>Enterprise organizations</li>
+              </ul>
+            </div>
+          </div>
+
+          <a routerLink="/contact" class="btn-primary">Secure Ongoing Success</a>
+        </div>
+        <div class="service-visual">
+          <img src="/assets/growthandAnalytics.jpg" alt="Growth analytics dashboard and metrics" />
+          <div class="support-highlights">
+            <span>24/7 uptime monitoring</span>
+            <span>Weekly performance reports</span>
+            <span>Security patching & updates</span>
+          </div>
+        </div>
+      </div>
+      <div class="service-support">
+        <div class="support-col"></div>
+        <div class="support-col"></div>
+      </div>
+    </div>
+  </div>
+  <div class="gradient-divider"></div>
+</section>
+
+<!-- Process Section -->
 <section class="process" appScrollReveal>
   <div class="container">
     <div class="section-header">
@@ -235,6 +341,7 @@
   </div>
 </section>
 
+<!-- CTA Section -->
 <section class="cta-section" appScrollReveal>
   <div class="container">
     <div class="cta-content glass-surface">
@@ -244,3 +351,4 @@
     </div>
   </div>
 </section>
+

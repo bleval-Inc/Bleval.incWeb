@@ -1,12 +1,11 @@
 import { Component, AfterViewInit, ElementRef, Inject, PLATFORM_ID, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { HeroTitleComponent } from '../hero-title/hero-title.component';
 import { ScrollRevealDirective } from '../scroll-reveal';
 
 @Component({
   selector: 'app-pricing',
-  imports: [CommonModule, RouterLink, HeroTitleComponent, ScrollRevealDirective],
+  imports: [CommonModule, RouterLink, ScrollRevealDirective],
   templateUrl: './pricing.html',
   styleUrl: './pricing.scss',
 })
