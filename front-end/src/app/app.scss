@@ -25,17 +25,17 @@ html, body {
   max-width: 100%;
 }
 
-@media (max-width: 768px) {
-  .page-wrapper {
-    /* Removed causing overflow on mobile */
-  }
-}
+// @media (max-width: 768px) {
+//   .page-wrapper {
+   
+//   }
+// }
 
-@media (max-width: 480px) {
-  .page-wrapper {
-    /* Removed causing overflow on mobile */
-  }
-}
+// @media (max-width: 480px) {
+//   .page-wrapper {
+    
+//   }
+// }
 
 .main-content {
   position: relative;
@@ -87,8 +87,8 @@ html, body {
   position: absolute;
   border-radius: 50%;
   filter: blur(80px);
-  opacity: 0.35;
-  animation: drift 50s ease-in-out infinite;
+opacity: 0.10;
+animation: drift 45s ease-in-out infinite;
   will-change: transform;
 }
 
@@ -99,6 +99,9 @@ html, body {
   top: 10%;
   left: -10%;
   animation-delay: 0s;
+  animation: driftX 45s cubic-bezier(0.25, 0.1, 0.25, 1) infinite,
+             driftY 50s cubic-bezier(0.25, 0.1, 0.25, 1) infinite,
+             scalePulse 50s ease-in-out infinite;
 }
 
 .bg .glow.g2 {
@@ -108,6 +111,9 @@ html, body {
   top: 50%;
   right: -5%;
   animation-delay: -17s;
+  animation: driftX 55s cubic-bezier(0.25, 0.1, 0.25, 1) infinite,
+             driftY 60s cubic-bezier(0.25, 0.1, 0.25, 1) infinite,
+             scalePulse 55s ease-in-out infinite;
 }
 
 .bg .glow.g3 {
@@ -117,12 +123,26 @@ html, body {
   bottom: -20%;
   left: 10%;
   animation-delay: -34s;
+  animation: driftX 65s cubic-bezier(0.25, 0.1, 0.25, 1) infinite,
+             driftY 70s cubic-bezier(0.25, 0.1, 0.25, 1) infinite,
+             scalePulse 60s ease-in-out infinite;
 }
 
-@keyframes drift {
-  0%, 100% { transform: translate(0, 0); }
-  33% { transform: translate(30px, -50px); }
-  66% { transform: translate(-20px, 30px); }
+@keyframes driftX {
+  0%, 100% { transform: translateX(0); }
+  33% { transform: translateX(40px); }
+  66% { transform: translateX(-30px); }
+}
+
+@keyframes driftY {
+  0%, 100% { transform: translateY(0); }
+  33% { transform: translateY(-40px); }
+  66% { transform: translateY(35px); }
+}
+
+@keyframes scalePulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
 }
 
 /* ═══════════════════════════════════════════════════════════════

@@ -103,11 +103,16 @@
 .principle {
   padding: var(--space-8);
   border-radius: var(--radius-lg);
-  background: var(--slate-glass);
   border: 1px solid var(--panel-border);
+  /* Minor glass refinement */
+  backdrop-filter: var(--glass-blur-light);
+  background: rgba(255,255,255,0.04);
   transition: all var(--duration-short) var(--ease-smooth);
   position: relative;
   overflow: hidden;
+  box-shadow:
+    0 4px 16px rgba(0,0,0,0.15),
+    inset 0 1px 0 rgba(255,255,255,0.06);
 }
 
 .principle::before {
@@ -449,7 +454,7 @@
   }
 
   .team-member {
-    padding: var(--space-8);
+ padding: var(--space-8);
   }
 
   .stats-grid {

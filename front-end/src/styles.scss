@@ -49,7 +49,9 @@
   /* ═══ GLASS & BACKDROP EFFECTS ═══ */
   --glass-blur: blur(20px);
   --glass-blur-light: blur(12px);
-  --glass-blur-strong: blur(30px);
+--glass-blur-strong: blur(30px);
+  --glass-primary: rgba(124,58,237,0.10);
+  --glass-secondary: rgba(0,229,255,0.08);
 
   /* ═══ TYPOGRAPHY ═══ */
   --font-display: 'Orbitron', sans-serif;
@@ -178,6 +180,7 @@ section::before {
     rgba(255, 255, 255, 0.06) 80%,
     transparent 100%
   );
+  display: none;
 }
 
 /* Comic panel edge highlight — bottom */
@@ -305,22 +308,24 @@ p {
 .card,
 .glass-card,
 .glass-surface {
-  background: var(--slate-glass);
-  border: 1px solid var(--panel-border);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
+  // background: var(--slate-glass);
+  background: 
+    linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02)),
+    linear-gradient(135deg, var(--glass-primary), transparent);
+  border: 1px solid rgba(255,255,255,0.08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-radius: var(--radius-xl);
   padding: var(--space-10);
   transition: all var(--duration-short) var(--ease-smooth);
   position: relative;
   z-index: 1;
   
-  /* Comic panel layered depth — multiple shadows for perception of layers */
+  /* True glassmorphism depth */
   box-shadow:
-    var(--panel-inset),
-    0 4px 16px rgba(0, 0, 0, 0.12),
-    0 0 0 1px rgba(255, 255, 255, 0.02),
-    0 0 20px rgba(0, 0, 0, 0.08);
+    0 8px 32px rgba(0,0,0,0.35),
+    inset 0 1px 0 rgba(255,255,255,0.10),
+    0 0 0 1px rgba(255,255,255,0.06);
   
   will-change: transform, box-shadow;
 }
@@ -352,15 +357,15 @@ p {
 .card:hover,
 .glass-card:hover,
 .glass-surface:hover {
-  transform: translateY(-8px) scale(1.01);
-  border-color: var(--panel-border-hover);
-  background: var(--bg-card-hover);
+  transform: translateY(-4px) scale(1.01);
+  border-color: rgba(255,255,255,0.12);
+  background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
   
   box-shadow:
-    var(--panel-inset-hover),
-    0 12px 40px rgba(0, 0, 0, 0.2),
-    0 0 0 1px var(--panel-edge),
-    var(--shadow-glow-sm);
+    inset 0 1px 0 rgba(255,255,255,0.12),
+    0 16px 48px rgba(0,0,0,0.4),
+    0 0 0 1px rgba(124,58,237,0.25),
+    0 0 32px rgba(124,58,237,0.25);
 }
 
 .card:hover::before,
