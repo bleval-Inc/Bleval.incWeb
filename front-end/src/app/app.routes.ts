@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -10,3 +10,8 @@ export const routes: Routes = [
   { path: 'blog', loadComponent: () => import('./blog/blog').then(m => m.Blog) },
   { path: 'contact', loadComponent: () => import('./contact/contact').then(m => m.Contact) },
 ];
+
+RouterModule.forRoot(routes, {
+  anchorScrolling: 'enabled',
+  scrollPositionRestoration: 'enabled'
+});

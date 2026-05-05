@@ -17,7 +17,7 @@ export class Contact {
     email: '',
     company: '',
     projectType: '',
-    budget: '',
+    pricing: '',
     message: ''
   };
 
@@ -49,7 +49,7 @@ export class Contact {
         email: '',
         company: '',
         projectType: '',
-        budget: '',
+        pricing: '',
         message: ''
       };
 
