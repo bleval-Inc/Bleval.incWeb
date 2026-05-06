@@ -24,9 +24,20 @@ export class ApiService {
     return this.post('/contact', data)
   }
 
-  sendChat(message: string, sessionKey?: string): Observable<{ reply: string; session_key: string }> {
-    return this.post('/chat', { message, session_key: sessionKey })
+  sendChat(message: string, sessionKey?: string): Observable<{ reply: string; session_key: string; cta?: { type: string; label: string; link: string } | null }> {
+    // environment.apiUrl already includes /api
+    return this.post('/chat', {
+      message,
+      session_key: sessionKey,
+    })
   }
+
+
+
+  submitLead(data: { email: string; intent: 'pricing' | 'services' | 'general'; session_key: string }): Observable<{ ok: boolean; lead_id: string }> {
+    return this.post('/lead', data)
+  }
+
 
   getBookingServices(): Observable<{ services: any[] }> {
     return this.get('/bookings/services')
