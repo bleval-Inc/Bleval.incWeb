@@ -72,9 +72,15 @@ Receive Proposal
           </div>
 
           <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" placeholder="Phone Number" [(ngModel)]="formData.phone">
+          </div>
+
+          <div class="form-group">
             <label for="company">Company</label>
             <input type="text" id="company" name="company" placeholder="Your company name" [(ngModel)]="formData.company">
           </div>
+
 
           <div class="form-group">
 Project Focus *
@@ -106,8 +112,20 @@ Project Details *
           </div>
 
           <button style="background: linear-gradient(135deg, var(--primary), var(--secondary)); color:white;" type="submit" class="btn btn-primary" [disabled]="!contactForm.valid || formSubmitted">
-{{ formSubmitted ? 'Sending...' : 'Send Message' }}
+{{ formSubmitted ? 'Submitting...' : 'Send Message' }}
           </button>
+
+          <div class="form-message success" *ngIf="formSuccess">
+            Your request has been submitted successfully. We'll get back to you shortly.
+            <div style="margin-top:10px">
+              <a href="/booking" style="color:var(--secondary);text-decoration:underline">Book a Call</a>
+            </div>
+          </div>
+
+          <div class="form-message error" *ngIf="error">
+            Something went wrong while submitting your request. Please try again or contact us directly.
+          </div>
+
         </form>
       </div>
 

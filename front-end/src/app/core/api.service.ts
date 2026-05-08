@@ -47,9 +47,20 @@ export class ApiService {
     return this.get(`/bookings/slots/${serviceId}?date=${date}`)
   }
 
-  createBooking(data: { service_id: string; contact_name: string; contact_email: string; contact_phone?: string; start_time: string; notes?: string }): Observable<any> {
+  createBooking(data: {
+    name: string
+    email: string
+    phone: string
+    service: string
+    date: string
+    time: string
+    notes?: string
+    source: 'booking_modal'
+  }): Observable<any> {
     return this.post('/bookings', data)
   }
+
+
 
   requestQuote(data: { name: string; email: string; phone?: string; service: string; budget?: string; message: string }): Observable<{ success: boolean }> {
     return this.post('/contact', { ...data, source: 'quote_request' })

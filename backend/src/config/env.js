@@ -15,8 +15,21 @@ const schema = z.object({
   AGENCY_FROM_EMAIL:     z.string(),
   AGENCY_NOTIFY_EMAIL:   z.string(),
   AGENCY_DOMAIN:         z.string(),
+  ADMIN_EMAIL:           z.string().email(),
+  RESEND_FROM_EMAIL:     z.string().email(),
   FRONTEND_URL:          z.string().default('http://localhost:4200'),
+
+  // Zoho SMTP (email provider)
+  SMTP_HOST:            z.string(),
+  SMTP_PORT:            z.string(),
+  SMTP_USER:            z.string(),
+  SMTP_PASS:            z.string(),
+  FROM_EMAIL:           z.string().email(),
+
+  // Kept for future toggling/disable switches
+  EMAIL_PROVIDER:       z.string().optional(),
 })
+
 
 const parsed = schema.safeParse(process.env)
 

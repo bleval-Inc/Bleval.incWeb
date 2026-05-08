@@ -12,6 +12,8 @@ import {
 import { RouterOutlet, RouterLink } from '@angular/router';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ApiService } from './core/api.service';
+
 import { Navbar } from './navbar/navbar';
 import { Footer } from './footer/footer';
 import { ChatbotComponent } from './chatbot/chatbot';
@@ -24,14 +26,23 @@ import { ToastComponent } from './toast/toast.component';
   styleUrl: './app.scss'
 })
 export class App implements AfterViewInit, OnDestroy {
+
   protected readonly isScrolled = signal(false);
   bookingOpen = signal(false);
   bookingLoading = signal(false);
   bookingSuccess = signal(false);
+  bookingError = signal(false);
 
   bookingName = '';
+  bookingEmail = '';
+  bookingPhone = '';
   bookingService = '';
   bookingDate = '';
+  bookingTime = '';
+  bookingNotes = '';
+
+  private submitTimeoutId: number | null = null;
+
 
   readonly serviceOptions = [
     'Web Design',
@@ -46,8 +57,10 @@ export class App implements AfterViewInit, OnDestroy {
   constructor(
     private renderer: Renderer2,
     private el: ElementRef,
+    private api: ApiService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
+
 
   /* ═══════════════════════════════════════════════════════════════
      SCROLL HANDLER
@@ -93,24 +106,98 @@ export class App implements AfterViewInit, OnDestroy {
   }
 
   submitBooking() {
-    if (!this.bookingName.trim() || !this.bookingService || !this.bookingDate) {
+    // Frontend validation (template also disables submit)
+    if (
+      !this.bookingName.trim() ||
+      !this.bookingEmail.trim() ||
+      !this.bookingPhone.trim() ||
+      !this.bookingService ||
+      !this.bookingDate ||
+      !this.bookingTime
+    ) {
       return;
     }
 
+    // Prevent duplicate submits
+    if (this.bookingLoading()) return;
+
+    this.bookingError.set(false);
+    this.bookingSuccess.set(false);
     this.bookingLoading.set(true);
-    setTimeout(() => {
-      this.bookingLoading.set(false);
-      this.bookingSuccess.set(true);
-    }, 900);
+
+    if (this.submitTimeoutId !== null) {
+      window.clearTimeout(this.submitTimeoutId);
+    }
+
+    const timeoutPromise = new Promise<never>((_, reject) => {
+      this.submitTimeoutId = window.setTimeout(() => {
+        reject(new Error('Request timed out'));
+      }, 20000);
+    });
+
+    const payload = {
+      name: this.bookingName.trim(),
+      email: this.bookingEmail.trim(),
+      phone: this.bookingPhone.trim(),
+      service: this.bookingService,
+      date: this.bookingDate,
+      time: this.bookingTime,
+      notes: this.bookingNotes?.trim() || undefined,
+      source: 'booking_modal' as const
+    };
+
+
+    Promise.race([
+      new Promise((resolve, reject) => {
+        this.api.createBooking(payload as any).subscribe({
+          next: (r) => resolve(r),
+          error: (e) => reject(e),
+        })
+      }),
+
+      timeoutPromise
+    ])
+      .then(() => {
+
+        if (this.submitTimeoutId !== null) {
+          window.clearTimeout(this.submitTimeoutId);
+          this.submitTimeoutId = null;
+        }
+        this.bookingLoading.set(false);
+        this.bookingSuccess.set(true);
+        this.bookingError.set(false);
+        this.resetBookingForm(true);
+      })
+      .catch((err) => {
+        console.error('BOOKING MODAL SUBMIT ERROR:', err);
+        if (this.submitTimeoutId !== null) {
+          window.clearTimeout(this.submitTimeoutId);
+          this.submitTimeoutId = null;
+        }
+        this.bookingLoading.set(false);
+        this.bookingSuccess.set(false);
+        this.bookingError.set(true);
+      });
   }
 
-  private resetBookingForm() {
+
+  private resetBookingForm(keepSuccess = false) {
     this.bookingName = '';
+    this.bookingEmail = '';
+    this.bookingPhone = '';
     this.bookingService = '';
     this.bookingDate = '';
+    this.bookingTime = '';
+    this.bookingNotes = '';
+
     this.bookingLoading.set(false);
-    this.bookingSuccess.set(false);
+    if (!keepSuccess) {
+      this.bookingSuccess.set(false);
+      this.bookingError.set(false);
+    }
   }
+
+
 
   /* ═══════════════════════════════════════════════════════════════
      FOOTER REVEAL — TRUE LAYERED SYSTEM
