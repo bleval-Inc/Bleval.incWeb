@@ -55,7 +55,7 @@ Receive Proposal
 </section>
 
 <!-- CONTACT FORM SECTION -->
-<section class="contact-section" appScrollReveal>
+<section id="contact-form" class="contact-section" appScrollReveal>
   <div class="container">
     <div class="contact-grid">
       <div class="form-wrapper">
@@ -72,9 +72,15 @@ Receive Proposal
           </div>
 
           <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" placeholder="Phone Number" [(ngModel)]="formData.phone">
+          </div>
+
+          <div class="form-group">
             <label for="company">Company</label>
             <input type="text" id="company" name="company" placeholder="Your company name" [(ngModel)]="formData.company">
           </div>
+
 
           <div class="form-group">
 Project Focus *
@@ -90,14 +96,13 @@ Project Focus *
           </div>
 
           <div class="form-group">
-            <label for="budget">Budget Range *</label>
-            <select id="budget" name="budget" [(ngModel)]="formData.budget" required>
+            <label for="p-plan">Pricing plan*</label>
+            <select id="p-plan" name="pricing" [(ngModel)]="formData.pricing" required>
               <option value="">— Select —</option>
-              <option value="under-5k">Under $5K</option>
-              <option value="5k-15k">$5K - $15K</option>
-              <option value="15k-30k">$15K - $30K</option>
-              <option value="30k-50k">$30K - $50K</option>
-              <option value="over-50k">$50K+</option>
+              <option value="starter">starter</option>
+              <option value="growth">growth</option>
+              <option value="pro">Pro</option>
+              <option value="custom">Custom</option>
             </select>
           </div>
 
@@ -106,9 +111,21 @@ Project Details *
             <textarea id="message" name="message" placeholder="What are you building? What's your goal?" [(ngModel)]="formData.message" rows="6" required></textarea>
           </div>
 
-          <button type="submit" class="btn btn-primary" [disabled]="!contactForm.valid || formSubmitted">
-{{ formSubmitted ? 'Sending...' : 'Send Message' }}
+          <button style="background: linear-gradient(135deg, var(--primary), var(--secondary)); color:white;" type="submit" class="btn btn-primary" [disabled]="!contactForm.valid || formSubmitted">
+{{ formSubmitted ? 'Submitting...' : 'Send Message' }}
           </button>
+
+          <div class="form-message success" *ngIf="formSuccess">
+            Your request has been submitted successfully. We'll get back to you shortly.
+            <div style="margin-top:10px">
+              <a href="/booking" style="color:var(--secondary);text-decoration:underline">Book a Call</a>
+            </div>
+          </div>
+
+          <div class="form-message error" *ngIf="error">
+            Something went wrong while submitting your request. Please try again or contact us directly.
+          </div>
+
         </form>
       </div>
 
@@ -116,7 +133,7 @@ Project Details *
         <h3 class="h3">Quick Info</h3>
         <div class="info-item">
           <h4 class="h4">Email</h4>
-          <a href="mailto:hello@bleval.inc">hello@bleval.inc</a>
+          <a href="mailto:hello@bleval.inc">bleval.inc@zohomail.com</a>
         </div>
         <div class="info-item">
           <h4 class="h4">Phone</h4>

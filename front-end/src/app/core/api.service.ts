@@ -24,9 +24,20 @@ export class ApiService {
     return this.post('/contact', data)
   }
 
-  sendChat(message: string, sessionKey?: string): Observable<{ reply: string; session_key: string }> {
-    return this.post('/chat', { message, session_key: sessionKey })
+  sendChat(message: string, sessionKey?: string): Observable<{ reply: string; session_key: string; cta?: { type: string; label: string; link: string } | null }> {
+    // environment.apiUrl already includes /api
+    return this.post('/chat', {
+      message,
+      session_key: sessionKey,
+    })
   }
+
+
+
+  submitLead(data: { email: string; intent: 'pricing' | 'services' | 'general'; session_key: string }): Observable<{ ok: boolean; lead_id: string }> {
+    return this.post('/lead', data)
+  }
+
 
   getBookingServices(): Observable<{ services: any[] }> {
     return this.get('/bookings/services')
@@ -36,9 +47,20 @@ export class ApiService {
     return this.get(`/bookings/slots/${serviceId}?date=${date}`)
   }
 
-  createBooking(data: { service_id: string; contact_name: string; contact_email: string; contact_phone?: string; start_time: string; notes?: string }): Observable<any> {
+  createBooking(data: {
+    name: string
+    email: string
+    phone: string
+    service: string
+    date: string
+    time: string
+    notes?: string
+    source: 'booking_modal'
+  }): Observable<any> {
     return this.post('/bookings', data)
   }
+
+
 
   requestQuote(data: { name: string; email: string; phone?: string; service: string; budget?: string; message: string }): Observable<{ success: boolean }> {
     return this.post('/contact', { ...data, source: 'quote_request' })

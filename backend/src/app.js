@@ -28,8 +28,11 @@ export function createApp() {
   app.get('/health', (req, res) => res.json({ status: 'ok', ts: Date.now() }))
 
   app.use(tenantMiddleware)
+
   app.use('/api', router)
+
   app.use(errorHandler)
+
 
   return app
 }

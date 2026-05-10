@@ -3,6 +3,7 @@ import { z } from 'zod'
 import { getServices, getAvailableSlots, createBooking, cancelBooking } from './bookingsService.js'
 import { requireMasterKey } from '../../middleware/auth.js'
 
+
 export const bookingsRouter = Router()
 
 bookingsRouter.get('/services', async (req, res, next) => {
@@ -22,26 +23,32 @@ bookingsRouter.get('/slots/:serviceId', async (req, res, next) => {
 })
 
 const bookingSchema = z.object({
-  service_id:     z.string().uuid(),
-  contact_name:   z.string().min(1),
-  contact_email:  z.string().email(),
-  contact_phone:  z.string().optional(),
-  start_time:     z.string(),
-  notes:          z.string().optional(),
+  name:    z.string().min(1).max(200),
+  email:   z.string().email(),
+  phone:   z.string().min(1).max(50),
+  service: z.string().min(1).max(200),
+  date:    z.string().min(1), // YYYY-MM-DD
+  time:    z.string().min(1), // HH:mm
+  notes:   z.string().optional(),
+  source:  z.string().optional(),
 })
+
 
 bookingsRouter.post('/', async (req, res, next) => {
   try {
     const data    = bookingSchema.parse(req.body)
     const booking = await createBooking({
-      client:        req.client,
-      serviceId:     data.service_id,
-      contactName:   data.contact_name,
-      contactEmail:  data.contact_email,
-      contactPhone:  data.contact_phone,
-      startTime:     data.start_time,
-      notes:         data.notes,
+      client: req.client,
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+      service: data.service,
+      date: data.date,
+      time: data.time,
+      notes: data.notes,
+      source: data.source || 'booking_modal',
     })
+
     res.status(201).json(booking)
   } catch (err) {
     if (err.name === 'ZodError') return res.status(400).json({ error: err.flatten() })
