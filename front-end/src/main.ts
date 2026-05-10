@@ -1,16 +1,36 @@
 import { bootstrapApplication } from '@angular/platform-browser';
-import { provideRouter, withInMemoryScrolling } from '@angular/router';
+import { appConfig } from './app/app.config';
 import { App } from './app/app';
-import { routes } from './app/app.routes';
+import { Router, NavigationEnd } from '@angular/router';
+import { inject } from '@angular/core';
+import { filter } from 'rxjs/operators';
 
-bootstrapApplication(App, {
+import { environment } from './environments/environment';
+
+// Safe one-time startup debug logs
+console.log('Environment:', environment.production ? 'PRODUCTION' : 'LOCAL');
+console.log('API URL:', environment.apiUrl);
+
+// Wrap the original appConfig providers with scroll handling
+const updatedAppConfig = {
+  ...appConfig,
   providers: [
-    provideRouter(
-      routes,
-      withInMemoryScrolling({
-        scrollPositionRestoration: 'top', // ALWAYS reset to top
-        anchorScrolling: 'enabled'       // enables #fragment navigation
-      })
-    )
+    ...(appConfig.providers || []),
+    {
+      provide: 'ROUTER_SCROLL_TOP',
+      useFactory: () => {
+        const router = inject(Router);
+        router.events
+          .pipe(filter(event => event instanceof NavigationEnd))
+          .subscribe(() => {
+            window.scrollTo({ top: 0, behavior: 'auto' });
+          });
+      },
+      multi: true
+    }
   ]
-}).catch(err => console.error(err));
+};
+
+bootstrapApplication(App, updatedAppConfig)
+  .catch((err) => console.error(err));
+
