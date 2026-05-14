@@ -1,0 +1,387 @@
+<!-- Bleval.inc Onboarding (UX refinement) -->
+<section class="onboarding" [class]="planAccentClass" appScrollReveal>
+  <div class="container">
+    <div class="onb-shell glass-surface" aria-live="polite">
+      <header class="onb-header">
+        <div class="onb-kicker">
+          <span class="overline">Premium Onboarding</span>
+          <span class="onb-sep">•</span>
+          <span class="onb-plan">{{ planLabel() }}</span>
+        </div>
+
+        <h1 class="h2 onb-title">A premium agency preparing your next digital ecosystem.</h1>
+        <p class="body onb-subtitle">
+          Cinematic, structured, and frictionless—so you can feel confident before the onboarding strategy session.
+        </p>
+
+        <div class="onb-progress" role="progressbar" [attr.aria-valuenow]="state.step" aria-valuemin="1" aria-valuemax="6">
+          <div class="onb-progress-track"></div>
+          <div class="onb-progress-fill" [style.width.%]="progress() * 100"></div>
+          <div class="onb-progress-steps">
+            <span [class.active]="state.step === 1">1</span>
+            <span [class.active]="state.step === 2">2</span>
+            <span [class.active]="state.step === 3">3</span>
+            <span [class.active]="state.step === 4">4</span>
+            <span [class.active]="state.step === 5">5</span>
+            <span [class.active]="state.step === 6">6</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- processing overlay -->
+      <div class="onb-overlay" *ngIf="uiMode === 'processing'" aria-live="polite" aria-busy="true">
+        <div class="onb-overlay-clickblock" aria-hidden="true"></div>
+        <div class="onb-overlay-glass" role="dialog" aria-modal="true">
+          <div class="onb-overlay-top">
+            <div class="onb-overlay-badge">
+              <span class="dot" aria-hidden="true"></span>
+              <span>Operational</span>
+            </div>
+            <div class="onb-overlay-brand">Bleval.inc</div>
+          </div>
+
+          <div class="onb-overlay-title">Processing Your Project Request</div>
+          <div class="onb-overlay-sub">We’re preparing your onboarding pipeline.</div>
+
+          <div class="onb-overlay-stages" aria-label="Processing stages">
+            <div class="stage" [class.done]="processingIndex >= 0">Validating onboarding details</div>
+            <div class="stage" [class.done]="processingIndex >= 1">Configuring project workflow</div>
+            <div class="stage" [class.done]="processingIndex >= 2">Securing onboarding information</div>
+            <div class="stage" [class.done]="processingIndex >= 3">Sending confirmation emails</div>
+            <div class="stage" [class.done]="processingIndex >= 4">Finalizing onboarding</div>
+          </div>
+
+          <div class="onb-premium-loader" role="progressbar" aria-valuemin="0" [attr.aria-valuenow]="processingIndex" aria-valuemax="4">
+            <div class="orb"></div>
+            <div class="ring"></div>
+            <div class="ambient"></div>
+          </div>
+
+          <div class="onb-overlay-effects" aria-hidden="true">
+            <span></span><span></span><span></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- failure state -->
+      <section class="onb-failure" *ngIf="uiMode === 'failure'">
+        <div class="onb-failure-card glass-card" role="alert" aria-live="polite">
+          <div class="failure-head">
+            <div class="failure-icon" aria-hidden="true">!</div>
+            <div>
+              <h2 class="failure-title">Submission Could Not Be Completed</h2>
+              <p class="failure-sub">We encountered a temporary issue while processing your onboarding request.</p>
+            </div>
+          </div>
+
+          <div class="failure-actions">
+            <button type="button" class="btn btn-secondary" (click)="submitRequest()" [disabled]="isSubmitting">
+              Retry Submission <span class="arrow">→</span>
+            </button>
+            <button type="button" class="btn btn-ghost" (click)="uiMode = 'form'">Return to Previous Step</button>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- onboarding step flow (uiMode === 'form') -->
+      <div class="onb-content" *ngIf="uiMode === 'form'">
+        <!-- STEP 1 — Welcome -->
+        <div class="onb-step" *ngIf="state.step === 1" [ngClass]="stepClass" appScrollReveal>
+          <div class="step-card glass-card">
+            <div class="step-top">
+              <h2 class="h3">Step 1 — Welcome</h2>
+              <p class="body">Your onboarding path is already aligned to your selected ecosystem.</p>
+            </div>
+
+            <div class="onb-widgets">
+              <div class="widget glass-surface">
+                <div class="widget-label">Positioning</div>
+                <div class="widget-value">{{ planMeta().positioning }}</div>
+              </div>
+              <div class="widget glass-surface">
+                <div class="widget-label">Timeline</div>
+                <div class="widget-value">{{ planMeta().timeline }}</div>
+              </div>
+              <div class="widget glass-surface">
+                <div class="widget-label">Your investment</div>
+                <div class="widget-value">R{{ planMeta().price | number:'1.0-0':'en-ZA' }}</div>
+              </div>
+            </div>
+
+            <div class="onb-presets" style="margin-top: var(--space-8)">
+              <p class="body onb-presets-title">What’s included in your ecosystem</p>
+              <div class="chip-grid">
+                <span class="chip" *ngFor="let f of planMeta().included">
+                  <span aria-hidden="true">✦</span>
+                  {{ f }}
+                </span>
+              </div>
+            </div>
+
+            <div class="step-footer">
+              <button type="button" class="btn btn-ghost" (click)="reset()">Restart</button>
+              <button type="button" class="btn btn-secondary" (click)="next()">Begin <span class="arrow">→</span></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 2 — Business Profile -->
+        <div class="onb-step" *ngIf="state.step === 2" [ngClass]="stepClass" appScrollReveal>
+          <div class="step-card glass-card">
+            <div class="step-top">
+              <h2 class="h3">Step 2 — Business Profile</h2>
+              <p class="body">So we can align execution direction from day one—no repeating yourself.</p>
+            </div>
+
+            <form [formGroup]="profileForm" (ngSubmit)="next()" class="onb-form">
+              <div class="grid-2">
+                <label class="field">
+                  <span class="field-label">Name</span>
+                  <input type="text" formControlName="name" placeholder="Your full name" [class.error]="isInvalidProfile('name')" />
+                  <span class="error-msg" *ngIf="isInvalidProfile('name')">Please enter your name</span>
+                </label>
+
+                <label class="field">
+                  <span class="field-label">Company</span>
+                  <input type="text" formControlName="company" placeholder="Company / brand" />
+                </label>
+              </div>
+
+              <div class="grid-2">
+                <label class="field">
+                  <span class="field-label">Email (required)</span>
+                  <input type="email" formControlName="email" placeholder="you@company.com" [class.error]="isInvalidProfile('email')" />
+                  <span class="error-msg" *ngIf="isInvalidProfile('email')">Valid email required</span>
+                </label>
+
+                <label class="field">
+                  <span class="field-label">Phone</span>
+                  <input type="tel" formControlName="phone" placeholder="Optional" />
+                </label>
+              </div>
+
+              <div class="grid-2">
+                <label class="field">
+                  <span class="field-label">Industry</span>
+                  <input type="text" formControlName="industry" placeholder="e.g. SaaS, eCommerce, Agency" />
+                </label>
+
+                <label class="field">
+                  <span class="field-label">Location</span>
+                  <input type="text" formControlName="location" placeholder="City / region" />
+                </label>
+              </div>
+
+              <div class="step-actions">
+                <button type="button" class="btn btn-ghost" (click)="back()">Back</button>
+                <button type="submit" class="btn btn-secondary">Continue <span class="arrow">→</span></button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- STEP 3 — Project Alignment -->
+        <div class="onb-step" *ngIf="state.step === 3" [ngClass]="stepClass" appScrollReveal>
+          <div class="step-card glass-card">
+            <div class="step-top">
+              <h2 class="h3">Step 3 — Project Alignment</h2>
+              <p class="body">Execution context only. We’re preparing the exact roadmap your ecosystem needs.</p>
+            </div>
+
+            <form [formGroup]="alignmentForm" (ngSubmit)="next()" class="onb-form">
+              <div class="section-subhead">Business overview</div>
+              <div class="field">
+                <input formControlName="businessOverview" placeholder="Tell us what you do and what success looks like..." />
+                <div class="error-msg" *ngIf="alignmentForm.controls.businessOverview?.invalid && alignmentForm.controls.businessOverview?.touched">Please add a short overview.</div>
+              </div>
+
+              <div class="section-subhead">Target audience</div>
+              <div class="field">
+                <input formControlName="targetAudience" placeholder="Who are we trying to convert?" />
+              </div>
+
+              <div class="section-subhead">Competitors / inspiration</div>
+              <div class="field">
+                <input formControlName="competitorsInspiration" placeholder="Any brands or sites we should study?" />
+              </div>
+
+              <div class="section-subhead">Preferred design direction</div>
+              <div class="field">
+                <input formControlName="preferredDesignDirection" placeholder="Modern, luxury, minimal, bold, futuristic, etc." />
+              </div>
+
+              <div class="section-subhead">Your current assets</div>
+              <div class="chip-grid">
+                <label class="chip" [class.active]="alignmentForm.value.existingWebsite">
+                  <input type="checkbox" formControlName="existingWebsite" />
+                  Existing website
+                </label>
+                <label class="chip" [class.active]="alignmentForm.value.existingBranding">
+                  <input type="checkbox" formControlName="existingBranding" />
+                  Existing branding
+                </label>
+              </div>
+
+              <div class="section-subhead">Project goals</div>
+              <div class="field">
+                <input formControlName="projectGoals" placeholder="What outcomes do you want in the first 30–90 days?" />
+              </div>
+
+              <div class="section-subhead">Content readiness</div>
+              <div class="segmented" role="radiogroup" aria-label="Content readiness">
+                <button
+                  type="button"
+                  class="seg"
+                  [class.selected]="alignmentForm.value.contentReadiness === 'ready'"
+                  (click)="alignmentForm.patchValue({ contentReadiness: 'ready' })"
+                  role="radio"
+                  [attr.aria-checked]="alignmentForm.value.contentReadiness === 'ready'"
+                >
+                  Content ready
+                </button>
+                <button
+                  type="button"
+                  class="seg"
+                  [class.selected]="alignmentForm.value.contentReadiness === 'some'"
+                  (click)="alignmentForm.patchValue({ contentReadiness: 'some' })"
+                  role="radio"
+                  [attr.aria-checked]="alignmentForm.value.contentReadiness === 'some'"
+                >
+                  Some available
+                </button>
+                <button
+                  type="button"
+                  class="seg"
+                  [class.selected]="alignmentForm.value.contentReadiness === 'needs'"
+                  (click)="alignmentForm.patchValue({ contentReadiness: 'needs' })"
+                  role="radio"
+                  [attr.aria-checked]="alignmentForm.value.contentReadiness === 'needs'"
+                >
+                  Need support
+                </button>
+              </div>
+
+              <div class="section-subhead">Special requirements (optional)</div>
+              <div class="field">
+                <input formControlName="specialRequirements" placeholder="Any deadlines, compliance needs, integrations, or constraints?" />
+              </div>
+
+              <div class="section-subhead" style="margin-top: var(--space-8)">Brand Identity Add-on (optional)</div>
+              <label class="chip" [class.active]="state.brandingAddOnSelected">
+                <input type="checkbox" [checked]="state.brandingAddOnSelected" (change)="toggleBrandingAddOn($event.target.checked)" />
+                Would you like Bleval.inc to create your logo and full brand identity? (R{{ brandingAddOnPrice }}/add-on)
+              </label>
+
+              <div class="step-actions">
+                <button type="button" class="btn btn-ghost" (click)="back()">Back</button>
+                <button type="submit" class="btn btn-secondary">Continue to features <span class="arrow">→</span></button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- STEP 4 — Included Features -->
+        <div class="onb-step" *ngIf="state.step === 4" [ngClass]="stepClass" appScrollReveal>
+          <div class="step-card glass-card">
+            <div class="step-top">
+              <h2 class="h3">Step 4 — Included Features</h2>
+              <p class="body">Your stack is already mapped. Here’s what we’ll execute inside your ecosystem.</p>
+            </div>
+
+            <div class="onb-widgets">
+              <div class="widget glass-surface" *ngFor="let feature of planMeta().included; let i = index">
+                <div class="widget-label">Feature {{ i + 1 }}</div>
+                <div class="widget-value">{{ feature }}</div>
+              </div>
+            </div>
+
+            <div class="step-actions">
+              <button type="button" class="btn btn-ghost" (click)="back()">Back</button>
+              <button type="button" class="btn btn-secondary" (click)="next()">Continue to summary <span class="arrow">→</span></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 5 — Summary -->
+        <div class="onb-step" *ngIf="state.step === 5" [ngClass]="stepClass" appScrollReveal>
+          <div class="step-card glass-card">
+            <div class="step-top">
+              <h2 class="h3">Step 5 — Summary</h2>
+              <p class="body">Confirm the essentials. We’ll use this to finalize the onboarding pipeline.</p>
+            </div>
+
+            <div class="summary">
+              <div class="summary-card glass-surface">
+                <div class="summary-label">Plan</div>
+                <div class="summary-value">{{ planMeta().name }}</div>
+
+                <div class="summary-label" style="margin-top: var(--space-4)">Total investment</div>
+R{{ setupInvestment() | number:'1.0-0':'en-ZA' }} <span style="color: rgba(255,255,255,0.55); font-weight: 700; font-size: 12px;">(one-time)</span>
+
+                <div class="summary-label" style="margin-top: var(--space-4)">Monthly subscription</div>
+R{{ monthlySubscription() | number:'1.0-0':'en-ZA' }}/mo
+
+                <div class="tip">
+                  <div class="tip-icon" aria-hidden="true">✦</div>
+                  <div>
+                    <div class="branch-note-email">Bleval.inc workflow</div>
+                    <div style="color: rgba(255,255,255,0.72); font-weight: 600; margin-top: var(--space-2)">
+                      We’ll validate inputs, secure your onboarding data, configure the pipeline, then send confirmations.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="step-actions">
+              <button type="button" class="btn btn-ghost" (click)="back()">Back</button>
+              <button type="button" class="btn btn-secondary" (click)="next()">Continue to submission <span class="arrow">→</span></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 6 — Final Submission -->
+        <div class="onb-step" *ngIf="state.step === 6" [ngClass]="stepClass" appScrollReveal>
+          <div class="step-card glass-card">
+            <div class="step-top">
+              <h2 class="h3">Step 6 — Final Submission</h2>
+              <p class="body">Submit once. We’ll handle the rest—cinematically and precisely.</p>
+            </div>
+
+            <div class="branch">
+              <div class="branch-card glass-surface">
+                <div class="branch-note-title">Submitting for</div>
+                <div class="branch-note-email">{{ profileForm.value?.email || state.email }}</div>
+
+                <div class="branch-note-title" style="margin-top: var(--space-6)">Plan</div>
+                <div class="branch-note-email">{{ planMeta().name }}</div>
+
+                <div class="branch-note-title" style="margin-top: var(--space-6)">Add-on</div>
+                <div class="branch-note-email">{{ state.brandingAddOnSelected ? 'Brand Identity' : 'None' }}</div>
+              </div>
+            </div>
+
+            <div class="step-actions" style="margin-top: var(--space-8)">
+              <button type="button" class="btn btn-ghost" (click)="back()">Back</button>
+<button
+                type="button"
+                class="btn btn-secondary"
+                (click)="submitRequest()"
+                [disabled]="isSubmitting"
+              >
+                {{ isSubmitting ? 'Submitting Request…' : 'Submit Request' }}
+                <span class="arrow">→</span>
+              </button>
+            </div>
+
+            <div class="error-msg" *ngIf="submitErrorMessage" style="margin-top: var(--space-4)">
+              {{ submitErrorMessage }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+

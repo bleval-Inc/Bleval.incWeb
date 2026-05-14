@@ -16,9 +16,10 @@ export class ApiService {
     return this.http.get<T>(`${this.baseUrl}${path}`, { headers: this.headers })
   }
 
-  private post<T>(path: string, body: unknown): Observable<T> {
+  post<T>(path: string, body: unknown): Observable<T> {
     return this.http.post<T>(`${this.baseUrl}${path}`, body, { headers: this.headers })
   }
+
 
   submitContact(data: { name: string; email: string; phone?: string; message: string }): Observable<{ success: boolean; id: string }> {
     return this.post('/contact', data)

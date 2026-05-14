@@ -1,0 +1,2 @@
+Recovery note: onboarding.html currently fails Angular template compilation (NG5002). Next step is to rewrite onboarding.html with syntactically correct tag nesting while keeping existing Angular step markup variables intact.
+

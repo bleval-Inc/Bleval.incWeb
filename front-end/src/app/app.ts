@@ -9,7 +9,8 @@ import {
   Inject,
   PLATFORM_ID
 } from '@angular/core';
-import { RouterOutlet, RouterLink } from '@angular/router';
+import { RouterOutlet, RouterLink, Router } from '@angular/router';
+
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from './core/api.service';
@@ -58,8 +59,10 @@ export class App implements AfterViewInit, OnDestroy {
     private renderer: Renderer2,
     private el: ElementRef,
     private api: ApiService,
+    private router: Router,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
+
 
 
   /* ═══════════════════════════════════════════════════════════════
@@ -284,13 +287,69 @@ export class App implements AfterViewInit, OnDestroy {
   /* ═══════════════════════════════════════════════════════════════
      LIFECYCLE
      ═══════════════════════════════════════════════════════════════ */
+  private handleBookingQueryTrigger() {
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    try {
+      const url = new URL(window.location.href);
+      const shouldBook = url.searchParams.get('book') === '1';
+      if (!shouldBook) return;
+
+      const plan = (url.searchParams.get('plan') || '').toLowerCase();
+      this.openBookingModalWithOnboardingPrefill(plan);
+
+      // Remove trigger params so it won't re-open on refresh.
+      url.searchParams.delete('book');
+      url.searchParams.delete('plan');
+      const remaining = Object.fromEntries(url.searchParams.entries());
+      this.router.navigate([url.pathname], { replaceUrl: true, queryParams: remaining });
+    } catch {
+      // no-op
+    }
+  }
+
+  private openBookingModalWithOnboardingPrefill(plan: string) {
+    // Prefill from existing onboarding localStorage.
+    // Keep resilient: never block booking modal open if parsing fails.
+    let onboarding: any = null;
+    try {
+      const raw = localStorage.getItem('bleval.onboarding.v1');
+      onboarding = raw ? JSON.parse(raw) : null;
+    } catch {
+      onboarding = null;
+    }
+
+    if (typeof onboarding?.name === 'string' && onboarding.name.trim()) this.bookingName = onboarding.name.trim();
+    if (typeof onboarding?.email === 'string' && onboarding.email.trim()) this.bookingEmail = onboarding.email.trim();
+    if (typeof onboarding?.phone === 'string' && onboarding.phone.trim()) this.bookingPhone = onboarding.phone.trim();
+
+    // Service inference (best-effort). Modal requires bookingService, but will remain empty if we can't map.
+    const inferredService =
+      plan === 'enterprise'
+        ? 'Full CRM/booking/payment stack'
+        : plan === 'acceleration' || plan === 'growth'
+          ? 'Maintenance & Growth'
+          : plan === 'foundation' || plan === 'starter'
+            ? 'Web Design'
+            : '';
+
+    if (inferredService) this.bookingService = inferredService;
+
+    this.bookingSuccess.set(false);
+    this.bookingError.set(false);
+    this.bookingLoading.set(false);
+    this.bookingOpen.set(true);
+  }
+
   ngAfterViewInit() {
     if (isPlatformBrowser(this.platformId)) {
       this.initCursor();
+      this.handleBookingQueryTrigger();
       // Initial footer reveal calc
       requestAnimationFrame(() => this.updateFooterReveal());
     }
   }
+
 
   ngOnDestroy() {
     if (this.rafId !== null) {

@@ -63,7 +63,15 @@
               </ul>
             </div>
           </div>
-          <a routerLink="/pricing" fragment="pricing-tiers" class="btn-primary">Explore</a>
+
+          <a
+            class="spotlight-explore-btn btn-primary"
+            [routerLink]="['/pricing']"
+            fragment="pricing-tiers"
+            aria-label="Explore pricing"
+          >
+            Explore
+          </a>
         </div>
         <div class="service-visual">
           <img src="/assets/Web-design-2.jpg" alt="Web design process and workspace" />
@@ -138,7 +146,14 @@
             </div>
           </div>
 
-          <a routerLink="/pricing" fragment="pricing-tiers" class="btn-primary">Explore</a>
+          <a
+            class="spotlight-explore-btn btn-primary"
+            [routerLink]="['/pricing']"
+            fragment="pricing-tiers"
+            aria-label="Explore pricing"
+          >
+            Explore
+          </a>
         </div>
         <div class="service-visual">
           <img src="/assets/web-dev.2.jpg" alt="Web development coding environment" />
@@ -213,7 +228,14 @@
             </div>
           </div>
 
-          <a routerLink="/pricing" fragment="pricing-tiers" class="btn-primary">Explore</a>
+          <a
+            class="spotlight-explore-btn btn-primary"
+            [routerLink]="['/pricing']"
+            fragment="pricing-tiers"
+            aria-label="Explore pricing"
+          >
+            Explore
+          </a>
         </div>
         <div class="service-visual">
           <img src="/assets/E-commerce.jpg" alt="E-commerce product catalog and dashboard" />
@@ -260,7 +282,7 @@
             </div>
           </div>
           <div class="reveal-section">
-            <div class="reveal-row" (click)="toggleReveal(3, 1)" [class.active]="services[3].reveals[1]">
+            <div class="reveal-row" (click)="toggleReveal(3, 1)" [class.active]="services[3].reveals[1]"> 
               Tech Stack
               <span class="reveal-icon">+</span>
             </div>
@@ -288,7 +310,7 @@
             </div>
           </div>
 
-          <a routerLink="/pricing" fragment="pricing-tiers" class="btn-primary">Explore</a>
+          <a class="spotlight-explore-btn btn-primary" [routerLink]="['/pricing']" fragment="pricing-tiers" aria-label="Explore pricing">Explore</a>
         </div>
         <div class="service-visual">
           <img src="/assets/growthandAnalytics.jpg" alt="Growth analytics dashboard and metrics" />

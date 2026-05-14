@@ -1,12 +1,12 @@
 import { Component, AfterViewInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router, RouterLink } from '@angular/router';
 import { filter, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-services',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './services.html',
   styleUrl: './services.scss',
 })
@@ -43,19 +43,22 @@ export class Services implements AfterViewInit, OnDestroy {
   ];
 
   ngAfterViewInit() {
-
-    // Wait for full navigation completion BEFORE scrolling
+    // Only apply fragment/scroll behavior while we are on the /services route.
+    // This prevents the Services component from running its scroll logic when
+    // navigating away (e.g. clicking "Explore" -> /pricing#pricing-tiers).
     this.sub = this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe(() => {
+        const currentPath = this.router.url ?? '';
+        const isOnServices = currentPath === '/services' || currentPath.startsWith('/services#');
+
+        if (!isOnServices) return;
 
         const fragment = this.route.snapshot.fragment;
 
         if (fragment) {
-          // Fragment navigation → ONLY scroll to section
           this.scrollToSection(fragment);
         } else {
-          // Normal navigation → scroll to top
           window.scrollTo({ top: 0, behavior: 'auto' });
         }
       });
