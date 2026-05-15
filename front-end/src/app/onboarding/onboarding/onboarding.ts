@@ -1,6 +1,8 @@
 import { Component, computed, inject, OnDestroy, OnInit } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { ActivatedRoute, Router } from '@angular/router'
+import { AnalyticsService } from '../../core/analytics.service'
+
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
 import { Subscription } from 'rxjs'
 import { OnboardingPlan, OnboardingState, OnboardingStateService, OnboardingStep } from '../onboarding-state.service'
@@ -27,6 +29,8 @@ export class OnboardingOnboarding implements OnInit, OnDestroy {
   private sub = new Subscription()
   private toastService = inject(ToastService)
   private onboardingApi = inject(ApiOnboarding)
+  private analytics = inject(AnalyticsService)
+
 
   goBackToPricing() {
     this.router.navigate(['/pricing'])
@@ -169,9 +173,6 @@ export class OnboardingOnboarding implements OnInit, OnDestroy {
     this.processingTicker && clearInterval(this.processingTicker)
   }
 
-
-
-
   private patchFormsFromState() {
     this.profileForm.patchValue({
       name: this.state.name,
@@ -196,10 +197,21 @@ export class OnboardingOnboarding implements OnInit, OnDestroy {
   next() {
     const step = this.state.step
 
+    // onboarding_step_completed should ONLY fire after successful validation/progression.
     if (step === 1) {
+      // Step 1 -> 2 has no validation gates.
       this.setStep(2)
+      if (!this.onboardingLifecycleFired.stepCompletedByStep.has(2)) {
+        this.onboardingLifecycleFired.stepCompletedByStep.add(2)
+        this.analytics.trackEvent('onboarding_step_completed', {
+          plan: this.state.plan,
+          // next step completed
+          step: 2,
+        })
+      }
       return
     }
+
 
     if (step === 2) {
       this.profileForm.markAllAsTouched()
@@ -217,8 +229,16 @@ export class OnboardingOnboarding implements OnInit, OnDestroy {
       }
       this.stateService.write(this.state)
       this.setStep(3)
+      if (!this.onboardingLifecycleFired.stepCompletedByStep.has(3)) {
+        this.onboardingLifecycleFired.stepCompletedByStep.add(3)
+        this.analytics.trackEvent('onboarding_step_completed', {
+          plan: this.state.plan,
+          step: 3,
+        })
+      }
       return
     }
+
 
     if (step === 3) {
       this.alignmentForm.markAllAsTouched()
@@ -231,18 +251,42 @@ export class OnboardingOnboarding implements OnInit, OnDestroy {
       }
       this.stateService.write(this.state)
       this.setStep(4)
+      if (!this.onboardingLifecycleFired.stepCompletedByStep.has(4)) {
+        this.onboardingLifecycleFired.stepCompletedByStep.add(4)
+        this.analytics.trackEvent('onboarding_step_completed', {
+          plan: this.state.plan,
+          step: 4,
+        })
+      }
       return
     }
+
 
     if (step === 4) {
       this.setStep(5)
+      if (!this.onboardingLifecycleFired.stepCompletedByStep.has(5)) {
+        this.onboardingLifecycleFired.stepCompletedByStep.add(5)
+        this.analytics.trackEvent('onboarding_step_completed', {
+          plan: this.state.plan,
+          step: 5,
+        })
+      }
       return
     }
 
+
     if (step === 5) {
       this.setStep(6)
+      if (!this.onboardingLifecycleFired.stepCompletedByStep.has(6)) {
+        this.onboardingLifecycleFired.stepCompletedByStep.add(6)
+        this.analytics.trackEvent('onboarding_step_completed', {
+          plan: this.state.plan,
+          step: 6,
+        })
+      }
       return
     }
+
 
     if (step === 6) {
       // terminal
@@ -295,6 +339,16 @@ export class OnboardingOnboarding implements OnInit, OnDestroy {
   private readonly requestLSKey = 'bleval.onboarding.request.v1'
   private readonly successHoldSeconds = 10
 
+  // GA4 onboarding event safety (prevents duplicates & premature fires)
+  private onboardingLifecycleFired = {
+    started: false,
+    submitted: false,
+    completed: false,
+    failed: false,
+    stepCompletedByStep: new Set<OnboardingStep>(),
+  }
+
+
   uiMode: UiMode = 'form'
   isSubmitting = false
   submitErrorMessage: string | null = null
@@ -338,6 +392,23 @@ export class OnboardingOnboarding implements OnInit, OnDestroy {
     this.isSubmitting = true
     this.uiMode = 'processing'
 
+    // onboarding_started: fire once per request lifecycle (entered processing mode)
+    if (!this.onboardingLifecycleFired.started) {
+      this.onboardingLifecycleFired.started = true
+      this.analytics.trackEvent('onboarding_started', {
+        plan: this.state.plan,
+      })
+    }
+
+    // onboarding_submitted: must fire immediately before API request
+    if (!this.onboardingLifecycleFired.submitted) {
+      this.onboardingLifecycleFired.submitted = true
+      this.analytics.trackEvent('onboarding_submitted', {
+        plan: this.state.plan,
+      })
+    }
+
+
     this.processingIndex = 0
 
 
@@ -355,10 +426,19 @@ export class OnboardingOnboarding implements OnInit, OnDestroy {
         const ok = !!res?.ok && res?.onboardingCompleted === true
         if (!ok) {
           // Backend returned non-ok in a controlled way.
+          if (!this.onboardingLifecycleFired.failed) {
+            this.onboardingLifecycleFired.failed = true
+            this.analytics.trackEvent('onboarding_failed', {
+              plan: this.state.plan,
+              error_stage: 'backend_non_ok',
+            })
+          }
+
           this.uiMode = 'failure'
           this.submitErrorMessage = 'We encountered an issue while submitting your onboarding request. Please try again in a moment.'
           return
         }
+
 
         // Success: clear onboarding state and request snapshot (required by spec after redirect as well)
         // We clear now to avoid stale UI; redirect happens after success hold.
@@ -374,20 +454,40 @@ export class OnboardingOnboarding implements OnInit, OnDestroy {
         console.log('[Onboarding] Redirecting to onboarding success experience')
 
 
+        // onboarding_completed: MUST fire ONLY when res.ok===true && res.onboardingCompleted===true
+        if (!this.onboardingLifecycleFired.completed) {
+          this.onboardingLifecycleFired.completed = true
+          this.analytics.trackEvent('onboarding_completed', {
+            plan: this.state.plan,
+            success: true,
+          })
+        }
+
+        // Navigate to dedicated cinematic success page.
         this.isSubmitting = false
         this.clearProcessingTicker()
 
-        // Navigate to dedicated cinematic success page.
+
         // onb-success route handles 10s redirect countdown.
         this.router.navigate(['/onboarding/success'], { replaceUrl: true })
 
       },
       error: () => {
+        // API error callback
+        if (!this.onboardingLifecycleFired.failed) {
+          this.onboardingLifecycleFired.failed = true
+          this.analytics.trackEvent('onboarding_failed', {
+            plan: this.state.plan,
+            error_stage: 'backend_error',
+          })
+        }
+
         this.uiMode = 'failure'
         this.submitErrorMessage = 'We encountered an issue while submitting your onboarding request. Please try again in a moment.'
         this.isSubmitting = false
         this.clearProcessingTicker()
       },
+
     })
   }
 

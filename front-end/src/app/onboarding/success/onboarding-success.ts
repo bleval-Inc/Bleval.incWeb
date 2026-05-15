@@ -12,7 +12,7 @@ import { Router } from '@angular/router'
 export class OnboardingSuccessComponent implements OnInit, OnDestroy {
   private router = inject(Router)
 
-  readonly holdSeconds = 10
+  readonly holdSeconds = 15
   countdown = this.holdSeconds
 
   private timer?: number
@@ -28,7 +28,7 @@ export class OnboardingSuccessComponent implements OnInit, OnDestroy {
       if (this.countdown <= 0) {
         this.finishRedirect()
       }
-    }, 1000) as unknown as number
+    }, 1500) as unknown as number
   }
 
   ngOnDestroy() {

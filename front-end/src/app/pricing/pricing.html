@@ -82,7 +82,8 @@
         <li>Monthly performance report</li>
       </ul>
 
-      <a [routerLink]="['/onboarding']" [queryParams]="{ plan: 'starter' }" class="btn-ghost">Launch Foundation</a>
+      <a [routerLink]="['/onboarding']" [queryParams]="{ plan: 'starter' }" class="btn-ghost" (click)="trackPricingPlanSelected('starter')">Launch Foundation</a>
+
 
     </div>
 
@@ -117,7 +118,8 @@
         <li>Quarterly growth audit</li>
       </ul>
 
-      <a [routerLink]="['/onboarding']" [queryParams]="{ plan: 'growth' }" class="btn-primary">Activate Acceleration</a>
+      <a [routerLink]="['/onboarding']" [queryParams]="{ plan: 'growth' }" class="btn-primary" (click)="trackPricingPlanSelected('growth')">Activate Acceleration</a>
+
 
     </div>
 
@@ -144,7 +146,8 @@
         <li>Monthly ROI optimization</li>
         <li>Accountable partnership</li>
       </ul>
-      <a [routerLink]="['/onboarding']" [queryParams]="{ plan: 'enterprise' }" class="btn-ghost">Deploy Enterprise</a>
+      <a [routerLink]="['/onboarding']" [queryParams]="{ plan: 'enterprise' }" class="btn-ghost" (click)="trackPricingPlanSelected('enterprise')">Deploy Enterprise</a>
+
 
 
     </div>

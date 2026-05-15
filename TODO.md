@@ -1,42 +1,29 @@
-# TODO - Bleval.inc Onboarding UX Refinement
+# TODO - GA4 remaining instrumentation & verification
 
-## Phase 0 — Plan confirmation
-- [x] Reviewed frontend onboarding component + backend onboarding service/router
+## Plan (approved approach)
+- [ ] Finalize onboarding event instrumentation in `front-end/src/app/onboarding/onboarding/onboarding.ts`:
+  - [ ] onboarding_started once per onboarding request lifecycle
+  - [ ] onboarding_step_completed after successful progression
+  - [ ] onboarding_submitted immediately before onboarding API request
+  - [ ] onboarding_completed ONLY when `res.ok === true && res.onboardingCompleted === true`, fired BEFORE redirect
+  - [ ] onboarding_failed with allowed error_stage values and no duplicates
+- [ ] Implement chatbot events in `front-end/src/app/chatbot/chatbot.ts`:
+  - [ ] Inject AnalyticsService
+  - [ ] chatbot_opened only on closed→open
+  - [ ] chatbot_message_sent after send flow begins successfully; log message_length only; no message content
+- [ ] Booking modal events in `front-end/src/app/app.ts` (+ template only if needed):
+  - [ ] Ensure booking_modal_opened triggers only on closed→open transitions
+  - [ ] Ensure booking_request_submitted only after successful booking API response; no open/click/form validation logging
+- [ ] Global CTA tracking:
+  - [ ] Add `cta_clicked` tracking for Hero CTA, Navbar CTA, Footer CTA, Services CTA, Contact CTA, Work CTA, Pricing CTA without breaking routing
+- [ ] Production build verification:
+  - [ ] Run production build and fix any TS/template/injection errors
+- [ ] GA4 event flow validation checklist:
+  - [ ] Use console + GA4 DebugView + Network tab to verify correct firing order/no duplicates
+  - [ ] Verify page_view once per navigation
+  - [ ] Verify no PII in any event payload
 
-## Phase 1 — Create processing/success/failure UI states (frontend)
-- [x] Add `isSubmitting` guard + premium processing overlay
-- [x] Transition to dedicated success screen on backend `{ ok: true, onboardingCompleted: true }`
-- [x] Add 10s success countdown + “Return Home Now” + redirect
-- [x] Add premium failure state: remove overlay, restore UI, preserve onboarding progress
-- [x] Ensure timer cleanup + no memory leaks
+## Status
+- [ ] Work in progress (implementation phase not yet started in this session)
 
-## Phase 2 — UX styling (frontend)
-- [ ] Implement true premium processing overlay (blur/dim, premium loader ring/orb, glassmorphism, cinematic gradients)
-- [ ] Remove inline success screen from onboarding component (must use dedicated route)
-
-## Phase 3 — Dedicated success page
-- [ ] Create `front-end/src/app/onboarding/success/onboarding-success.ts`
-- [ ] Create `front-end/src/app/onboarding/success/onboarding-success.html`
-- [ ] Create `front-end/src/app/onboarding/success/onboarding-success.scss`
-- [ ] Add route `onboarding/success` in `front-end/src/app/app.routes.ts`
-
-## Phase 4 — Frontend success flow orchestration
-- [ ] Update onboarding submit success to: navigate('/onboarding/success') only when `{ ok: true && onboardingCompleted: true }`
-- [ ] Ensure onboarding.ts no longer redirects directly to `/home`
-- [ ] Add required browser console logs
-
-## Phase 5 — Backend success logging + stable contract
-- [ ] Update `backend/src/services/onboarding/onboardingService.js`:
-  - [ ] Add structured logs: `[onboardingComplete:clientEmailSent]`, `[onboardingComplete:adminEmailSent]`, `[onboardingComplete:success]`, `[onboardingComplete:responseReturned]`
-  - [ ] Ensure response includes: `emailsSent: true` and `message: 'Onboarding completed successfully'`
-  - [ ] Graceful degradation if emails partially fail
-
-## Phase 6 — Final validation
-- [ ] Run `npm run build` (frontend)
-- [ ] Manual test checklist:
-  - [ ] Submit onboarding => overlay appears immediately, button disables
-  - [ ] Backend completes successfully, required logs appear in backend console
-  - [ ] Frontend console logs appear and success page shows countdown
-  - [ ] Redirects to `/home` after countdown or button click
-  - [ ] Failure flow shows premium failure card, overlay removed, state preserved
 

@@ -69,9 +69,11 @@
             [routerLink]="['/pricing']"
             fragment="pricing-tiers"
             aria-label="Explore pricing"
+            (click)="trackServiceExploreClicked(services[0].name)"
           >
             Explore
           </a>
+
         </div>
         <div class="service-visual">
           <img src="/assets/Web-design-2.jpg" alt="Web design process and workspace" />
@@ -151,9 +153,13 @@
             [routerLink]="['/pricing']"
             fragment="pricing-tiers"
             aria-label="Explore pricing"
+            (click)="trackServiceExploreClicked(services[1].name)"
+
           >
             Explore
           </a>
+
+
         </div>
         <div class="service-visual">
           <img src="/assets/web-dev.2.jpg" alt="Web development coding environment" />
@@ -233,9 +239,11 @@
             [routerLink]="['/pricing']"
             fragment="pricing-tiers"
             aria-label="Explore pricing"
+            (click)="trackServiceExploreClicked(services[2].name)"
           >
             Explore
           </a>
+
         </div>
         <div class="service-visual">
           <img src="/assets/E-commerce.jpg" alt="E-commerce product catalog and dashboard" />
@@ -310,7 +318,8 @@
             </div>
           </div>
 
-          <a class="spotlight-explore-btn btn-primary" [routerLink]="['/pricing']" fragment="pricing-tiers" aria-label="Explore pricing">Explore</a>
+          <a class="spotlight-explore-btn btn-primary" [routerLink]="['/pricing']" fragment="pricing-tiers" aria-label="Explore pricing" (click)="trackServiceExploreClicked(services[3].name)" >Explore</a>
+
         </div>
         <div class="service-visual">
           <img src="/assets/growthandAnalytics.jpg" alt="Growth analytics dashboard and metrics" />

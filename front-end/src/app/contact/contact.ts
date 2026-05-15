@@ -5,6 +5,8 @@ import { CommonModule } from '@angular/common';
 import { ToastService } from '../core/toast.service';
 import { ScrollRevealDirective } from '../scroll-reveal';
 import { ApiService } from '../core/api.service';
+import { AnalyticsService } from '../core/analytics.service';
+
 
 @Component({
   selector: 'app-contact',
@@ -15,6 +17,8 @@ import { ApiService } from '../core/api.service';
 export class Contact {
   private api = inject(ApiService)
   private toastService = inject(ToastService)
+  private analytics = inject(AnalyticsService)
+
 
   formData = {
     name: '',
@@ -32,6 +36,7 @@ export class Contact {
 
   async onSubmit() {
     this.formSubmitted = true;
+
     this.formSuccess = false;
     this.error = false;
 
@@ -63,6 +68,10 @@ export class Contact {
 
       this.formSuccess = true;
       this.toastService.show("Your request has been submitted successfully. We'll get back to you shortly.", 'success');
+      this.analytics.trackEvent('contact_form_submitted', {
+        source: '/contact',
+      })
+
 
       // Reset form
       this.formData = {

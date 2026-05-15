@@ -2,6 +2,8 @@ import { Component, AfterViewInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, NavigationEnd, Router, RouterLink } from '@angular/router';
 import { filter, Subscription } from 'rxjs';
+import { AnalyticsService } from '../core/analytics.service';
+
 
 @Component({
   selector: 'app-services',
@@ -14,10 +16,29 @@ export class Services implements AfterViewInit, OnDestroy {
 
   private sub?: Subscription;
 
+  private trackFired = new Set<string>()
+
   constructor(
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private analytics: AnalyticsService
   ) {}
+
+  trackServiceExploreClicked(serviceName: string) {
+    const key = `service_explore_clicked:${serviceName}`
+    if (this.trackFired.has(key)) return
+    this.trackFired.add(key)
+
+    this.analytics.trackEvent('service_explore_clicked', {
+      service: serviceName,
+      destination: '/pricing',
+    })
+
+    this.analytics.trackEvent('service_cta_clicked', {
+      cta: 'Explore',
+    })
+  }
+
 
   services = [
     {

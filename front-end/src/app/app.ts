@@ -9,16 +9,16 @@ import {
   Inject,
   PLATFORM_ID
 } from '@angular/core';
-import { RouterOutlet, RouterLink, Router } from '@angular/router';
-
+import { RouterOutlet, RouterLink, Router, NavigationEnd } from '@angular/router';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from './core/api.service';
-
 import { Navbar } from './navbar/navbar';
 import { Footer } from './footer/footer';
 import { ChatbotComponent } from './chatbot/chatbot';
 import { ToastComponent } from './toast/toast.component';
+import { AnalyticsService } from './core/analytics.service';
+import { filter } from 'rxjs/internal/operators/filter';
 
 @Component({
   selector: 'app-root',
@@ -60,10 +60,13 @@ export class App implements AfterViewInit, OnDestroy {
     private el: ElementRef,
     private api: ApiService,
     private router: Router,
+    private analytics: AnalyticsService, 
     @Inject(PLATFORM_ID) private platformId: Object
-  ) {}
-
-
+  ) { this.router.events
+    .pipe(filter(event => event instanceof NavigationEnd))
+    .subscribe((event: any) => {
+      this.analytics.trackPageView(event.urlAfterRedirects);
+    }); }
 
   /* ═══════════════════════════════════════════════════════════════
      SCROLL HANDLER
@@ -94,14 +97,36 @@ export class App implements AfterViewInit, OnDestroy {
     }
   }
 
-  toggleBookingPopup() {
-    this.bookingOpen.update(value => !value);
-    if (!this.bookingOpen()) {
-      this.resetBookingForm();
-    } else {
-      this.bookingSuccess.set(false);
+  private bookingModalOpenedFired = false
+
+  private getCurrentRouteForAnalytics(): string {
+    try {
+      return this.router.url || '/'
+    } catch {
+      return '/'
     }
   }
+
+  toggleBookingPopup() {
+    const willOpen = !this.bookingOpen()
+    this.bookingOpen.update(() => !this.bookingOpen())
+
+    if (willOpen) {
+      if (!this.bookingModalOpenedFired) {
+        this.bookingModalOpenedFired = true
+        this.analytics.trackEvent('booking_modal_opened', {
+          source: this.getCurrentRouteForAnalytics(),
+        })
+      }
+
+      this.bookingSuccess.set(false);
+    } else {
+      this.bookingOpen.set(false)
+      this.resetBookingForm();
+      this.bookingModalOpenedFired = false
+    }
+  }
+
 
   closeBookingPopup() {
     this.bookingOpen.set(false);
@@ -169,6 +194,11 @@ export class App implements AfterViewInit, OnDestroy {
         this.bookingLoading.set(false);
         this.bookingSuccess.set(true);
         this.bookingError.set(false);
+
+        this.analytics.trackEvent('booking_request_submitted', {
+          source: this.getCurrentRouteForAnalytics(),
+        })
+
         this.resetBookingForm(true);
       })
       .catch((err) => {
@@ -182,7 +212,6 @@ export class App implements AfterViewInit, OnDestroy {
         this.bookingError.set(true);
       });
   }
-
 
   private resetBookingForm(keepSuccess = false) {
     this.bookingName = '';
@@ -199,8 +228,6 @@ export class App implements AfterViewInit, OnDestroy {
       this.bookingError.set(false);
     }
   }
-
-
 
   /* ═══════════════════════════════════════════════════════════════
      FOOTER REVEAL — TRUE LAYERED SYSTEM
