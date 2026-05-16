@@ -1,0 +1,22 @@
+# Bleval.inc Robots Configuration
+# Environment: Production
+
+User-agent: *
+Allow: /
+
+# Prevent indexing of internal/admin systems
+Disallow: /admin
+Disallow: /internal
+
+# Prevent duplicate onboarding query indexing
+Disallow: /onboarding?
+Disallow: /*?plan=
+
+# Optional crawl optimization
+Crawl-delay: 2
+
+# Primary sitemap
+Sitemap: https://blevalincweb.netlify.app/sitemap.xml
+
+# Preferred host
+Host: https://blevalincweb.netlify.app

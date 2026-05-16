@@ -10,6 +10,8 @@ import {
   PLATFORM_ID
 } from '@angular/core';
 import { RouterOutlet, RouterLink, Router, NavigationEnd } from '@angular/router';
+import { SeoService } from './core/seo.service';
+import { SEO_BASE_URL } from './core/seo.config';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from './core/api.service';
@@ -60,12 +62,29 @@ export class App implements AfterViewInit, OnDestroy {
     private el: ElementRef,
     private api: ApiService,
     private router: Router,
-    private analytics: AnalyticsService, 
+    private analytics: AnalyticsService,
+    private seo: SeoService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) { this.router.events
     .pipe(filter(event => event instanceof NavigationEnd))
     .subscribe((event: any) => {
       this.analytics.trackPageView(event.urlAfterRedirects);
+
+      // SEO updates (route-driven). Must not break GA4 tracking.
+      if (isPlatformBrowser(this.platformId)) {
+        const url = event?.urlAfterRedirects ?? event?.url ?? this.router.url;
+        const pathname = (() => {
+          try {
+            // Prefer extracting pathname from full URL.
+            return new URL(url, SEO_BASE_URL).pathname;
+          } catch {
+            return (this.router.url || '/').split('?')[0].split('#')[0];
+          }
+        })();
+
+        const routeKey = this.seo.routeKeyFromPath(pathname);
+        this.seo.applyForRoute(routeKey, pathname);
+      }
     }); }
 
   /* ═══════════════════════════════════════════════════════════════

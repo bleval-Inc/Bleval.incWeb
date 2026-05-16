@@ -1,59 +1,47 @@
-# BlevalInc
+# Bleval.inc SEO System (Angular SPA)
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.1.4.
+This repository now includes a production-oriented SEO system for the Angular SPA.
 
-## Development server
+## What was added/updated
+- **Dynamic per-route meta updates** via `SeoService`.
+- **Central SEO map** in `src/app/core/seo.config.ts`.
+- **Organization + WebSite + LocalBusiness JSON-LD** injected in `src/index.html`.
+- **robots.txt** and **sitemap.xml** added in `front-end/public/`.
 
-To start a local development server, run:
+## Key files
+- `front-end/src/app/core/seo.service.ts`
+- `front-end/src/app/core/seo.config.ts`
+- `front-end/src/app/app.ts` (hooks SEO into `NavigationEnd`, preserving GA4)
+- `front-end/src/index.html` (JSON-LD + canonical)
+- `front-end/public/sitemap.xml`
+- `front-end/public/robots.txt`
 
+## How it works (route SEO)
+On every `NavigationEnd`, `App` calls:
+- `seo.routeKeyFromPath(pathname)`
+- `seo.applyForRoute(routeKey, pathname)`
+
+This updates:
+- `<title>`
+- meta `description`
+- meta `keywords` (when configured)
+- `<link rel="canonical">`
+
+Duplicate meta tags are prevented by using a deterministic marker (`data-bleval-seo-id`).
+
+## Build / deploy
+### Front-end build
+From `front-end/`:
 ```bash
-ng serve
+npm run build
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Sitemap + robots are served from the built output (from `public/`).
 
-## Code scaffolding
+## Prerendering note (important)
+This codebase is currently an Angular client-only build (SPA). For true Googlebot HTML prerendering, the site must be built with SSR/Universal or a static prerender pipeline.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+This PR implements the SEO *system* and generates sitemap/robots, but does not convert the project to SSR/SSG (because that requires Angular SSR tooling + server changes).
 
-```bash
-ng generate component component-name
-```
+If you want me to add SSR/SSG next, the required next step is to confirm your preferred target (Angular SSR with `@angular/ssr` or a static prerender tool), and your hosting constraints.
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
