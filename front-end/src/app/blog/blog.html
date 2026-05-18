@@ -2,9 +2,11 @@
   <div class="orb-cyan" style="top: 20%; right: 10%;"></div>
   <div class="orb-uv" style="bottom: 20%; left: 10%;"></div>
   <div class="hero-content container">
-<p class="overline">Studio Insights</p>
-    <h1 class="hero-heading">Modern<br>Digital Thinking</h1>
-    <p class="body hero-subtitle">Curated insights on user experience, strategic design, and scalable web architecture from our digital studio.</p>
+    <p class="overline">Studio Insights</p>
+    <h1 class="hero-heading">Modern<br />Digital Thinking</h1>
+    <p class="body hero-subtitle">
+      Curated insights on user experience, strategic design, and scalable web architecture from our digital studio.
+    </p>
     <div class="filter-chips">
       <span class="tag tag-uv active">All</span>
       <span class="tag tag-cyan">Design</span>
@@ -18,21 +20,35 @@
 <section class="featured-post" appScrollReveal>
   <div class="container">
     <div class="section-header scroll-reveal">
-<p class="overline">Featured Insight</p>
+      <p class="overline">Featured Insight</p>
       <h2 class="h2">Strategic Design in Practice</h2>
       <p class="body">Exploring the principles behind clean, conversion-aware digital experiences.</p>
     </div>
+
     <div class="featured-card glass-surface">
-      <div class="featured-image" style="background: linear-gradient(135deg, var(--uv-start), var(--deep-iris));"></div>
+      <div
+        class="featured-image"
+        [style.backgroundImage]="getFeaturedBg()"
+        role="img"
+        [attr.aria-label]="featuredPost.title"
+      ></div>
+
       <div class="featured-content">
-        <div class="post-meta">
-          <span class="tag tag-cyan">Case Study</span>
-          <span class="read-time">8 min read</span>
-          <span class="date">March 15, 2024</span>
+        <div class="post-meta" aria-label="Featured post meta">
+          <span class="tag tag-cyan">{{ featuredPost.source }}</span>
+          <span class="read-time">Featured</span>
         </div>
-<h2 class="h2">User-Centered Design: Building Intuitive Flows</h2>
-        <p class="body">Research-driven approach to creating seamless user journeys that enhance engagement and clarity.</p>
-        <a href="#" class="btn-ghost">Read Full Article →</a>
+
+        <h2 class="h2">{{ featuredPost.title }}</h2>
+        <p class="body">{{ featuredPost.excerpt }}</p>
+
+        <a
+          [href]="featuredPost.url"
+          class="btn-ghost"
+          target="_blank"
+          rel="noopener noreferrer"
+          [attr.aria-label]="'Read article: ' + featuredPost.title"
+        >Read Article →</a>
       </div>
     </div>
   </div>
@@ -40,77 +56,31 @@
 
 <section class="posts-grid" appScrollReveal>
   <div class="container">
-<div class="posts-grid-container">
-      <article class="post-card glass-surface scroll-reveal">
-        <div class="post-image" style="background: linear-gradient(135deg, var(--cyan), var(--uv-end));"></div>
+    <div class="posts-grid-container">
+      <article *ngFor="let post of posts" class="post-card glass-surface scroll-reveal" [attr.aria-label]="post.title">
+        <div
+          class="post-image"
+          [style.backgroundImage]="getPostBg(post.image)"
+          role="img"
+          [attr.aria-label]="post.title"
+        ></div>
+
         <div class="post-content">
-          <span class="tag tag-uv">Design</span>
-Strategic Color & Typography for Digital Presence
-          <p>How understanding human psychology can dramatically improve your website's effectiveness.</p>
-          <div class="post-footer">
-            <span class="read-time">5 min read</span>
-            <span class="date">March 10, 2024</span>
+          <span class="tag tag-uv">{{ post.source }}</span>
+          <h3>{{ post.title }}</h3>
+          <p>{{ post.excerpt }}</p>
+
+          <div class="post-footer" aria-label="Article footer">
+            <span class="read-time">External article</span>
           </div>
-        </div>
-      </article>
-      <article class="post-card glass-surface scroll-reveal">
-        <div class="post-image" style="background: linear-gradient(135deg, var(--deep-iris), var(--cyan));"></div>
-        <div class="post-content">
-          <span class="tag tag-cyan">Development</span>
-Modern Frontend Performance Techniques
-          <p>Essential techniques for creating fast, scalable React applications that users love.</p>
-          <div class="post-footer">
-            <span class="read-time">7 min read</span>
-            <span class="date">March 8, 2024</span>
-          </div>
-        </div>
-      </article>
-      <article class="post-card glass-surface scroll-reveal">
-        <div class="post-image" style="background: linear-gradient(135deg, var(--uv-end), var(--slate-glass));"></div>
-        <div class="post-content">
-          <span class="tag tag-uv">Strategy</span>
-Content Systems for Strategic Growth
-          <p>How to create content that attracts, converts, and retains enterprise customers.</p>
-          <div class="post-footer">
-            <span class="read-time">6 min read</span>
-            <span class="date">March 5, 2024</span>
-          </div>
-        </div>
-      </article>
-      <article class="post-card glass-surface scroll-reveal">
-        <div class="post-image" style="background: linear-gradient(135deg, var(--slate-glass), var(--uv-start));"></div>
-        <div class="post-content">
-          <span class="tag tag-cyan">Case Study</span>
-E-Commerce UX: Seamless User Journeys
-          <p>The complete redesign process that transformed an online store's performance.</p>
-          <div class="post-footer">
-            <span class="read-time">10 min read</span>
-            <span class="date">March 1, 2024</span>
-          </div>
-        </div>
-      </article>
-      <article class="post-card glass-surface scroll-reveal">
-        <div class="post-image" style="background: linear-gradient(135deg, var(--cyan), var(--deep-iris));"></div>
-        <div class="post-content">
-          <span class="tag tag-uv">Design</span>
-Responsive Design Priorities for 2024
-          <p>Beyond responsive design: creating truly mobile-optimized user experiences.</p>
-          <div class="post-footer">
-            <span class="read-time">4 min read</span>
-            <span class="date">February 28, 2024</span>
-          </div>
-        </div>
-      </article>
-      <article class="post-card glass-surface scroll-reveal">
-        <div class="post-image" style="background: linear-gradient(135deg, var(--uv-start), var(--cyan));"></div>
-        <div class="post-content">
-          <span class="tag tag-cyan">Development</span>
-CSS Optimization for Scalable Interfaces
-          <p>CSS features and techniques that can significantly improve your site's loading speed.</p>
-          <div class="post-footer">
-            <span class="read-time">6 min read</span>
-            <span class="date">February 25, 2024</span>
-          </div>
+
+          <a
+            class="btn-ghost post-cta"
+            [href]="post.url"
+            target="_blank"
+            rel="noopener noreferrer"
+            [attr.aria-label]="'Read article: ' + post.title"
+          >Read Article →</a>
         </div>
       </article>
     </div>
@@ -121,13 +91,30 @@ CSS Optimization for Scalable Interfaces
   <div class="container">
     <div class="newsletter-card glass-surface">
       <div class="newsletter-content">
-<h2 class="h2">Studio Updates in Your Inbox</h2>
+        <h2 class="h2">Studio Updates in Your Inbox</h2>
         <p class="body">Curated insights on design, development, and digital strategy. Unsubscribe anytime.</p>
       </div>
       <div class="newsletter-form">
-        <input type="email" placeholder="Enter your email" class="email-input">
-        <button class="btn-primary">Subscribe</button>
+        <input
+          type="email"
+          placeholder="Enter your email"
+          class="email-input"
+          [value]="email"
+          (input)="onEmailInput($any($event.target).value)"
+          [disabled]="isSubscribing"
+          aria-label="Email address"
+        />
+        <button class="btn-primary" (click)="onSubscribe()" [disabled]="isSubscribing" aria-label="Subscribe">
+          <span class="btn-content" [class.hidden]="isSubscribing">Subscribe</span>
+          <span class="btn-spinner" *ngIf="isSubscribing" aria-hidden="true"></span>
+        </button>
+
+        <div class="subscribe-error" *ngIf="subscribeError" role="alert">
+          {{ subscribeError }}
+        </div>
       </div>
+
     </div>
   </div>
 </section>
+

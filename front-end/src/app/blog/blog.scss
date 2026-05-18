@@ -164,7 +164,14 @@
   height: 200px;
   background-size: cover;
   background-position: center;
+  aspect-ratio: 16 / 9;
 }
+
+.post-cta {
+  margin-top: auto;
+  align-self: flex-start;
+}
+
 
 .post-content {
   padding: 1.5rem;
@@ -220,6 +227,56 @@
   gap: 1rem;
   min-width: 300px;
 }
+
+.newsletter-form {
+  position: relative;
+}
+
+.subscribe-error {
+  margin-top: 0.75rem;
+  font-size: 14px;
+  color: rgba(255, 170, 170, 0.95);
+  animation: fadeUp 280ms var(--ease) both;
+}
+
+.btn-primary {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-content.hidden {
+  opacity: 0;
+}
+
+.btn-spinner {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: rgba(255, 255, 255, 0.95);
+  animation: spin 800ms linear infinite;
+  position: absolute;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 
 .email-input {
   flex: 1;
