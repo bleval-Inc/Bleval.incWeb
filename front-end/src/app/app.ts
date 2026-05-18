@@ -9,15 +9,18 @@ import {
   Inject,
   PLATFORM_ID
 } from '@angular/core';
-import { RouterOutlet, RouterLink } from '@angular/router';
+import { RouterOutlet, RouterLink, Router, NavigationEnd } from '@angular/router';
+import { SeoService } from './core/seo.service';
+import { SEO_BASE_URL } from './core/seo.config';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from './core/api.service';
-
 import { Navbar } from './navbar/navbar';
 import { Footer } from './footer/footer';
 import { ChatbotComponent } from './chatbot/chatbot';
 import { ToastComponent } from './toast/toast.component';
+import { AnalyticsService } from './core/analytics.service';
+import { filter } from 'rxjs/internal/operators/filter';
 
 @Component({
   selector: 'app-root',
@@ -58,9 +61,31 @@ export class App implements AfterViewInit, OnDestroy {
     private renderer: Renderer2,
     private el: ElementRef,
     private api: ApiService,
+    private router: Router,
+    private analytics: AnalyticsService,
+    private seo: SeoService,
     @Inject(PLATFORM_ID) private platformId: Object
-  ) {}
+  ) { this.router.events
+    .pipe(filter(event => event instanceof NavigationEnd))
+    .subscribe((event: any) => {
+      this.analytics.trackPageView(event.urlAfterRedirects);
 
+      // SEO updates (route-driven). Must not break GA4 tracking.
+      if (isPlatformBrowser(this.platformId)) {
+        const url = event?.urlAfterRedirects ?? event?.url ?? this.router.url;
+        const pathname = (() => {
+          try {
+            // Prefer extracting pathname from full URL.
+            return new URL(url, SEO_BASE_URL).pathname;
+          } catch {
+            return (this.router.url || '/').split('?')[0].split('#')[0];
+          }
+        })();
+
+        const routeKey = this.seo.routeKeyFromPath(pathname);
+        this.seo.applyForRoute(routeKey, pathname);
+      }
+    }); }
 
   /* ═══════════════════════════════════════════════════════════════
      SCROLL HANDLER
@@ -91,14 +116,36 @@ export class App implements AfterViewInit, OnDestroy {
     }
   }
 
-  toggleBookingPopup() {
-    this.bookingOpen.update(value => !value);
-    if (!this.bookingOpen()) {
-      this.resetBookingForm();
-    } else {
-      this.bookingSuccess.set(false);
+  private bookingModalOpenedFired = false
+
+  private getCurrentRouteForAnalytics(): string {
+    try {
+      return this.router.url || '/'
+    } catch {
+      return '/'
     }
   }
+
+  toggleBookingPopup() {
+    const willOpen = !this.bookingOpen()
+    this.bookingOpen.update(() => !this.bookingOpen())
+
+    if (willOpen) {
+      if (!this.bookingModalOpenedFired) {
+        this.bookingModalOpenedFired = true
+        this.analytics.trackEvent('booking_modal_opened', {
+          source: this.getCurrentRouteForAnalytics(),
+        })
+      }
+
+      this.bookingSuccess.set(false);
+    } else {
+      this.bookingOpen.set(false)
+      this.resetBookingForm();
+      this.bookingModalOpenedFired = false
+    }
+  }
+
 
   closeBookingPopup() {
     this.bookingOpen.set(false);
@@ -166,6 +213,11 @@ export class App implements AfterViewInit, OnDestroy {
         this.bookingLoading.set(false);
         this.bookingSuccess.set(true);
         this.bookingError.set(false);
+
+        this.analytics.trackEvent('booking_request_submitted', {
+          source: this.getCurrentRouteForAnalytics(),
+        })
+
         this.resetBookingForm(true);
       })
       .catch((err) => {
@@ -179,7 +231,6 @@ export class App implements AfterViewInit, OnDestroy {
         this.bookingError.set(true);
       });
   }
-
 
   private resetBookingForm(keepSuccess = false) {
     this.bookingName = '';
@@ -196,8 +247,6 @@ export class App implements AfterViewInit, OnDestroy {
       this.bookingError.set(false);
     }
   }
-
-
 
   /* ═══════════════════════════════════════════════════════════════
      FOOTER REVEAL — TRUE LAYERED SYSTEM
@@ -284,13 +333,69 @@ export class App implements AfterViewInit, OnDestroy {
   /* ═══════════════════════════════════════════════════════════════
      LIFECYCLE
      ═══════════════════════════════════════════════════════════════ */
+  private handleBookingQueryTrigger() {
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    try {
+      const url = new URL(window.location.href);
+      const shouldBook = url.searchParams.get('book') === '1';
+      if (!shouldBook) return;
+
+      const plan = (url.searchParams.get('plan') || '').toLowerCase();
+      this.openBookingModalWithOnboardingPrefill(plan);
+
+      // Remove trigger params so it won't re-open on refresh.
+      url.searchParams.delete('book');
+      url.searchParams.delete('plan');
+      const remaining = Object.fromEntries(url.searchParams.entries());
+      this.router.navigate([url.pathname], { replaceUrl: true, queryParams: remaining });
+    } catch {
+      // no-op
+    }
+  }
+
+  private openBookingModalWithOnboardingPrefill(plan: string) {
+    // Prefill from existing onboarding localStorage.
+    // Keep resilient: never block booking modal open if parsing fails.
+    let onboarding: any = null;
+    try {
+      const raw = localStorage.getItem('bleval.onboarding.v1');
+      onboarding = raw ? JSON.parse(raw) : null;
+    } catch {
+      onboarding = null;
+    }
+
+    if (typeof onboarding?.name === 'string' && onboarding.name.trim()) this.bookingName = onboarding.name.trim();
+    if (typeof onboarding?.email === 'string' && onboarding.email.trim()) this.bookingEmail = onboarding.email.trim();
+    if (typeof onboarding?.phone === 'string' && onboarding.phone.trim()) this.bookingPhone = onboarding.phone.trim();
+
+    // Service inference (best-effort). Modal requires bookingService, but will remain empty if we can't map.
+    const inferredService =
+      plan === 'enterprise'
+        ? 'Full CRM/booking/payment stack'
+        : plan === 'acceleration' || plan === 'growth'
+          ? 'Maintenance & Growth'
+          : plan === 'foundation' || plan === 'starter'
+            ? 'Web Design'
+            : '';
+
+    if (inferredService) this.bookingService = inferredService;
+
+    this.bookingSuccess.set(false);
+    this.bookingError.set(false);
+    this.bookingLoading.set(false);
+    this.bookingOpen.set(true);
+  }
+
   ngAfterViewInit() {
     if (isPlatformBrowser(this.platformId)) {
       this.initCursor();
+      this.handleBookingQueryTrigger();
       // Initial footer reveal calc
       requestAnimationFrame(() => this.updateFooterReveal());
     }
   }
+
 
   ngOnDestroy() {
     if (this.rafId !== null) {

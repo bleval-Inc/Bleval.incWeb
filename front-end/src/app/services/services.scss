@@ -169,7 +169,7 @@
   font-size: clamp(15px, 1.5vw, 16px);
   font-weight: 600;
   align-self: flex-start;
-  // box-shadow: var(--shadow-glow);
+  box-shadow: var(--shadow-glow);
 }
 
 /* Reveal rows - Tightened */
@@ -368,6 +368,7 @@
   z-index: 0;
   border-radius: 2px;
   box-shadow: 0 1px 3px rgba(0, 229, 255, 0.2);
+  display: none; /* Hidden on desktop for cleaner look */
 }
 
 .process-step {

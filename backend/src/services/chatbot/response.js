@@ -118,13 +118,16 @@ function valueLine() {
 }
 
 function nextStepFor({ stage, highIntent = false }) {
+  // There is no /booking route in the frontend.
+  // Trigger the existing global booking modal via a safe query param on /home.
   const base = {
-    booking: [{ type: 'booking', label: 'Book a Call', link: '/booking' }],
+    booking: [{ type: 'booking', label: 'Book a Call', link: '/home?book=1' }],
     contact: [
       { type: 'contact', label: 'Contact Us', link: '/contact' },
-      { type: 'booking', label: 'Book a Call', link: '/booking' },
+      { type: 'booking', label: 'Book a Call', link: '/home?book=1' },
     ],
   }
+
 
   return highIntent ? base.contact : base.booking
 }

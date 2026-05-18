@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://blevalincweb-production.up.railway.app/api',
+  apiUrl: 'https://bleval-backend.onrender.com/api',
   clientId: 'bleval',
 }

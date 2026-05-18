@@ -1,4 +1,4 @@
-import { bootstrapApplication } from '@angular/platform-browser';
+import { bootstrapApplication, provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { appConfig } from './app/app.config';
 import { App } from './app/app';
 import { Router, NavigationEnd } from '@angular/router';
@@ -27,7 +27,7 @@ const updatedAppConfig = {
           });
       },
       multi: true
-    }
+    }, provideClientHydration(withEventReplay())
   ]
 };
 
