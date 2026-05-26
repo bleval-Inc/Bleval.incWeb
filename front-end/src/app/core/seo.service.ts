@@ -139,7 +139,15 @@ export class SeoService {
 
     // Use name selector + deterministic id attribute to avoid duplicates.
     const selector = `meta[name="${opts.name}"][data-bleval-seo-id="${id}"]`;
-    const existing = this.meta.getTag(selector);
+
+    // Defensive: selector syntax issues must never break navigation/runtime.
+    let existing: any = null;
+    try {
+      existing = this.meta.getTag(selector);
+    } catch {
+      existing = null;
+    }
+
 
     if (existing) {
       this.meta.updateTag({
