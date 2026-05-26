@@ -1,52 +1,88 @@
 import nodemailer from 'nodemailer'
 import { env } from '../../config/env.js'
 
+/**
+ * Zoho SMTP Transport
+ *
+ * Optimized for:
+ * - Render deployments
+ * - Cloud networking
+ * - STARTTLS
+ * - IPv4 enforcement
+ * - Long SMTP handshake times
+ */
+
 export const zohoTransport = nodemailer.createTransport({
-  host: env.SMTP_HOST,
+  /**
+   * Zoho Global SMTP Host
+   */
+  host: 'smtp.zoho.com',
 
   /**
-   * Use 587 for cloud hosting reliability
+   * STARTTLS Port
+   * More reliable on cloud hosts than 465
    */
   port: 587,
 
   /**
-   * IMPORTANT:
-   * secure MUST be false for port 587
+   * MUST remain false for port 587
    */
   secure: false,
 
   /**
-   * Upgrade connection using STARTTLS
+   * Upgrade plain connection to TLS
    */
   requireTLS: true,
 
+  /**
+   * SMTP Authentication
+   */
   auth: {
     user: env.SMTP_USER,
     pass: env.SMTP_PASS,
   },
 
   /**
-   * Render + cloud SMTP stability
+   * Force IPv4
+   * Helps avoid Render IPv6 SMTP issues
+   */
+  family: 4,
+
+  /**
+   * TLS Configuration
    */
   tls: {
     rejectUnauthorized: false,
+    minVersion: 'TLSv1.2',
   },
 
   /**
-   * Increased timeouts for Render cold starts
+   * Cloud/Render SMTP stability
    */
   connectionTimeout: 60000,
   greetingTimeout: 60000,
   socketTimeout: 60000,
+
+  /**
+   * Debugging
+   * Helpful while troubleshooting
+   */
+  logger: true,
+  debug: true,
 })
 
 /**
  * Verify transporter on startup
- * DOES NOT crash app
+ * Does NOT crash application
  */
 zohoTransport.verify((error, success) => {
   if (error) {
-    console.error('SMTP VERIFY ERROR:', error)
+    console.error('SMTP VERIFY ERROR:', {
+      message: error.message,
+      code: error.code,
+      command: error.command,
+      stack: error.stack,
+    })
   } else {
     console.log('SMTP SERVER READY')
   }
