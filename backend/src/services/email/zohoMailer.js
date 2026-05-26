@@ -1,6 +1,17 @@
 import nodemailer from 'nodemailer'
 import { env } from '../../config/env.js'
 
+/**
+ * Zoho SMTP Transport
+ *
+ * Optimized for:
+ * - Render deployments
+ * - Cloud networking
+ * - STARTTLS
+ * - IPv4 enforcement
+ * - Long SMTP handshake times
+ */
+
 export const zohoTransport = nodemailer.createTransport({
   host: 'smtp.gmail.com',
 
@@ -10,6 +21,9 @@ export const zohoTransport = nodemailer.createTransport({
 
   requireTLS: true,
 
+  /**
+   * SMTP Authentication
+   */
   auth: {
     user: env.SMTP_USER,
     pass: env.SMTP_PASS,
