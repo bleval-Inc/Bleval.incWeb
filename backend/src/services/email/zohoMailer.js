@@ -1,5 +1,6 @@
 import nodemailer from 'nodemailer'
 import { env } from '../../config/env.js'
+import dns from 'dns'
 
 /**
  * Zoho SMTP Transport
@@ -11,6 +12,8 @@ import { env } from '../../config/env.js'
  * - IPv4 enforcement
  * - Long SMTP handshake times
  */
+
+dns.setDefaultResultOrder('ipv4first')
 
 export const zohoTransport = nodemailer.createTransport({
   host: 'smtp.gmail.com',
@@ -56,3 +59,4 @@ zohoTransport.verify((error, success) => {
     console.log('SMTP SERVER READY')
   }
 })
+
