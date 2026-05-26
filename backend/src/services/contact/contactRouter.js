@@ -14,25 +14,42 @@ const schema = z.object({
 })
 
 contactRouter.post('/', async (req, res) => {
-  const timeout = new Promise((_, reject) =>
-    setTimeout(() => reject(new Error('Request timed out. Please try again.')), 20000),
-  )
-
   try {
     const data = schema.parse(req.body)
-    const payload = { client: req.client, ...data }
 
-    await Promise.race([submitContact(payload), timeout])
+    const payload = {
+      client: req.client,
+      ...data,
+    }
 
-    return res.status(200).json({
+    /**
+     * Return success immediately
+     * Prevent frontend waiting on SMTP
+     */
+    res.status(200).json({
       success: true,
       message: 'Contact form submitted successfully.',
     })
+
+    /**
+     * Process email in background
+     */
+    submitContact(payload)
+      .then(() => {
+        console.log('CONTACT EMAIL FLOW COMPLETED')
+      })
+      .catch((error) => {
+        console.error('BACKGROUND CONTACT ERROR:', error)
+      })
+
   } catch (err) {
     console.error('CONTACT FORM ERROR:', err)
 
     if (err?.name === 'ZodError') {
-      return res.status(400).json({ success: false, message: 'Validation failed' })
+      return res.status(400).json({
+        success: false,
+        message: 'Validation failed',
+      })
     }
 
     return res.status(500).json({
@@ -41,6 +58,3 @@ contactRouter.post('/', async (req, res) => {
     })
   }
 })
-
-
-
