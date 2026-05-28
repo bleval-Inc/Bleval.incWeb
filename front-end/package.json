@@ -46,5 +46,13 @@
     "jsdom": "^27.1.0",
     "typescript": "~5.9.2",
     "vitest": "^4.0.8"
-  }
+  },
+  "assets": [
+  "src/icon_64x64_dark.ico",
+  "src/assets",
+  "src/robots.txt",
+  "src/sitemap.xml",
+  "src/_redirects"
+]
+
 }

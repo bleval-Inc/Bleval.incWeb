@@ -6,12 +6,22 @@ export const contactRouter = Router()
 
 const schema = z.object({
   name: z.string().min(1).max(200),
+
   email: z.string().email(),
+
   phone: z.string().optional(),
+
+  company: z.string().optional(),
+
   service: z.string().optional(),
+
+  pricingPlan: z.string().optional(),
+
   message: z.string().min(1).max(5000),
+
   source: z.string().optional(),
 })
+
 
 contactRouter.post('/', async (req, res) => {
   try {
@@ -24,7 +34,6 @@ contactRouter.post('/', async (req, res) => {
 
     /**
      * Return success immediately
-     * Prevent frontend waiting on SMTP
      */
     res.status(200).json({
       success: true,

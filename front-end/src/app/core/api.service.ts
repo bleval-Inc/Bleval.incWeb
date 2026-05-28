@@ -21,9 +21,18 @@ export class ApiService {
   }
 
 
-  submitContact(data: { name: string; email: string; phone?: string; message: string }): Observable<{ success: boolean; id: string }> {
+  submitContact(data: {
+    name: string;
+    email: string;
+    phone?: string;
+    company?: string;
+    service?: string;
+    pricingPlan?: string;
+    message: string;
+  }): Observable<{ success: boolean; id: string }> {
     return this.post('/contact', data)
   }
+
 
   sendChat(message: string, sessionKey?: string): Observable<{ reply: string; session_key: string; cta?: { type: string; label: string; link: string } | null }> {
     // environment.apiUrl already includes /api

@@ -56,103 +56,101 @@
    
     <!-- STARTER -->
     <div class="tier glass-surface">
-<h3 class="h3">Foundation</h3>
-      <p class="body">Digital presence that converts first visitors. ROI in 60 days.</p>
+      <h3 class="h3">Quick Win</h3>
+      <p class="body">Turn visitors into leads with a conversion-first website + automation-ready foundations.</p>
 
       <div class="pricing">
-        <div class="build-price">R6 000</div>
-        <div class="build-label">One-time build</div>
-
-        <div class="divider"></div>
-
-        <div class="monthly-price">R999<span>/mo</span></div>
-        <div class="monthly-label">Guaranteed uptime + optimization</div>
-      </div>
-
-      <ul class="features">
-        <li>5 high-conversion pages</li>
-        <li>Mobile-first performance</li>
-        <li>Lead capture + analytics</li>
-        <li>SEO foundation</li>
-      </ul>
-
-      <ul class="features subtle">
-        <li>Everything monitored 24/7</li>
-        <li>Security + automatic backups</li>
-        <li>Monthly performance report</li>
-      </ul>
-
-      <a [routerLink]="['/onboarding']" [queryParams]="{ plan: 'starter' }" class="btn-ghost" (click)="trackPricingPlanSelected('starter')">Launch Foundation</a>
-
-
-    </div>
-
-    <!-- GROWTH -->
-    <div class="tier glass-surface popular">
-<div class="popular-badge">Most Popular</div>
-
-      <h3 class="h3">Acceleration</h3>
-      <p class="body">Automation + leads for 3x growth velocity. 90-day ROI target.</p>
-
-      <div class="pricing">
-        <div class="build-price">R9 000</div>
-        <div class="build-label">One-time build</div>
+        <div class="build-price">R3 500</div>
+        <div class="build-label">Setup (one-time)</div>
 
         <div class="divider"></div>
 
         <div class="monthly-price">R1 500<span>/mo</span></div>
+        <div class="monthly-label">Monthly optimization</div>
+      </div>
+
+      <ul class="features">
+        <li>Conversion-focused page structure</li>
+        <li>Lead capture setup + analytics</li>
+        <li>Performance + SEO foundations</li>
+        <li>Workflow-ready contact + booking routes</li>
+      </ul>
+
+      <ul class="features subtle">
+        <li>AI-ready content and CTA mapping</li>
+        <li>Speed + usability improvements</li>
+        <li>Monthly performance report</li>
+      </ul>
+
+      <a [routerLink]="['/onboarding']" [queryParams]="{ plan: 'starter' }" class="btn-ghost" (click)="trackPricingPlanSelected('starter')">Book Your Free Revenue Audit</a>
+    </div>
+
+    <!-- GROWTH -->
+    <div class="tier glass-surface popular">
+      <div class="popular-badge">Most Popular</div>
+
+      <h3 class="h3">Growth System</h3>
+      <p class="body">Automate lead follow-up and optimize conversion pathways so growth compounds month over month.</p>
+
+      <div class="pricing">
+        <div class="build-price">R5 000</div>
+        <div class="build-label">Setup (one-time)</div>
+
+        <div class="divider"></div>
+
+        <div class="monthly-price">R3 500<span>/mo</span></div>
         <div class="monthly-label">Growth engine optimization</div>
       </div>
 
       <ul class="features">
-        <li>8 conversion-optimized pages</li>
-        <li>AI chatbot + WhatsApp flows</li>
-        <li>Lead nurturing automation</li>
-        <li>Content + SEO system</li>
+        <li>More conversion-ready pages</li>
+        <li>AI automation for lead capture + nurture</li>
+        <li>CRO sprints (conversion improvements)</li>
+        <li>SEO system + ongoing content planning</li>
       </ul>
 
       <ul class="features subtle">
-        <li>Foundation + acceleration tools</li>
-        <li>A/B testing + CRO</li>
+        <li>A/B testing and performance tuning</li>
         <li>Advanced analytics suite</li>
         <li>Quarterly growth audit</li>
       </ul>
 
-      <a [routerLink]="['/onboarding']" [queryParams]="{ plan: 'growth' }" class="btn-primary" (click)="trackPricingPlanSelected('growth')">Activate Acceleration</a>
-
-
+      <a [routerLink]="['/onboarding']" [queryParams]="{ plan: 'growth' }" class="btn-primary" (click)="trackPricingPlanSelected('growth')">Book Your Free Revenue Audit</a>
     </div>
 
     <!-- PRO -->
     <div class="tier glass-surface">
-<h3 class="h3">Enterprise</h3>
-      <p class="body">Full revenue stack. 6-month 5x ROI commitment.</p>
+      <h3 class="h3">Revenue Machine</h3>
+      <p class="body">Build the scalable revenue stack: CRM/booking integrations, custom automation, and continuous optimization.</p>
+
       <div class="pricing">
-        <div class="build-price">R12 000</div>
-        <div class="build-label">One-time build</div>
+        <div class="build-price">R8 000</div>
+        <div class="build-label">Setup (one-time)</div>
+
         <div class="divider"></div>
-        <div class="monthly-price">R1 999<span>/mo</span></div>
-        <div class="monthly-label">Enterprise optimization suite</div>
+
+        <div class="monthly-price">R6 500<span>/mo</span></div>
+        <div class="monthly-label">Revenue stack optimization</div>
       </div>
+
       <ul class="features">
-        <li>Unlimited conversion systems</li>
-        <li>Full CRM/booking/payment stack</li>
+        <li>Unlimited scalable conversion systems</li>
+        <li>CRM + booking + payments stack integration</li>
         <li>Custom API integrations</li>
         <li>Enterprise SEO + velocity</li>
       </ul>
+
       <ul class="features subtle">
-        <li>Acceleration + enterprise tools</li>
         <li>24/7 system monitoring</li>
         <li>Monthly ROI optimization</li>
         <li>Accountable partnership</li>
       </ul>
-      <a [routerLink]="['/onboarding']" [queryParams]="{ plan: 'enterprise' }" class="btn-ghost" (click)="trackPricingPlanSelected('enterprise')">Deploy Enterprise</a>
 
-
-
+      <a [routerLink]="['/onboarding']" [queryParams]="{ plan: 'enterprise' }" class="btn-ghost" (click)="trackPricingPlanSelected('enterprise')">Book Your Free Revenue Audit</a>
     </div>
   </div>
 </section>
+
 
 <section class="project-demos" appScrollReveal>
   <div class="container">
