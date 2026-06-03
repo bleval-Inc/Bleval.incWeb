@@ -2,45 +2,47 @@
 <urlset
   xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
 >
+
   <url>
-    <loc>https://blevalincweb.netlify.app/</loc>
-    <lastmod>2026-05-15</lastmod>
+    <loc>https://blevalinc.netlify.app/</loc>
+    <lastmod>2026-05-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
 
   <url>
-    <loc>https://blevalincweb.netlify.app/services</loc>
-    <lastmod>2026-05-15</lastmod>
+    <loc>https://blevalinc.netlify.app/services</loc>
+    <lastmod>2026-05-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
 
   <url>
-    <loc>https://blevalincweb.netlify.app/pricing</loc>
-    <lastmod>2026-05-15</lastmod>
+    <loc>https://blevalinc.netlify.app/pricing</loc>
+    <lastmod>2026-05-27</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://blevalincweb.netlify.app/contact</loc>
-    <lastmod>2026-05-15</lastmod>
+    <loc>https://blevalinc.netlify.app/contact</loc>
+    <lastmod>2026-05-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://blevalincweb.netlify.app/about</loc>
-    <lastmod>2026-05-15</lastmod>
+    <loc>https://blevalinc.netlify.app/about</loc>
+    <lastmod>2026-05-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://blevalincweb.netlify.app/onboarding</loc>
-    <lastmod>2026-05-15</lastmod>
+    <loc>https://blevalinc.netlify.app/onboarding</loc>
+    <lastmod>2026-05-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
+
 </urlset>

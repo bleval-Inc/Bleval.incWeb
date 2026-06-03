@@ -1,15 +1,14 @@
 import { db } from '../../db/index.js'
 import { enrollLead } from '../leads/leadsService.js'
-import { sendAdminEmail, sendUserEmail } from '../email/emailService.js'
+import { env } from '../../config/env.js'
+import { sendEmail } from '../email/emailService.js'
+
 
 function safeJson(obj) {
-
   return JSON.parse(JSON.stringify(obj ?? {}))
 }
 
 async function upsertLeadAndContactless({ client, payload }) {
-  // Current leads schema requires email; contact_id is optional.
-  // enrollLead handles upsert by (client_id,email) and triggers sequences.
   const leadId = await enrollLead({
     client,
     name: payload.profile.name,
@@ -82,64 +81,89 @@ export async function onboardingStart({ client, payload }) {
 
   // Non-blocking email: do not break onboarding start if email fails.
   try {
-    const { subject, html } = {
-      subject: `Weve received your onboarding request  Bleval.inc`,
-      html: `
-        <div style="font-family:sans-serif;max-width:600px;margin:0 auto;color:#1a1a1a">
-          <h2 style="color:#1a1a1a">Hi ${payload.profile.name},</h2>
-          <p>Thanks for starting your onboarding with <strong>Bleval.inc</strong>.</p>
-          <p><strong>Plan:</strong> ${payload.plan || 'Not specified'}</p>
-          <p>Next steps:</p>
-          <ul>
-            <li>We review your launch details</li>
-            <li>We build your onboarding + growth roadmap</li>
-            <li>We confirm the best next step via call</li>
-          </ul>
-          <p style="margin-top:24px">
-            Book your discovery call here: <a href="https://bleval.inc/booking" style="color:#2563eb">Book a Call</a>
-          </p>
-          <p> Bleval.inc</p>
-        </div>
-      `,
+    const toEmail = payload?.profile?.email
+    const subject = `Weve received your onboarding request  Bleval.inc`
+
+    const profile = payload?.profile ?? {}
+    const alignment = payload?.alignment ?? {}
+
+    const adminTemplateParams = {
+      email_type: 'onboarding_admin_started',
+
+      // Profile
+      profile_name: profile?.name ?? '',
+      profile_company: profile?.company ?? '',
+      profile_email: profile?.email ?? '',
+      profile_phone: profile?.phone ?? '',
+      profile_industry: profile?.industry ?? '',
+      profile_location: profile?.location ?? '',
+
+      // Business overview
+      business_overview: alignment?.businessOverview ?? '',
+      target_audience: alignment?.targetAudience ?? '',
+      competitors: alignment?.competitors ?? '',
+      design_direction: alignment?.designDirection ?? '',
+
+      assets: alignment?.currentAssets ?? '',
+      project_goals: alignment?.projectGoals ?? '',
+      content_readiness: alignment?.contentReadiness ?? '',
+      special_requirements: alignment?.specialRequirements ?? '',
+
+      selected_plan: payload?.plan ?? '',
+      branding_addon: payload?.brandingAddOnSelected ? 'Yes' : 'No',
+      pricing: payload?.pricing ?? '',
+      requested_at: payload?.requestedAt ?? '',
+
+      // For template completeness (safe defaults)
+      pricing_info: payload?.pricing ?? '',
+      onboarding_status: 'started',
     }
 
-    // NOTE: contact-form mail uses nodemailer + Zoho SMTP via sendUserEmail/sendAdminEmail.
-    await sendUserEmail({
-      to: payload.profile.email,
-      subject,
-      html,
+    const userTemplateParams = {
+      email_type: 'onboarding_user_confirmation_started',
+
+      name: profile?.name ?? '',
+      selected_plan: payload?.plan ?? '',
+      business_summary: alignment?.businessOverview ?? '',
+      next_steps: 'You are booked for the next phase. Our team will review your inputs and follow up with scheduling details.',
+      onboarding_timeline: 'Typical kickoff occurs within 2–5 business days after submission.',
+      strategy_call_expectation: 'You will receive an email with scheduling options for your strategy call.',
+    }
+
+    // Admin email (full submission details) - uses ONLY admin template
+    await sendEmail({
+      templateId: env.EMAILJS_ADMIN_TEMPLATE_ID,
+      to: env.ADMIN_EMAIL,
+      subject: `New onboarding started ǀ ${payload?.profile?.name ?? ''}`,
+      templateParams: {
+        ...adminTemplateParams,
+      },
     })
 
-    await sendAdminEmail({
-      subject: `New onboarding started  ${payload.profile.name}`,
-      html: `
-        <div style="font-family:sans-serif;max-width:600px;margin:0 auto;color:#111">
-          <h2>New onboarding request (started)</h2>
-          <table style="width:100%;border-collapse:collapse">
-            <tr><td style="padding:8px 0;font-weight:bold;width:120px">Client</td><td>${client.name}</td></tr>
-            <tr><td style="padding:8px 0;font-weight:bold">Name</td><td>${payload.profile.name}</td></tr>
-            <tr><td style="padding:8px 0;font-weight:bold">Email</td><td><a href="mailto:${payload.profile.email}">${payload.profile.email}</a></td></tr>
-            <tr><td style="padding:8px 0;font-weight:bold">Phone</td><td>${payload.profile.phone || 'N/A'}</td></tr>
-            <tr><td style="padding:8px 0;font-weight:bold">Plan</td><td>${payload.plan}</td></tr>
-            <tr><td style="padding:8px 0;font-weight:bold">Branding add-on</td><td>${payload.brandingAddOnSelected ? 'Yes' : 'No'}</td></tr>
-          </table>
-          <h3>Onboarding alignment</h3>
-          <pre style="background:#f5f5f5;padding:16px;border-radius:8px;white-space:pre-wrap;word-break:break-word">${JSON.stringify(payload.alignment || {}, null, 2)}</pre>
-          <p><small>Timestamp: ${new Date().toISOString()}</small></p>
-        </div>
-      `,
+
+    // User confirmation email
+    await sendEmail({
+      templateId: env.EMAILJS_USER_TEMPLATE_ID,
+      to: toEmail,
+      subject,
+      templateParams: {
+        ...userTemplateParams,
+      },
     })
+
+
   } catch (err) {
     console.error('[onboardingStart:email] failed (non-fatal)', {
       err: { name: err?.name, message: err?.message, stack: err?.stack },
     })
   }
 
-
   return { ok: true, leadId, status: 'onboarding_started' }
 }
 
 export async function onboardingComplete({ client, payload }) {
+  const toEmail = payload?.profile?.email
+
   const runId = `onb_complete_${Date.now()}_${Math.random().toString(16).slice(2)}`
   const clientId = client?.id ?? null
   const email = payload?.profile?.email ?? null
@@ -176,6 +200,7 @@ export async function onboardingComplete({ client, payload }) {
     })
     console.log('[onboardingComplete:step2] metadata persistence completed', { runId, leadId })
 
+
     // 3) pipeline stage advancement
     console.log('[onboardingComplete:step3] pipeline advancement started', { runId, leadId })
     try {
@@ -198,120 +223,90 @@ export async function onboardingComplete({ client, payload }) {
         leadId,
         err: { name: err?.name, message: err?.message, stack: err?.stack },
       })
-      // Do not fail onboarding completion if pipeline advancement fails.
     }
 
     // 4) direct onboarding emails (must not crash request)
+    // EmailJS now uses 2 templates + template_params; no inline html.
     console.log('[onboardingComplete:step4] direct email send started', { runId, leadId })
     try {
-      const clientName = payload?.profile?.name
-      const clientEmail = payload?.profile?.email
-      const selectedPlan = payload?.plan
+      const toUser = payload?.profile?.email
+      const clientName = payload?.profile?.name ?? ''
 
-      // CLIENT confirmation email
-      await sendUserEmail({
-        to: clientEmail,
+      const profile = payload?.profile ?? {}
+      const alignment = payload?.alignment ?? {}
 
-        subject: 'Your Bleval.inc onboarding request is received — next steps inside',
-        html: `
-          <div style="font-family:sans-serif;max-width:600px;margin:0 auto;color:#0f172a">
-            <div style="padding:18px 18px;border-radius:14px;background:linear-gradient(135deg,#0ea5e9,#6366f1);color:#fff">
-              <h2 style="margin:0 0 8px">Onboarding received</h2>
-              <p style="margin:0">A premium, high-performance strategy is now in motion.</p>
-            </div>
+      const adminTemplateParamsCompleted = {
+        email_type: 'onboarding_admin_completed',
 
-            <div style="margin-top:18px;line-height:1.5">
-              <p>Hi ${clientName},</p>
+        // Profile
+        profile_name: profile?.name ?? '',
+        profile_company: profile?.company ?? '',
+        profile_email: profile?.email ?? '',
+        profile_phone: profile?.phone ?? '',
+        profile_industry: profile?.industry ?? '',
+        profile_location: profile?.location ?? '',
 
-              <p>We’ve successfully received your completed onboarding details for <strong>Bleval.inc</strong>.</p>
+        // Business overview / target
+        business_overview: alignment?.businessOverview ?? '',
+        target_audience: alignment?.targetAudience ?? '',
+        competitors: alignment?.competitors ?? '',
+        design_direction: alignment?.designDirection ?? '',
 
-              <h3 style="margin-top:18px">What happens next</h3>
-              <ul>
-                <li><strong>We review your inputs</strong> and align your onboarding strategy.</li>
-                <li><strong>Your plan is confirmed:</strong> ${selectedPlan}.</li>
-                <li><strong>We’ll contact you shortly</strong> to schedule your onboarding strategy call.</li>
-              </ul>
+        // Assets / goals / readiness
+        assets: alignment?.currentAssets ?? '',
+        project_goals: alignment?.projectGoals ?? '',
+        content_readiness: alignment?.contentReadiness ?? '',
+        special_requirements: alignment?.specialRequirements ?? '',
 
-              <h3 style="margin-top:18px">Estimated response timeline</h3>
-              <p>Within <strong>24 hours</strong>, you’ll receive confirmation on your onboarding strategy call and the next step for your project review.</p>
+        // Plan / pricing / branding
+        selected_plan: payload?.plan ?? '',
+        branding_addon: payload?.brandingAddOnSelected ? 'Yes' : 'No',
+        pricing: payload?.pricing ?? '',
+        requested_at: payload?.requestedAt ?? '',
 
-              <h3 style="margin-top:18px">Your project is now in review</h3>
-              <p>Our team is preparing a focused execution path—built for speed, clarity, and measurable outcomes.</p>
+        // Safety defaults
+        pricing_info: payload?.pricing ?? '',
+        onboarding_status: 'completed',
+      }
 
-              <p style="margin-top:22px">Next steps are simple:</p>
-              <ol>
-                <li>Watch for our email with call confirmation.</li>
-                <li>Reply quickly if you need any scheduling adjustments.</li>
-                <li>We’ll finalize your onboarding plan during the call.</li>
-              </ol>
+      const userTemplateParamsCompleted = {
+        email_type: 'onboarding_user_confirmation_completed',
+        name: profile?.name ?? '',
+        selected_plan: payload?.plan ?? '',
+        business_summary: alignment?.businessOverview ?? '',
+        next_steps: 'Next steps: a Bleval strategist will review your inputs and schedule your strategy call. You’ll receive confirmation and timing by email.',
+        onboarding_timeline: 'Expect scheduling within 2–5 business days after your submission (timing may vary by volume).',
+        strategy_call_expectation: 'You will receive an email with available times for your strategy call. Reply to confirm your preferred slot.',
+      }
 
-              <p style="margin-top:26px">— Bleval.inc</p>
-            </div>
-          </div>
-        `,
-      })
-
-      // ADMIN/internal notification email
-      await sendAdminEmail({
+      await sendEmail({
+        templateId: env.EMAILJS_ADMIN_TEMPLATE_ID,
+        to: env.ADMIN_EMAIL,
         subject: `Onboarding completed — ${clientName}`,
-        html: `
-          <div style="font-family:sans-serif;max-width:700px;margin:0 auto;color:#0f172a">
-            <h2 style="margin:0 0 10px">New onboarding completion</h2>
-            <p style="margin:0 0 18px;color:#334155">Timestamp: ${new Date().toISOString()}</p>
-
-            <table style="width:100%;border-collapse:collapse">
-              <tr><td style="padding:8px 0;font-weight:bold;width:160px">Client</td><td>${client?.name ?? 'N/A'}</td></tr>
-              <tr><td style="padding:8px 0;font-weight:bold">Name</td><td>${clientName ?? 'N/A'}</td></tr>
-              <tr><td style="padding:8px 0;font-weight:bold">Email</td><td><a href="mailto:${clientEmail}">${clientEmail}</a></td></tr>
-              <tr><td style="padding:8px 0;font-weight:bold">Phone</td><td>${payload?.profile?.phone || 'N/A'}</td></tr>
-              <tr><td style="padding:8px 0;font-weight:bold">Selected plan</td><td>${selectedPlan}</td></tr>
-              <tr><td style="padding:8px 0;font-weight:bold">Branding add-on</td><td>${payload?.brandingAddOnSelected ? 'Yes' : 'No'}</td></tr>
-            </table>
-
-            <h3 style="margin-top:18px">Onboarding alignment answers</h3>
-            <pre style="background:#f5f5f5;padding:16px;border-radius:10px;white-space:pre-wrap;word-break:break-word">${JSON.stringify(payload?.alignment || {}, null, 2)}</pre>
-
-            <h3 style="margin-top:18px">Onboarding metadata</h3>
-            <pre style="background:#f5f5f5;padding:16px;border-radius:10px;white-space:pre-wrap;word-break:break-word">${JSON.stringify({
-              requestedAt: payload?.requestedAt ?? null,
-              completionNote: payload?.completionNote ?? null,
-              plan: payload?.plan,
-              brandingAddOnSelected: payload?.brandingAddOnSelected ?? false,
-            }, null, 2)}</pre>
-          </div>
-        `,
+        templateParams: {
+          ...adminTemplateParamsCompleted,
+        },
       })
+
+      await sendEmail({
+        templateId: env.EMAILJS_USER_TEMPLATE_ID,
+        to: toUser,
+        subject: 'Your Bleval.inc onboarding request is received — next steps inside',
+        templateParams: {
+          ...userTemplateParamsCompleted,
+        },
+      })
+
 
       console.log('[onboardingComplete:step4] direct email send completed', { runId, leadId })
-      console.log('[onboardingComplete:clientEmailSent]', {
-        runId,
-        leadId,
-        clientId,
-        leadEmail: clientEmail,
-        plan: selectedPlan,
-        timestamps: { clientEmailSentAt: new Date().toISOString() },
-      })
-      console.log('[onboardingComplete:adminEmailSent]', {
-        runId,
-        leadId,
-        clientId,
-        leadEmail: clientEmail,
-        plan: selectedPlan,
-        timestamps: { adminEmailSentAt: new Date().toISOString() },
-      })
     } catch (err) {
-
       console.error('[onboardingComplete:step4] direct email send failed (non-fatal)', {
         runId,
         leadId,
         err: { name: err?.name, message: err?.message, stack: err?.stack },
       })
-      // Degrade gracefully: onboarding completion must succeed even if email fails.
     }
 
-
-    // Spec-required structured completion logs.
-    // (Email failures should not crash onboarding completion; we already degrade gracefully.)
 
     console.log('[onboardingComplete:success]', {
       runId,
@@ -340,8 +335,6 @@ export async function onboardingComplete({ client, payload }) {
       status: 'qualified',
       message: 'Onboarding completed successfully',
     }
-
-
   } catch (err) {
     console.error('[onboardingComplete:fatal] onboardingComplete crashed', {
       runId,
@@ -349,7 +342,7 @@ export async function onboardingComplete({ client, payload }) {
       leadSnapshot,
       err: { name: err?.name, message: err?.message, stack: err?.stack },
     })
-    // Ensure controlled error response to avoid connection resets.
+
     return {
       ok: false,
       error: err?.message || 'Onboarding completion failed',
@@ -358,5 +351,4 @@ export async function onboardingComplete({ client, payload }) {
     }
   }
 }
-
 

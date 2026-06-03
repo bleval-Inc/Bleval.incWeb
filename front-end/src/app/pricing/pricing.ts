@@ -21,6 +21,7 @@ export class Pricing implements AfterViewInit {
 
   trackPricingPlanSelected(plan: 'starter' | 'growth' | 'enterprise') {
     const key = `pricing_plan_selected:${plan}`
+
     if (this.trackFired.has(key)) return
     this.trackFired.add(key)
 

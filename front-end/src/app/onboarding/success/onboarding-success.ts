@@ -22,6 +22,7 @@ export class OnboardingSuccessComponent implements OnInit, OnDestroy {
     console.log('[Onboarding] Confirmation emails dispatched')
     console.log('[Onboarding] Homepage redirect countdown started')
 
+    if (typeof window === 'undefined') return
 
     this.timer = window.setInterval(() => {
       this.countdown = Math.max(0, this.countdown - 1)
@@ -30,6 +31,7 @@ export class OnboardingSuccessComponent implements OnInit, OnDestroy {
       }
     }, 1500) as unknown as number
   }
+
 
   ngOnDestroy() {
     this.timer && clearInterval(this.timer)

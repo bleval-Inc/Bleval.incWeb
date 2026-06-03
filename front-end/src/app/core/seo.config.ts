@@ -19,31 +19,36 @@ export const SEO_BASE_URL = 'https://bleval.inc';
 
 export const SEO_CONFIG: Record<SeoRouteKey, SeoConfigEntry> = {
   home: {
-    title: 'Bleval.inc | High-Performance Websites & Digital Growth Systems',
+    title: 'Bleval Inc | AI Automation & Revenue-Driven Digital Systems',
     description:
-      'We build conversion-focused websites for service businesses designed to generate leads and scale growth.',
+      'Bleval Inc builds premium, conversion-focused websites and AI-powered business systems that improve lead flow, workflow efficiency, and revenue growth.',
     keywords: [
-      'web development Cape Town',
-      'business websites',
-      'lead generation websites',
+      'AI automation for business',
+      'conversion-focused web design',
+      'revenue-driven websites',
+      'workflow optimization',
+      'digital growth systems',
     ],
   },
   services: {
-    title: 'Web Design & Development Services | Bleval.inc',
+    title: 'AI-Powered Web Development & Business Systems | Bleval Inc',
     description:
-      'Professional websites, SEO systems, and conversion-focused digital solutions for service businesses.',
-    keywords: ['web design services', 'SEO websites', 'business websites Cape Town'],
+      'Web design, web development, branding, and workflow optimization—built to convert visitors into qualified leads and scale efficiently.',
+    keywords: ['AI automation', 'web design', 'web development', 'branding', 'business systems'],
   },
   pricing: {
-    title: 'Website Pricing & Packages | Bleval.inc',
-    description: 'Transparent pricing for high-performance websites and growth systems.',
-    keywords: ['website pricing South Africa', 'web development packages'],
+    title: 'Pricing for Revenue-Driven Websites & AI Systems | Bleval Inc',
+    description:
+      'Choose a package built for measurable growth—setup + monthly optimization designed to improve conversions, leads, and operational efficiency.',
+    keywords: ['website pricing', 'AI automation packages', 'CRO services', 'conversion optimization'],
   },
   contact: {
-    title: 'Contact Bleval.inc | Get a Website Quote',
-    description: 'Speak with Bleval.inc to build your high-performance business website.',
-    keywords: ['hire web developer Cape Town'],
+    title: 'Book a Free Revenue Audit | Bleval Inc',
+    description:
+      'Book your free revenue audit. We’ll analyze your funnel, workflow, and conversion pathways—then send a clear plan to improve results.',
+    keywords: ['free revenue audit', 'digital growth audit', 'website conversion audit'],
   },
+
   onboarding: {
     title: 'Start Your Project | Bleval.inc Onboarding',
     description: 'Begin your website build process with Bleval.inc.',

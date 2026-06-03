@@ -9,6 +9,7 @@ import { SEO_BASE_URL, SEO_CONFIG, type SeoRouteKey } from './seo.config';
   providedIn: 'root',
 })
 export class SeoService {
+  [x: string]: any;
   private readonly META_ID_PREFIX = 'bleval.seo:';
 
   // Track last applied values to avoid redundant DOM churn.
@@ -92,12 +93,23 @@ export class SeoService {
    */
   applyForRoute(routeKey: SeoRouteKey, canonicalPath: string) {
     const entry = SEO_CONFIG[routeKey] ?? SEO_CONFIG.home;
+    const canonicalUrl = this.toCanonicalUrl(canonicalPath);
 
     this.setTitle(entry.title);
     this.setDescription(entry.description);
     this.setKeywords(entry.keywords);
 
-    const canonicalUrl = this.toCanonicalUrl(canonicalPath);
+    this.upsertOpenGraph({
+      url: canonicalUrl,
+      title: entry.title,
+      description: entry.description,
+    });
+
+    this.upsertTwitter({
+      title: entry.title,
+      description: entry.description,
+    });
+
     this.setCanonical(canonicalUrl);
   }
 
@@ -130,8 +142,21 @@ export class SeoService {
     return `${this.META_ID_PREFIX}${key}`;
   }
 
+  private upsertOpenGraph(opts: { url: string; title: string; description: string }) {
+    this.upsertMeta({ key: 'og:title', name: 'og:title', content: opts.title });
+    this.upsertMeta({ key: 'og:description', name: 'og:description', content: opts.description });
+    this.upsertMeta({ key: 'og:url', name: 'og:url', content: opts.url });
+  }
+
+  private upsertTwitter(opts: { title: string; description: string }) {
+    this.upsertMeta({ key: 'twitter:title', name: 'twitter:title', content: opts.title });
+    this.upsertMeta({ key: 'twitter:description', name: 'twitter:description', content: opts.description });
+    this.upsertMeta({ key: 'twitter:card', name: 'twitter:card', content: 'summary_large_image' });
+  }
+
   private upsertMeta(opts: { key: string; name: string; content: string }) {
     if (!isPlatformBrowser(this.platformId)) {
+
       // Still allow Title updates server-side; Meta is ok too but canonical/link is browser-only.
     }
 

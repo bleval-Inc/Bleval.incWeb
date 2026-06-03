@@ -2,6 +2,8 @@ import { Component, ElementRef, AfterViewInit, OnDestroy, ViewChild, Inject, PLA
 import { RouterLink } from '@angular/router';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ScrollRevealDirective } from '../scroll-reveal';
+import { SeoService } from '../core/seo.service';
+import { SEO_CONFIG } from '../core/seo.config';
 
 @Component({
   selector: 'app-home',
@@ -13,7 +15,8 @@ import { ScrollRevealDirective } from '../scroll-reveal';
 export class Home implements AfterViewInit, OnDestroy {
   constructor(
     private elementRef: ElementRef,
-    @Inject(PLATFORM_ID) private platformId: Object
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private seo: SeoService
   ) {}
 
   @ViewChild('statsGrid', { static: false }) statsGrid!: ElementRef<HTMLDivElement>;
@@ -28,6 +31,11 @@ export class Home implements AfterViewInit, OnDestroy {
       });
     }
   }
+
+  ngOnInit() {
+    this.seo.applyForRoute('home', '/home');
+  }
+
 
   ngOnDestroy() {
     this.counterObserver?.disconnect();

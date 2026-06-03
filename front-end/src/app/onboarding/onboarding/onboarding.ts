@@ -413,13 +413,17 @@ export class OnboardingOnboarding implements OnInit, OnDestroy {
 
 
     // Subtle staged message progression (keeps UX premium without changing backend logic)
+    // Guard for SSR/prerender where `window` is not defined.
     this.processingTicker && clearInterval(this.processingTicker)
-    this.processingTicker = window.setInterval(() => {
-      this.processingIndex = Math.min(
-        this.processingMessages.length - 1,
-        this.processingIndex + 1,
-      )
-    }, 1300) as unknown as number
+    if (typeof window !== 'undefined') {
+      this.processingTicker = window.setInterval(() => {
+        this.processingIndex = Math.min(
+          this.processingMessages.length - 1,
+          this.processingIndex + 1,
+        )
+      }, 1300) as unknown as number
+    }
+
 
     this.onboardingApi.complete(payload).subscribe({
       next: (res: any) => {

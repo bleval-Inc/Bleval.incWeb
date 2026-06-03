@@ -44,10 +44,12 @@ export class Contact {
       name: this.formData.name,
       email: this.formData.email,
       phone: this.formData.phone || undefined,
-      message: this.formData.message,
-      // Use projectType/pricing for “service” attribution.
+      company: this.formData.company || '',
       service: this.formData.projectType || this.formData.pricing || undefined,
+      pricingPlan: this.formData.pricing || '',
+      message: this.formData.message,
     }
+
 
     // Timeout failsafe: never infinite load
     const timeoutPromise = new Promise<never>((_, reject) => {
