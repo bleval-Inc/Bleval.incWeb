@@ -1,0 +1,30 @@
+User-agent: *
+Allow: /
+
+Disallow: /api/
+
+Sitemap: https://blevalinc.netlify.app/sitemap.xml
+# ========================================
+# Bleval Inc Robots Configuration
+# Environment: Production
+# ========================================
+
+User-agent: *
+Allow: /
+
+# Prevent indexing of internal/private systems
+Disallow: /admin
+Disallow: /internal
+
+# Prevent duplicate onboarding/query parameter indexing
+Disallow: /*?plan=
+Disallow: /onboarding?
+
+# Sitemap location
+Sitemap: https://blevalinc.netlify.app/sitemap.xml
+
+User-agent: *
+
+Allow: /
+
+Sitemap: https://bleval.inc/sitemap.xml

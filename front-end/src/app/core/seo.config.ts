@@ -50,27 +50,27 @@ export const SEO_CONFIG: Record<SeoRouteKey, SeoConfigEntry> = {
   },
 
   onboarding: {
-    title: 'Start Your Project | Bleval.inc Onboarding',
-    description: 'Begin your website build process with Bleval.inc.',
+    title: 'Start Your Project | Bleval Inc Onboarding',
+    description: 'Begin your website build process with Bleval Inc.',
     keywords: [],
   },
   onboardingSuccess: {
-    title: 'Onboarding Complete | Bleval.inc',
+    title: 'Onboarding Complete | Bleval Inc',
     description: 'Thanks for starting your project. We are reviewing your request and will be in touch shortly.',
     keywords: [],
   },
   about: {
-    title: 'About Bleval.inc | Our Digital Agency Approach',
+    title: 'About Bleval Inc | Our Digital Agency Approach',
     description: 'Performance-first web design and development systems built for growth.',
     keywords: [],
   },
   work: {
-    title: 'Bleval.inc Work | Case Studies & Results',
-    description: 'Selected digital projects and outcomes delivered by Bleval.inc.',
+    title: 'Bleval Inc Work | Case Studies & Results',
+    description: 'Selected digital projects and outcomes delivered by Bleval Inc.',
     keywords: [],
   },
   blog: {
-    title: 'Bleval.inc Blog | Digital Growth & SEO Systems',
+    title: 'Bleval Inc Blog | Digital Growth & SEO Systems',
     description: 'Articles on web development, SEO, and growth systems.',
     keywords: [],
   },
