@@ -93,34 +93,46 @@ const emailWorker = new Worker(
 
     if (name === 'booking-confirmation') {
       console.log('RESEND SEND START: booking-confirmation')
+
+      const booking = data?.booking || {}
+      const contactName = booking.contact_name || data?.name || ''
+      const requestedService = data?.service || ''
+      const preferredDate = data?.date || ''
+      const preferredTime = data?.time || ''
+
       const result = await resend.emails.send({
         from: data.from,
         to: data.to,
-        subject: `Your call request is received — Bleval.inc`,
+        subject: `Your booking request is confirmed — Bleval.inc`,
         html: `
         <div style="font-family:sans-serif;max-width:600px;margin:0 auto;color:#1a1a1a">
-          <h2 style="color:#1a1a1a">Hi ${data.booking.contact_name},</h2>
-          <p>Your booking request has been received.</p>
-          <p><strong>Requested slot:</strong></p>
-          <p>
-            ${data.date || new Date(data.booking.start_time).toISOString().slice(0, 10)} at
-            ${
-              data.time ||
-              new Date(data.booking.start_time).toLocaleTimeString('en-ZA', {
-                hour: '2-digit',
-                minute: '2-digit',
-              })
-            }
+          <h2 style="color:#1a1a1a">Hi ${contactName},</h2>
+          <p>Thanks for booking with <strong>Bleval.inc</strong>.</p>
+
+          <p style="margin-top:18px"><strong>Confirmation details</strong></p>
+          <ul style="padding-left:18px;margin-top:8px">
+            <li><strong>Full name:</strong> ${contactName}</li>
+            ${requestedService ? `<li><strong>Selected service:</strong> ${requestedService}</li>` : ''}
+            ${preferredDate ? `<li><strong>Preferred date:</strong> ${preferredDate}</li>` : ''}
+            ${preferredTime ? `<li><strong>Preferred time:</strong> ${preferredTime}</li>` : ''}
+          </ul>
+
+          <p style="margin-top:18px">${data?.confirmation_message || 'We’ve received your request and will reach out shortly to confirm your booking.'}</p>
+
+          <p style="margin-top:22px">
+            Book your discovery call here (if you need to reschedule):
+            <a href="https://bleval.inc/booking" style="color:#2563eb">Book a Call</a>
           </p>
-          <p>We’ll confirm shortly via email.</p>
-          <p>If anything changes, reply to this email.</p>
-          <p>— Bleval.inc</p>
+
+          <p style="margin-top:18px">— Bleval.inc</p>
         </div>
       `,
       })
+
       console.log('RESEND RESPONSE:', result)
       return
     }
+
 
     if (name === 'onboarding-started') {
       console.log('RESEND SEND START: onboarding-started')
