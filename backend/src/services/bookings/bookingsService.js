@@ -172,3 +172,4 @@ export async function cancelBooking(bookingId, clientId) {
 
   return rows[0] || null
 }
+
