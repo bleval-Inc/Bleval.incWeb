@@ -1,66 +1,5 @@
-import { buildReply, intents } from './response.js'
+import { buildReply } from './response.js'
 import { redis } from '../../db/redis.js'
-
-/**
- * ✅ SAFE PATTERN MATCHING (CRITICAL FIX)
- * Prevents partial word collisions like:
- * "pro" matching "problem"
- */
-function containsPattern(message, pattern) {
-  const escaped = String(pattern)
-    .toLowerCase()
-    .trim()
-    .replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-
-  const regex = new RegExp(`\\b${escaped}\\b`, 'i')
-  return regex.test(message)
-}
-
-/**
- * ✅ INTENT MATCHING WITH PRIORITY SCORING
- */
-export function matchIntent(message) {
-  const lower = String(message || '').toLowerCase().trim()
-
-  let bestMatch = null
-  let bestScore = 0
-
-  for (const intent of intents) {
-    let score = 0
-
-    for (const pattern of intent.patterns || []) {
-      if (containsPattern(lower, pattern)) {
-        score += 1
-      }
-    }
-
-    if (score > 0) {
-      const weightedScore = score * (intent.priority || 1)
-
-      if (weightedScore > bestScore) {
-        bestScore = weightedScore
-        bestMatch = intent
-      }
-    }
-  }
-
-  return bestMatch
-}
-
-/**
- * ✅ EXTRACT CLEAN INTENT NAME (USED BY buildReply)
- */
-export function extractIntentName(message, intent) {
-  const lower = String(message || '').toLowerCase()
-
-  for (const pattern of intent.patterns || []) {
-    if (containsPattern(lower, pattern)) {
-      return pattern
-    }
-  }
-
-  return null
-}
 
 /**
  * ✅ MAIN CHAT FUNCTION
@@ -70,7 +9,14 @@ export async function chat({ client, sessionKey, userMessage }) {
 
   let session = {
     messages: [],
-    context: { stage: 'exploring' },
+    context: {
+      stage: 'exploring',
+      previousIntent: '',
+      currentTopic: '',
+      interest: '',
+      highIntent: false,
+      lastCtaShown: null,
+    },
   }
 
   // ✅ Load session safely
@@ -84,6 +30,12 @@ export async function chat({ client, sessionKey, userMessage }) {
   // ✅ Defensive structure guards
   session.messages = Array.isArray(session.messages) ? session.messages : []
   session.context = session.context || { stage: 'exploring' }
+  session.context.stage = session.context.stage || 'exploring'
+  session.context.previousIntent = session.context.previousIntent || ''
+  session.context.currentTopic = session.context.currentTopic || ''
+  session.context.interest = session.context.interest || ''
+  session.context.highIntent = Boolean(session.context.highIntent)
+  session.context.lastCtaShown = session.context.lastCtaShown || null
 
   // ✅ Save user message
   session.messages.push({
@@ -92,16 +44,11 @@ export async function chat({ client, sessionKey, userMessage }) {
     ts: Date.now(),
   })
 
-  // ✅ Intent detection
-  const matchedIntent = matchIntent(userMessage)
-  const intentName = matchedIntent
-    ? extractIntentName(userMessage, matchedIntent)
-    : null
-
-  console.log('🧠 Matched intent:', intentName)
-
-  // ✅ Generate response (fallback handled inside buildReply)
-  const response = buildReply(intentName, session.context.stage)
+  // ✅ Generate response (response.js handles matching + state-aware CTA)
+  const response = await buildReply({
+    userMessage,
+    context: session.context,
+  })
 
   // ✅ Save bot response
   session.messages.push({
@@ -124,3 +71,4 @@ export async function chat({ client, sessionKey, userMessage }) {
     session_key: sessionKey,
   }
 }
+
