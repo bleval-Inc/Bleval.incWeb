@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ElementRef, Inject, PLATFORM_ID, ViewChild, ViewChildren, QueryList } from '@angular/core';
+import { Component, AfterViewInit, ElementRef, Inject, PLATFORM_ID, ViewChild, ViewChildren, QueryList, OnDestroy } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ScrollRevealDirective } from '../scroll-reveal';
@@ -11,24 +11,30 @@ import { AnalyticsService } from '../core/analytics.service';
   templateUrl: './pricing.html',
   styleUrl: './pricing.scss',
 })
-export class Pricing implements AfterViewInit {
+export class Pricing implements AfterViewInit, OnDestroy {
   @ViewChildren('faqItem') faqItems!: QueryList<ElementRef<HTMLDivElement>>;
   @ViewChildren('faqQuestion') faqQuestions!: QueryList<ElementRef<HTMLButtonElement>>;
 
+  private readonly pricingClickListener = this.handlePricingClick.bind(this);
+  private pricingHostElement: HTMLElement | null = null;
   private trackFired = new Set<string>()
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object, private analytics: AnalyticsService) {}
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private elementRef: ElementRef,
+    private analytics: AnalyticsService
+  ) {}
 
-  trackPricingPlanSelected(plan: 'starter' | 'growth' | 'enterprise') {
+  trackPricingPlanSelected(plan: 'foundation' | 'growth' | 'enterprise') {
     const key = `pricing_plan_selected:${plan}`
 
     if (this.trackFired.has(key)) return
     this.trackFired.add(key)
 
     const map: Record<typeof plan, { monthly: number; setup_fee: number; displayPlan: string }> = {
-      starter: { monthly: 999, setup_fee: 6000, displayPlan: 'Foundation' },
-      growth: { monthly: 1500, setup_fee: 9000, displayPlan: 'Acceleration' },
-      enterprise: { monthly: 1999, setup_fee: 12000, displayPlan: 'Enterprise' },
+      foundation: { monthly: 1299, setup_fee: 6000, displayPlan: 'Foundation' },
+      growth: { monthly: 2999, setup_fee: 14000, displayPlan: 'Growth' },
+      enterprise: { monthly: 5999, setup_fee: 25000, displayPlan: 'Enterprise' },
     }
 
     const v = map[plan]
@@ -41,16 +47,49 @@ export class Pricing implements AfterViewInit {
 
 
   ngAfterViewInit() {
-    if (isPlatformBrowser(this.platformId)) {
-      this.faqQuestions.changes.subscribe(() => this.initFaq());
-      this.initFaq();
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
+    const host = this.elementRef?.nativeElement as HTMLElement | null;
+    this.pricingHostElement = host instanceof HTMLElement
+      ? host
+      : document.querySelector('app-pricing') ?? document.body;
+
+    this.pricingHostElement.addEventListener('click', this.pricingClickListener);
+  }
+
+  ngOnDestroy() {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
+    if (this.pricingHostElement) {
+      this.pricingHostElement.removeEventListener('click', this.pricingClickListener);
     }
   }
 
-  private initFaq() {
-    this.faqQuestions.forEach((questionRef, index) => {
-      questionRef.nativeElement.onclick = () => this.toggleFaq(index);
-    });
+  private handlePricingClick(event: Event) {
+    const target = event.target as HTMLElement;
+    const button = target.closest('.accordion-button, .accelerator-toggle, .faq-question') as HTMLButtonElement | null;
+    if (!button) return;
+
+    event.preventDefault();
+
+    if (button.classList.contains('faq-question')) {
+      const faqIndex = this.faqQuestions.toArray().findIndex((question) => question.nativeElement === button);
+      if (faqIndex >= 0) {
+        this.toggleFaq(faqIndex);
+      }
+      return;
+    }
+
+    this.toggleAccordion(button);
+  }
+
+  private toggleAccordion(button: HTMLButtonElement) {
+    const isExpanded = button.getAttribute('aria-expanded') === 'true';
+    button.setAttribute('aria-expanded', (!isExpanded).toString());
   }
 
   private toggleFaq(activeIndex: number) {

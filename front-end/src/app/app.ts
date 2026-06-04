@@ -373,9 +373,9 @@ export class App implements AfterViewInit, OnDestroy {
     const inferredService =
       plan === 'enterprise'
         ? 'Full CRM/booking/payment stack'
-        : plan === 'acceleration' || plan === 'growth'
+        : plan === 'growth'
           ? 'Maintenance & Growth'
-          : plan === 'foundation' || plan === 'starter'
+          : plan === 'foundation'
             ? 'Web Design'
             : '';
 
