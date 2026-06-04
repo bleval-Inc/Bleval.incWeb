@@ -75,7 +75,7 @@ export class Services implements AfterViewInit, OnDestroy {
         'Lead Nurture Sequences'
       ],
       bestFor: ['Plumbers', 'Electricians', 'Salons', 'Real Estate', 'Clinics', 'Gyms'],
-      imageSrc: 'assets/Web-design.jpg',
+      imageSrc: 'assets/leads-funnel.jpg',
       imageAlt: 'AI lead capture and conversion system preview'
     },
     {
@@ -94,7 +94,7 @@ export class Services implements AfterViewInit, OnDestroy {
         'Monthly Reporting'
       ],
       bestFor: ['Startups', 'Service Businesses', 'Tradespeople', 'Clinics', 'Salons', 'Real Estate'],
-      imageSrc: 'assets/Web-design.jpg',
+      imageSrc: 'assets/SEO.jpg',
       imageAlt: 'Growth and conversion strategy preview'
     },
     {
@@ -113,7 +113,7 @@ export class Services implements AfterViewInit, OnDestroy {
         'Lead Reporting'
       ],
       bestFor: ['Startups', 'E-Commerce', 'Service Businesses', 'Agencies', 'Coaches', 'Consultants'],
-      imageSrc: 'assets/Web-design.jpg',
+      imageSrc: 'assets/growthandAnalytics.jpg',
       imageAlt: 'Continuous growth and content systems preview'
     },
     {
@@ -131,7 +131,7 @@ export class Services implements AfterViewInit, OnDestroy {
         'CRM Handoff'
       ],
       bestFor: ['Plumbers', 'Electricians', 'Salons', 'Real Estate', 'Clinics', 'Service Businesses'],
-      imageSrc: 'assets/Web-design.jpg',
+      imageSrc: 'assets/everyCall.jpg',
       imageAlt: 'Voice AI receptionist and automation preview'
     },
     {
@@ -150,7 +150,7 @@ export class Services implements AfterViewInit, OnDestroy {
         'Quarterly Strategy Reviews'
       ],
       bestFor: ['Agencies', 'Growing Businesses', 'E-Commerce', 'Professional Services', 'Enterprises', 'Consultancies'],
-      imageSrc: 'assets/Web-design.jpg',
+      imageSrc: 'assets/automation.jpg',
       imageAlt: 'Enterprise revenue operations preview'
     }
   ];
@@ -159,7 +159,6 @@ export class Services implements AfterViewInit, OnDestroy {
     {
       label: 'Foundation Accelerator',
       title: 'Brand Identity Package',
-      price: 'R3,500 Once-Off',
       features: [
         'Professional Logo Design',
         'Brand Colour Palette',
@@ -167,12 +166,12 @@ export class Services implements AfterViewInit, OnDestroy {
         'Business Card Design',
         'Social Media Kit',
         'Brand Guidelines PDF'
-      ]
+      ],
+      price: ''
     },
     {
       label: 'Highest Perceived Value',
       title: 'AI Voice Receptionist',
-      price: 'R1,500–R4,000/month',
       features: [
         '24/7 Call Answering',
         'Lead Qualification',
@@ -180,12 +179,12 @@ export class Services implements AfterViewInit, OnDestroy {
         'Call Summaries',
         'Missed Call Recovery',
         'WhatsApp Follow-Up'
-      ]
+      ],
+      price: ''
     },
     {
       label: 'Growth Accelerator',
       title: 'Content Creation Suite',
-      price: 'From R2,500/month',
       features: [
         'Social Content Creation',
         'Branded Graphics',
@@ -193,7 +192,8 @@ export class Services implements AfterViewInit, OnDestroy {
         'Content Calendar',
         'Scheduling',
         'Monthly Reporting'
-      ]
+      ],
+      price: ''
     }
   ];
 
