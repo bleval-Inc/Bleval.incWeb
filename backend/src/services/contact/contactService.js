@@ -1,5 +1,5 @@
 import { env } from '../../config/env.js'
-import { sendEmail } from '../email/emailService.js'
+import { sendEmail } from '../../features/email/emailService.js'
 
 function safe(v) {
   return v === null || v === undefined ? '' : v
@@ -70,23 +70,19 @@ export async function submitContact({
 
   try {
     await sendEmail({
-      templateId: env.EMAILJS_ADMIN_TEMPLATE_ID,
       to: env.AGENCY_NOTIFY_EMAIL || env.ADMIN_EMAIL,
       subject: adminSubject,
-      templateParams: {
-        ...flattenContactAdminParams({
-          name,
-          email,
-          phone,
-          company,
-          service,
-          pricingPlan,
-          message,
-          source,
-          submittedAt: new Date().toISOString(),
-        }),
-        // EmailJS template param used by some template variants
-        to_email: email,
+      templateKey: 'contact-admin',
+      data: {
+        name,
+        email,
+        phone,
+        company,
+        service,
+        pricingPlan,
+        message,
+        source,
+        submitted_at: new Date().toISOString(),
       },
     })
 
@@ -102,21 +98,18 @@ export async function submitContact({
   // USER CONFIRMATION EMAIL (non-blocking)
   try {
     await sendEmail({
-      templateId: env.EMAILJS_USER_TEMPLATE_ID,
       to: email,
       subject: userSubject,
-      templateParams: {
-        ...flattenContactUserParams({
-          name,
-          service,
-          pricingPlan,
-          message,
-          nextSteps: 'We will review your inquiry and respond by email. If we need clarification, we will reach out.',
-          responseTime: '1–2 business days',
-          supportEmail: env.AGENCY_NOTIFY_EMAIL || env.ADMIN_EMAIL || '',
-        }),
+      templateKey: 'contact-user',
+      data: {
+        name,
+        service,
+        pricing_plan: pricingPlan,
+        message_summary: typeof message === 'string' ? message.slice(0, 800) : '',
+        next_steps: 'We will review your inquiry and respond by email. If we need clarification, we will reach out.',
+        response_time: '1–2 business days',
+        support_email: env.AGENCY_NOTIFY_EMAIL || env.ADMIN_EMAIL || '',
       },
-
     })
     console.log('CONTACT USER EMAIL SENT')
   } catch (err) {

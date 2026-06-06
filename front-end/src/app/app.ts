@@ -40,11 +40,10 @@ export class App implements AfterViewInit, OnDestroy {
   bookingEmail = '';
   bookingPhone = '';
   bookingService = '';
-  bookingDate = '';
-  bookingTime = '';
-  bookingNotes = '';
+  bookingMessage = '';
 
   private submitTimeoutId: number | null = null;
+
 
 
   readonly serviceOptions = [
@@ -155,15 +154,15 @@ export class App implements AfterViewInit, OnDestroy {
   submitBooking() {
     // Frontend validation (template also disables submit)
     if (
-      !this.bookingName.trim() ||
-      !this.bookingEmail.trim() ||
-      !this.bookingPhone.trim() ||
+      !this.bookingName?.trim() ||
+      !this.bookingEmail?.trim() ||
+      !this.bookingPhone?.trim() ||
       !this.bookingService ||
-      !this.bookingDate ||
-      !this.bookingTime
+      !this.bookingMessage?.trim()
     ) {
       return;
     }
+
 
     // Prevent duplicate submits
     if (this.bookingLoading()) return;
@@ -187,11 +186,10 @@ export class App implements AfterViewInit, OnDestroy {
       email: this.bookingEmail.trim(),
       phone: this.bookingPhone.trim(),
       service: this.bookingService,
-      date: this.bookingDate,
-      time: this.bookingTime,
-      notes: this.bookingNotes?.trim() || undefined,
+      message: this.bookingMessage.trim(),
       source: 'booking_modal' as const
     };
+
 
 
     Promise.race([
@@ -237,11 +235,10 @@ export class App implements AfterViewInit, OnDestroy {
     this.bookingEmail = '';
     this.bookingPhone = '';
     this.bookingService = '';
-    this.bookingDate = '';
-    this.bookingTime = '';
-    this.bookingNotes = '';
+    this.bookingMessage = '';
 
     this.bookingLoading.set(false);
+
     if (!keepSuccess) {
       this.bookingSuccess.set(false);
       this.bookingError.set(false);
@@ -381,11 +378,14 @@ export class App implements AfterViewInit, OnDestroy {
 
     if (inferredService) this.bookingService = inferredService;
 
+    // Ensure we don't carry scheduling/old booking state into this lead form.
+    this.bookingMessage = '';
     this.bookingSuccess.set(false);
     this.bookingError.set(false);
     this.bookingLoading.set(false);
     this.bookingOpen.set(true);
   }
+
 
   ngAfterViewInit() {
     if (isPlatformBrowser(this.platformId)) {

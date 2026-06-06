@@ -9,159 +9,100 @@ export async function getServices(clientId) {
   return rows
 }
 
-export async function getAvailableSlots(client, serviceId, date) {
-  const { rows: booked } = await db.query(
-    `SELECT start_time, end_time FROM bookings
-     WHERE client_id = $1 AND service_id = $2
-     AND start_time::date = $3::date
-     AND status NOT IN ('cancelled')`,
-    [client.id, serviceId, date]
-  )
-
-  const { rows: [service] } = await db.query(
-    `SELECT * FROM booking_services WHERE id = $1 AND client_id = $2`,
-    [serviceId, client.id]
-  )
-
-  if (!service) return []
-
-  const slots = []
-  const dayStart = new Date(`${date}T09:00:00`)
-  const dayEnd = new Date(`${date}T17:00:00`)
-
-  for (
-    let t = new Date(dayStart);
-    t < dayEnd;
-    t.setMinutes(t.getMinutes() + service.duration_min)
-  ) {
-    const slotEnd = new Date(t.getTime() + service.duration_min * 60000)
-
-    const clash = booked.some(
-      (b) => new Date(b.start_time) < slotEnd && new Date(b.end_time) > t
-    )
-
-    if (!clash) slots.push(new Date(t).toISOString())
-  }
-
-  return slots
-}
-
+// Lead-only booking refactor: no scheduling, no availability, no start/end times.
 export async function createBooking({
   client,
   name,
   email,
   phone,
   service,
-  date,
-  time,
-  notes,
-  source = 'booking_modal',
+  message,
+  source = 'booking_form',
 }) {
-  // normalize time safely
-  const normalizedTime = (() => {
-    if (typeof time !== 'string') return ''
-    const t = time.trim()
-    if (/^\d{2}:\d{2}$/.test(t)) return t
+  const safe = (v) => (v === null || v === undefined ? '' : String(v))
 
-    const parsed = new Date(t)
-    if (!Number.isNaN(parsed.getTime())) {
-      return `${String(parsed.getHours()).padStart(2, '0')}:${String(
-        parsed.getMinutes()
-      ).padStart(2, '0')}`
-    }
-
-    return ''
-  })()
-
-  const start = new Date(`${date}T${normalizedTime}:00`)
-
-  if (!normalizedTime || Number.isNaN(start.getTime())) {
-    throw Object.assign(new Error('Invalid preferred date/time'), { status: 400 })
+  const clean = {
+    name: safe(name),
+    email: safe(email),
+    phone: safe(phone),
+    service: safe(service),
+    message: safe(message),
+    source: safe(source),
   }
 
-  let serviceId = null
-  let durationMin = 60
+  console.log('BOOKING REQUEST RECEIVED')
+  console.log('BOOKING PAYLOAD (safe):', {
+    client: client?.id ?? null,
+    name: clean.name,
+    email: clean.email,
+    phone: clean.phone || null,
+    service: clean.service,
+    source: clean.source,
+    messageLength: clean.message?.length ?? 0,
+  })
 
+  // Preferred DB logic for lead capture: store inquiry as a contact (lead).
+  // No fake start/end times.
+  console.log('STEP 2: starting booking insert (contacts)')
   try {
-    const { rows: matched } = await db.query(
-      `SELECT id, duration_min
-       FROM booking_services
-       WHERE client_id = $1 AND name ILIKE $2
-       LIMIT 1`,
-      [client.id, service]
+    await db.query(
+      `INSERT INTO contacts (client_id, name, email, phone, message, source)
+       VALUES ($1,$2,$3,$4,$5,$6)`,
+      [client.id, clean.name, clean.email, clean.phone || null, clean.message, clean.source || 'booking_form']
     )
-
-    if (matched?.length) {
-      serviceId = matched[0].id
-      durationMin = matched[0].duration_min || 60
-    }
-  } catch (_) {}
-
-  const end = new Date(start.getTime() + durationMin * 60000)
-
-  if (serviceId) {
-    try {
-      await db.query(
-        `INSERT INTO bookings
-         (client_id, service_id, contact_name, contact_email, contact_phone, start_time, end_time, notes)
-         VALUES ($1,$2,$3,$4,$5,$6,$7,$8)`,
-        [
-          client.id,
-          serviceId,
-          name,
-          email,
-          phone || null,
-          start.toISOString(),
-          end.toISOString(),
-          notes || null,
-        ]
-      )
-    } catch (_) {}
+    console.log('STEP 3: booking insert complete (contacts)')
+  } catch (err) {
+    console.error('STEP 3b: booking insert failed (FULL ERROR):', err)
   }
 
-  // EMAIL QUEUE (UNCHANGED)
+
+  // EMAILS — direct send (no queues)
+  // Must match Contact + Onboarding architecture: use sendEmail(), nodemailer transporter, Brevo SMTP, and templates.
   try {
-    const { emailQueue } = await import('../../queue/index.js')
+    const { sendEmail } = await import('../../features/email/emailService.js')
 
-    const from = env.AGENCY_FROM_EMAIL || env.RESEND_FROM_EMAIL
     const adminTo = env?.AGENCY_NOTIFY_EMAIL || env?.ADMIN_EMAIL
+    const submittedAt = new Date().toISOString()
 
-    await emailQueue.add('email:job', {
-      name: 'booking-confirmation',
+    console.log('STEP 4: sending admin email (direct)')
+    await sendEmail({
+      to: adminTo,
+      subject: `New Booking Request — ${clean.name}`,
+      templateKey: 'booking-admin',
       data: {
-        from,
-        to: email,
-        booking: {
-          contact_name: name,
-          start_time: start.toISOString(),
-        },
-        service,
-        date,
-        time,
+        name: clean.name,
+        email: clean.email,
+        phone: clean.phone || null,
+        service: clean.service,
+        message: clean.message,
+        source: clean.source,
+        submittedAt,
       },
     })
+    console.log('STEP 5: admin email sent')
 
-    await emailQueue.add('email:job', {
-      name: 'agency-notification',
+    console.log('STEP 6: sending user email (direct)')
+    await sendEmail({
+      to: clean.email,
+      subject: `Booking Request Received — ${clean.name}`,
+      templateKey: 'booking-user',
       data: {
-        from,
-        to: adminTo,
-        name,
-        email,
-        service,
-        date,
-        time,
+        name: clean.name,
+        service: clean.service,
+        message: clean.message,
       },
     })
+    console.log('STEP 7: user email sent')
+
+    console.log('STEP 8: booking flow complete (emails sent)')
   } catch (e) {
-    console.error('[booking email queue error]', e)
+    console.error('[booking direct email error] FULL ERROR:', e)
   }
 
-  return {
-    success: true,
-  }
+  return { success: true }
 }
 
+// Keep existing cancel endpoint (master key) unchanged; not part of lead qualification flow.
 export async function cancelBooking(bookingId, clientId) {
   const { rows } = await db.query(
     `UPDATE bookings SET status = 'cancelled'
@@ -172,4 +113,5 @@ export async function cancelBooking(bookingId, clientId) {
 
   return rows[0] || null
 }
+
 

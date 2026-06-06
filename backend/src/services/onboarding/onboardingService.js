@@ -1,7 +1,7 @@
 import { db } from '../../db/index.js'
 import { enrollLead } from '../leads/leadsService.js'
 import { env } from '../../config/env.js'
-import { sendEmail } from '../email/emailService.js'
+import { sendEmail } from '../../features/email/emailService.js'
 
 
 function safeJson(obj) {
@@ -130,23 +130,31 @@ export async function onboardingStart({ client, payload }) {
       strategy_call_expectation: 'You will receive an email with scheduling options for your strategy call.',
     }
 
-    // Admin email (full submission details) - uses ONLY admin template
+    // Admin email (full submission details)
     await sendEmail({
-      templateId: env.EMAILJS_ADMIN_TEMPLATE_ID,
       to: env.ADMIN_EMAIL,
       subject: `New onboarding started ǀ ${payload?.profile?.name ?? ''}`,
-      templateParams: {
+      templateKey: 'onboarding-admin',
+      data: {
+        profile_name: profile?.name ?? '',
+        profile_email: profile?.email ?? '',
+        selected_plan: payload?.plan ?? '',
+        business_overview: alignment?.businessOverview ?? '',
+        // include remaining adminTemplateParams for completeness
         ...adminTemplateParams,
       },
     })
 
-
     // User confirmation email
     await sendEmail({
-      templateId: env.EMAILJS_USER_TEMPLATE_ID,
       to: toEmail,
       subject,
-      templateParams: {
+      templateKey: 'onboarding-user',
+      data: {
+        name: profile?.name ?? '',
+        selected_plan: payload?.plan ?? '',
+        next_steps: 'You are booked for the next phase. Our team will review your inputs and follow up with scheduling details.',
+        onboarding_timeline: 'Typical kickoff occurs within 2–5 business days after submission.',
         ...userTemplateParams,
       },
     })
@@ -280,19 +288,19 @@ export async function onboardingComplete({ client, payload }) {
       }
 
       await sendEmail({
-        templateId: env.EMAILJS_ADMIN_TEMPLATE_ID,
         to: env.ADMIN_EMAIL,
         subject: `Onboarding completed — ${clientName}`,
-        templateParams: {
+        templateKey: 'onboarding-admin',
+        data: {
           ...adminTemplateParamsCompleted,
         },
       })
 
       await sendEmail({
-        templateId: env.EMAILJS_USER_TEMPLATE_ID,
         to: toUser,
         subject: 'Your Bleval.inc onboarding request is received — next steps inside',
-        templateParams: {
+        templateKey: 'onboarding-user',
+        data: {
           ...userTemplateParamsCompleted,
         },
       })
