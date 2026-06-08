@@ -62,10 +62,8 @@ export class ApiService {
     email: string
     phone: string
     service: string
-    date: string
-    time: string
-    notes?: string
-    source: 'booking_modal'
+    message: string
+    source: 'booking_form'
   }): Observable<any> {
     return this.post('/bookings', data)
   }

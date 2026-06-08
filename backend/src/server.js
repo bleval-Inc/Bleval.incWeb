@@ -2,6 +2,8 @@ import { createApp } from './app.js'
 import { env } from './config/env.js'
 import { db } from './db/index.js'
 import { redis } from './db/redis.js'
+import { verifyTransporter } from './features/email/emailConfig.js'
+import http from 'http'
 
 const app = createApp()
 
@@ -76,11 +78,49 @@ process.on('uncaughtException', (err) => {
  */
 const PORT = env.PORT || process.env.PORT || 3000
 
-const server = app.listen(PORT, '0.0.0.0', () => {
-  console.log(`\n🚀 Bleval backend running → http://0.0.0.0:${PORT}`)
-  console.log(`🌍 Environment: ${env.NODE_ENV}`)
-  console.log(`🏥 Health check: /api/healthz\n`)
-})
+let server
+
+if (typeof app.listen === 'function') {
+  server = app.listen(PORT, '0.0.0.0', () => {
+    console.log(`\n🚀 Bleval backend running → http://0.0.0.0:${PORT}`)
+    console.log(`🌍 Environment: ${env.NODE_ENV}`)
+    console.log(`🏥 Health check: /api/healthz\n`)
+  })
+} else if (typeof app === 'function') {
+  // app might be a handler function; create an HTTP server around it
+  server = http.createServer(app).listen(PORT, '0.0.0.0', () => {
+    console.log(`\n🚀 Bleval backend running (http.createServer) → http://0.0.0.0:${PORT}`)
+    console.log(`🌍 Environment: ${env.NODE_ENV}`)
+    console.log(`🏥 Health check: /api/healthz\n`)
+  })
+} else {
+  console.error('Fatal: createApp() did not return an Express app or handler.');
+  console.error('createApp() returned:', app && app.constructor ? app.constructor.name : typeof app)
+  process.exit(1)
+}
+
+// Verify SMTP transporter
+(async () => {
+  try {
+    const res = await verifyTransporter()
+    if (res.ok) {
+      console.log('\n==================================')
+      console.log('BLEVAL EMAIL SYSTEM')
+      console.log('Provider: Brevo SMTP')
+      console.log('SMTP: Connected')
+      console.log('==================================\n')
+    } else {
+      console.error('\n==================================')
+      console.error('BLEVAL EMAIL SYSTEM')
+      console.error('Provider: Brevo SMTP')
+      console.error('SMTP: FAILED')
+      console.error('==================================\n')
+      console.error(res.error)
+    }
+  } catch (err) {
+    console.error('SMTP verification error', err)
+  }
+})()
 
 /**
  * Graceful shutdown

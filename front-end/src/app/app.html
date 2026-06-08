@@ -79,12 +79,15 @@
 >
   <div class="booking-modal" (click)="$event.stopPropagation()">
 
+
     <!-- HEADER -->
+
     <div class="booking-modal-header">
       <div>
         <p class="overline">Book a Service</p>
-        <h3 class="h3">Schedule a Discovery Call</h3>
+        <h3 class="h3">Request a Consultation</h3>
       </div>
+
 
       <button
         type="button"
@@ -158,26 +161,19 @@
           </select>
         </label>
 
-        <!-- DATE -->
-        <label class="field-label">
-          Preferred Date
-          <input
-            type="date"
-            [(ngModel)]="bookingDate"
-            name="bookingDate"
-            required
-          />
-        </label>
 
-        <!-- TIME -->
+
+
+        <!-- PROJECT DETAILS -->
         <label class="field-label">
-          Preferred Time
-          <input
-            type="time"
-            [(ngModel)]="bookingTime"
-            name="bookingTime"
+          Project Details
+          <textarea
+            [(ngModel)]="bookingMessage"
+            name="bookingMessage"
+            placeholder="Tell us about your project"
+            rows="5"
             required
-          />
+          ></textarea>
         </label>
 
         <!-- SUBMIT -->
@@ -187,13 +183,11 @@
           class="btn btn-primary booking-submit"
           [disabled]="
             bookingLoading() ||
-            bookingName.trim() ||
-            !bookingEmail.trim() ||
-            !bookingPhone.trim() ||
+            !bookingName?.trim() ||
+            !bookingEmail?.trim() ||
+            !bookingPhone?.trim() ||
             !bookingService ||
-
-            !bookingDate ||
-            !bookingTime
+            !bookingMessage?.trim()
           "
         >
           {{
@@ -205,6 +199,7 @@
           }}
         </button>
 
+
       </form>
 
       <!-- SUCCESS -->
@@ -213,10 +208,12 @@
         *ngIf="bookingSuccess()"
       >
         <p>
-          Your booking request has been received successfully.
-          We’ll contact you shortly via email or phone to confirm your booking.
+          Thank you for your enquiry.
+           <!-- Your booking request has been received successfully
+          and a Bleval.inc strategist will review your submission shortly.
+          We will contact you via email or phone within 1–2 business days to discuss your project and next steps. -->
         </p>
-      </div>
+      </div> 
 
       <!-- ERROR -->
       <div
@@ -224,10 +221,11 @@
         *ngIf="bookingError()"
       >
         <p>
-          Something went wrong while submitting your booking.
-          Please try again.
+          We were unable to submit your booking request.
+          Please try again or contact us directly at bleval.inc@gmail.com.
         </p>
       </div>
+
 
     </div>
   </div>

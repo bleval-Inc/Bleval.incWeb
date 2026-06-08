@@ -1,4 +1,4 @@
-export * from './emailService.js'
+export * from '../../features/email/emailService.js'
 
 
 

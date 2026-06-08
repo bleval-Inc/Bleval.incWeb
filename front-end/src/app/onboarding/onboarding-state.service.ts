@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core'
 
-export type OnboardingPlan = 'foundation' | 'acceleration' | 'enterprise'
+export type OnboardingPlan = 'foundation' | 'growth' | 'enterprise'
 export type OnboardingStep = 1 | 2 | 3 | 4 | 5 | 6
 
 
@@ -86,7 +86,7 @@ export class OnboardingStateService {
 
     // Accept multiple legacy keys so existing links/bookmarking keep working.
     if (key === 'foundation' || key === 'starter') return 'foundation'
-    if (key === 'acceleration' || key === 'growth') return 'acceleration'
+    if (key === 'growth' || key === 'acceleration') return 'growth'
     if (key === 'enterprise' || key === 'premium') return 'enterprise'
 
     return null

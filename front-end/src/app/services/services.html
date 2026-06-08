@@ -1,384 +1,211 @@
+<!-- HERO SECTION -->
 <section class="hero" appScrollReveal>
-  <div class="orb-cyan" style="top: 20%; right: 10%;"></div>
-  <div class="orb-uv" style="bottom: 20%; left: 10%;"></div>
+  <div class="hero-background">
+    <div class="radial-gradient"></div>
+  </div>
+  
   <div class="hero-content container">
-    <p class="overline">Premium Services</p>
-    <h1 class="hero-heading">Exceptional Design & Development.</h1>
-    <p class="body hero-subtitle">Bleval Inc designs and develops premium websites and web applications focused on superior user experience, performance, and digital presence.</p>
-  </div>
-</section>
-
-<!-- Web Design Service -->
-<section id="web-design" class="spotlight-section" appScrollReveal>
-  <div class="spotlight-inner">
-    <div class="service-spotlight glass-surface scroll-reveal">
-      <div class="spotlight-label" style="color: var(--secondary);">01 — Web Design</div>
-      <div class="service-main">
-        <div class="service-content">
-          <h2 class="h2">Web Design</h2>
-          <p class="service-tagline">Premium design that creates memorable user experiences.</p>
-          <p class="body">Strategic visual systems that elevate your brand and convert visitors into customers. We craft design languages that scale across platforms while maintaining consistency and impact.</p>
-          
-          <div class="reveal-section">
-            <div class="reveal-row" (click)="toggleReveal(0, 0)" [class.active]="services[0].reveals[0]">
-              What You Get
-              <span class="reveal-icon">+</span>
-            </div>
-            <div class="reveal-content" [class.expanded]="services[0].reveals[0]">
-              <ul>
-                <li>Wireframes & interactive prototypes</li>
-                <li>High-fidelity visual designs</li>
-                <li>Design system documentation</li>
-                <li>3 revision rounds included</li>
-              </ul>
-            </div>
-          </div>
-          
-          <div class="reveal-section">
-            <div class="reveal-row" (click)="toggleReveal(0, 1)" [class.active]="services[0].reveals[1]">
-              Tech Stack
-              <span class="reveal-icon">+</span>
-            </div>
-            <div class="reveal-content" [class.expanded]="services[0].reveals[1]">
-              <ul>
-                <li>Figma design system</li>
-                <li>User testing tools</li>
-                <li>Accessibility standards (WCAG 2.1)</li>
-                <li>Design handoff documentation</li>
-              </ul>
-            </div>
-          </div>
-          
-          <div class="reveal-section">
-            <div class="reveal-row" (click)="toggleReveal(0, 2)" [class.active]="services[0].reveals[2]">
-              Who This Is For
-              <span class="reveal-icon">+</span>
-            </div>
-            <div class="reveal-content" [class.expanded]="services[0].reveals[2]">
-              <ul>
-                <li>Brands seeking visual distinction</li>
-                <li>Companies prioritizing user experience</li>
-                <li>Startups building MVP design systems</li>
-                <li>Enterprises standardizing design language</li>
-              </ul>
-            </div>
-          </div>
-
-          <a
-            class="spotlight-explore-btn btn-primary"
-            [routerLink]="['/pricing']"
-            fragment="pricing-tiers"
-            aria-label="Explore pricing"
-            (click)="trackServiceExploreClicked(services[0].name)"
-          >
-            Explore
-          </a>
-
-        </div>
-        <div class="service-visual">
-          <img src="/assets/Web-design-2.jpg" alt="Web design process and workspace" />
-          <div class="support-highlights">
-            <span>User research & competitive analysis</span>
-            <span>Interactive prototypes</span>
-            <span>High-fidelity visual designs</span>
-          </div>
-        </div>
+    <div class="hero-inner">
+      <p class="eyebrow">WHAT WE BUILD</p>
+      <h1 class="hero-heading">Not Websites.<br>Revenue Systems.</h1>
+      <p class="hero-subheading">Every service we offer is designed around one goal: helping businesses generate more leads, recover lost revenue, and automate the work that slows growth.</p>
+      
+      <div class="hero-ctas">
+        <a routerLink="/contact" fragment="contact-form" class="btn-primary">Book Free Audit</a>
+        <a (click)="scrollToServices()" class="btn-ghost">Explore Services</a>
       </div>
-      <div class="service-support">
-        <div class="support-col"></div>
-        <div class="support-col"></div>
+    </div>
+    
+    <!-- Floating Metrics (Desktop only) -->
+    <div class="floating-metrics">
+      <div class="floating-card">
+        <div class="metric-value">70%</div>
+        <div class="metric-label">Calls Go Unanswered</div>
+      </div>
+      <div class="floating-card">
+        <div class="metric-value">40%</div>
+        <div class="metric-label">Reduction In No-Shows</div>
+      </div>
+      <div class="floating-card">
+        <div class="metric-value">24/7</div>
+        <div class="metric-label">Lead Capture</div>
       </div>
     </div>
   </div>
-  <div class="gradient-divider"></div>
 </section>
 
-<!-- Web Development Service -->
-<section id="web-development" class="spotlight-section reverse" appScrollReveal>
-  <div class="spotlight-inner">
-    <div class="service-spotlight glass-surface scroll-reveal">
-      <div class="spotlight-label" style="color: var(--secondary);">02 — Web Development</div>
-      <div class="service-main">
-        <div class="service-content">
-          <h2 class="h2">Web Development</h2>
-          <p class="service-tagline">High-performance code with modern technologies.</p>
-          <p class="body">Performance-first architecture that scales to millions. We build systems that handle growth without compromise — engineered for reliability, speed, and extensibility.</p>
-          
-          <div class="reveal-section">
-            <div class="reveal-row" (click)="toggleReveal(1, 0)" [class.active]="services[1].reveals[0]">
-              What You Get
-              <span class="reveal-icon">+</span>
-            </div>
-            <div class="reveal-content" [class.expanded]="services[1].reveals[0]">
-              <ul>
-                <li>Component-driven architecture</li>
-                <li>Database design & optimization</li>
-                <li>API development & integration</li>
-                <li>Mobile-responsive implementation</li>
-                <li>Automated testing & CI/CD setup</li>
-              </ul>
-            </div>
-          </div>
-          <div class="reveal-section">
-            <div class="reveal-row" (click)="toggleReveal(1, 1)" [class.active]="services[1].reveals[1]">
-              Tech Stack
-              <span class="reveal-icon">+</span>
-            </div>
-            <div class="reveal-content" [class.expanded]="services[1].reveals[1]">
-              <ul>
-                <li>Angular/React/Next.js frameworks</li>
-                <li>Node.js & Express backend</li>
-                <li>PostgreSQL & Redis databases</li>
-                <li>AWS/Netlify deployment</li>
-              </ul>
-            </div>
-          </div>
-          <div class="reveal-section">
-            <div class="reveal-row" (click)="toggleReveal(1, 2)" [class.active]="services[1].reveals">
-              Who This Is For
-              <span class="reveal-icon">+</span>
-            </div>
-            <div class="reveal-content" [class.expanded]="services[1].reveals[2]">
-              <ul>
-                <li>10x traffic capacity without degradation</li>
-                <li>Sub-2s page loads guaranteed</li>
-                <li>Zero-downtime deployments</li>
-                <li>Future-proof extensibility</li>
-              </ul>
-            </div>
-          </div>
-
-          <a
-            class="spotlight-explore-btn btn-primary"
-            [routerLink]="['/pricing']"
-            fragment="pricing-tiers"
-            aria-label="Explore pricing"
-            (click)="trackServiceExploreClicked(services[1].name)"
-
-          >
-            Explore
-          </a>
-
-
-        </div>
-        <div class="service-visual">
-          <img src="/assets/web-dev.2.jpg" alt="Web development coding environment" />
-          <div class="support-highlights">
-            <span>Component-driven architecture</span>
-            <span>Database design & optimization</span>
-            <span>API development & integration</span>
-          </div>
-        </div>
-      </div>
-      <div class="service-support">
-        <div class="support-col"></div>
-        <div class="support-col"></div>
-      </div>
-    </div>
-  </div>
-  <div class="gradient-divider"></div>
-</section>
-
-<!-- E-Commerce Service -->
-<section id="e-commerce-solutions" class="spotlight-section" appScrollReveal>
-  <div class="spotlight-inner">
-    <div class="service-spotlight glass-surface scroll-reveal">
-      <div class="spotlight-label" style="color: var(--secondary);">03 — E-Commerce Solutions</div>
-      <div class="service-main">
-        <div class="service-content">
-          <h2 class="h2">E-Commerce Solutions</h2>
-          <p class="service-tagline">Conversion-first platforms that maximize revenue.</p>
-          <p class="body">We build e-commerce experiences that don't just look good — they sell. From streamlined checkout flows to intelligent product discovery, every element is optimized for revenue growth.</p>
-          
-          <div class="reveal-section">
-            <div class="reveal-row" (click)="toggleReveal(2, 0)" [class.active]="services[2].reveals[0]">
-              What You Get
-              <span class="reveal-icon">+</span>
-            </div>
-            <div class="reveal-content" [class.expanded]="services[2].reveals[0]">
-              <ul>
-                <li>Shopify/WooCommerce customization</li>
-                <li>Custom storefront development</li>
-                <li>Payment gateway integration</li>
-                <li>Inventory management system</li>
-                <li>Conversion optimization</li>
-              </ul>
-            </div>
-          </div>
-          <div class="reveal-section">
-            <div class="reveal-row" (click)="toggleReveal(2, 1)" [class.active]="services[2].reveals[1]">
-              Tech Stack
-              <span class="reveal-icon">+</span>
-            </div>
-            <div class="reveal-content" [class.expanded]="services[2].reveals[1]">
-              <ul>
-                <li>Shopify Liquid templating</li>
-                <li>WooCommerce custom plugins</li>
-                <li>Stripe/PayPal integration</li>
-                <li>Google Analytics & GA4</li>
-              </ul>
-            </div>
-          </div>
-          <div class="reveal-section">
-            <div class="reveal-row" (click)="toggleReveal(2, 2)" [class.active]="services[2].reveals[2]">
-              Who This Is For
-              <span class="reveal-icon">+</span>
-            </div>
-            <div class="reveal-content" [class.expanded]="services[2].reveals[2]">
-              <ul>
-                <li>Retail & product businesses</li>
-                <li>Direct-to-consumer brands</li>
-                <li>Marketplaces</li>
-                <li>Existing stores needing upgrades</li>
-              </ul>
-            </div>
-          </div>
-
-          <a
-            class="spotlight-explore-btn btn-primary"
-            [routerLink]="['/pricing']"
-            fragment="pricing-tiers"
-            aria-label="Explore pricing"
-            (click)="trackServiceExploreClicked(services[2].name)"
-          >
-            Explore
-          </a>
-
-        </div>
-        <div class="service-visual">
-          <img src="/assets/E-commerce.jpg" alt="E-commerce product catalog and dashboard" />
-          <div class="support-highlights">
-            <span>Shopify/WooCommerce customization</span>
-            <span>Custom storefront development</span>
-            <span>Payment gateway integration</span>
-          </div>
-        </div>
-      </div>
-      <div class="service-support">
-        <div class="support-col"></div>
-        <div class="support-col"></div>
-      </div>
-    </div>
-  </div>
-  <div class="gradient-divider"></div>
-</section>
-
-<!-- Growth & Maintenance Service -->
-<section id="growth-maintenance" class="spotlight-section reverse" appScrollReveal>
-  <div class="spotlight-inner">
-    <div class="service-spotlight glass-surface scroll-reveal">
-      <div class="spotlight-label" style="color: var(--secondary);">04 — Growth & Maintenance</div>
-      <div class="service-main">
-        <div class="service-content">
-          <h2 class="h2">Growth & Maintenance</h2>
-          <p class="service-tagline">Ongoing optimization for sustained competitive advantage.</p>
-          <p class="body">Launch is just the beginning. We provide comprehensive support, monitoring, and optimization to ensure your digital product continues to perform at peak efficiency and drive business growth.</p>
-          
-          <div class="reveal-section">
-            <div class="reveal-row" (click)="toggleReveal(3, 0)" [class.active]="services[3].reveals[0]">
-              What You Get
-              <span class="reveal-icon">+</span>
-            </div>
-            <div class="reveal-content" [class.expanded]="services[3].reveals[0]">
-              <ul>
-                <li>24/7 uptime monitoring</li>
-                <li>Weekly performance reports</li>
-                <li>Security patching & updates</li>
-                <li>Conversion optimization sprints</li>
-                <li>Content & feature updates</li>
-              </ul>
-            </div>
-          </div>
-          <div class="reveal-section">
-            <div class="reveal-row" (click)="toggleReveal(3, 1)" [class.active]="services[3].reveals[1]"> 
-              Tech Stack
-              <span class="reveal-icon">+</span>
-            </div>
-            <div class="reveal-content" [class.expanded]="services[3].reveals[1]">
-              <ul>
-                <li>Advanced analytics (GA4)</li>
-                <li>A/B testing platforms</li>
-                <li>Security monitoring tools</li>
-                <li>Performance optimization tools</li>
-              </ul>
-            </div>
-          </div>
-          <div class="reveal-section">
-            <div class="reveal-row" (click)="toggleReveal(3, 2)" [class.active]="services[3].reveals[2]">
-              Who This Is For
-              <span class="reveal-icon">+</span>
-            </div>
-            <div class="reveal-content" [class.expanded]="services[3].reveals[2]">
-              <ul>
-                <li>Businesses wanting long-term support</li>
-                <li>Growing digital products</li>
-                <li>Performance-focused teams</li>
-                <li>Enterprise organizations</li>
-              </ul>
-            </div>
-          </div>
-
-          <a class="spotlight-explore-btn btn-primary" [routerLink]="['/pricing']" fragment="pricing-tiers" aria-label="Explore pricing" (click)="trackServiceExploreClicked(services[3].name)" >Explore</a>
-
-        </div>
-        <div class="service-visual">
-          <img src="/assets/growthandAnalytics.jpg" alt="Growth analytics dashboard and metrics" />
-          <div class="support-highlights">
-            <span>24/7 uptime monitoring</span>
-            <span>Weekly performance reports</span>
-            <span>Security patching & updates</span>
-          </div>
-        </div>
-      </div>
-      <div class="service-support">
-        <div class="support-col"></div>
-        <div class="support-col"></div>
-      </div>
-    </div>
-  </div>
-  <div class="gradient-divider"></div>
-</section>
-
-<!-- Process Section -->
-<section class="process" appScrollReveal>
+<!-- PROBLEM SECTION -->
+<section class="problem-section" appScrollReveal>
   <div class="container">
     <div class="section-header">
-      <p class="overline">Our Process</p>
-      <h2 class="h2">From idea to launch</h2>
+      <p class="eyebrow">THE REAL PROBLEM</p>
+      <h2 class="section-title">Most Businesses Don't Need More Traffic.<br>They Need Better Systems.</h2>
+      <p class="section-subtitle">Leads are already finding you.<br>The problem is what happens after they do.</p>
     </div>
-    <div class="process-timeline">
-      <div class="process-step glass-surface">
-        <div class="step-number">1</div>
-        <h3>Discover</h3>
-        <p>We dive deep into your business, goals, and audience to create a strategic foundation.</p>
+    
+    <div class="problem-cards">
+      <div class="problem-card" appScrollReveal>
+        <div class="card-title">Missed Calls</div>
+        <p class="card-description">Potential customers call while you're busy. The call goes unanswered. The opportunity goes to a competitor.</p>
+        <div class="card-stat">R50K+ lost annually</div>
       </div>
-      <div class="process-step glass-surface">
-        <div class="step-number">2</div>
-        <h3>Design</h3>
-        <p>Wireframes, prototypes, and pixel-perfect designs that bring your vision to life.</p>
+      
+      <div class="problem-card" appScrollReveal>
+        <div class="card-title">Invisible Online</div>
+        <p class="card-description">Customers search for your services. Your competitors appear first. You never get the chance to compete.</p>
+        <div class="card-stat">97% check online before buying</div>
       </div>
-      <div class="process-step glass-surface">
-        <div class="step-number">3</div>
-        <h3>Build</h3>
-        <p>Clean, efficient code built with modern technologies and best practices.</p>
-      </div>
-      <div class="process-step glass-surface">
-        <div class="step-number">4</div>
-        <h3>Launch</h3>
-        <p>Thorough testing, deployment, and ongoing support to ensure everything runs smoothly.</p>
+      
+      <div class="problem-card" appScrollReveal>
+        <div class="card-title">No Follow-Up</div>
+        <p class="card-description">A lead enquires. Nobody follows up. The lead goes cold.</p>
+        <div class="card-stat">40% of leads never receive proper follow-up</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- CTA Section -->
-<section class="cta-section" appScrollReveal>
+<!-- SERVICES ARCHITECTURE SECTION -->
+<section class="services-architecture" id="services-anchor" appScrollReveal>
   <div class="container">
-    <div class="cta-content glass-surface">
-      <h2 class="h2">Not sure which service<br>you need?</h2>
-      <p class="body">Let's talk about your project. We'll help you choose the right solution.</p>
-      <a routerLink="/contact" fragment="contact-form"  class="btn-primary">Get in Touch</a>
+    <div class="services-explorer">
+      <!-- Left Sticky Menu -->
+      <div class="services-menu">
+        <div class="menu-item" *ngFor="let service of services; let i = index" 
+             [class.active]="selectedServiceIndex === i"
+             (click)="selectService(i)">
+          <span class="menu-number">{{ service.number }}</span>
+          <span class="menu-title">{{ service.title }}</span>
+          <span class="menu-tab">{{ service.tabLabel }}</span>
+        </div>
+      </div>
+      
+      <!-- Right Content Area -->
+      <div class="services-content">
+        <div class="service-detail" *ngFor="let service of services; let i = index"
+             [class.active]="selectedServiceIndex === i">
+          <div class="detail-header">
+            <h2 class="detail-title">{{ service.title }}</h2>
+            <div class="service-image-wrap">
+              <picture>
+                <source srcset="">
+                <img
+                  class="service-image"
+                  [src]="service.imageSrc"
+                  [alt]="service.imageAlt"
+                  width="380"
+                  height="260"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </picture>
+            </div>
+            <p class="detail-description">{{ service.description }}</p>
+          </div>
+
+          <!-- <img src="../../assets/Web-design-2.jpg" alt="Arrow icon" class="detail-arrow"> -->
+          
+          <!-- Included Features -->
+          <div class="detail-section">
+            <h3 class="section-label">Included</h3>
+            <div class="feature-pills">
+              <span class="feature-pill" *ngFor="let feature of service.included">{{ feature }}</span>
+            </div>
+          </div>
+          
+          <!-- Recommended For Tags -->
+          <div class="detail-section">
+            <h3 class="section-label">Recommended For</h3>
+            <div class="recommended-chips">
+              <span class="recommended-chip" *ngFor="let industry of service.bestFor">{{ industry }}</span>
+            </div>
+          </div>
+          
+          <!-- Service CTA -->
+          <div class="service-cta">
+            <a [routerLink]="['/pricing']" 
+               (click)="trackServiceExploreClicked(service.title)"
+               class="btn-outline">Explore Plans →</a>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
+<!-- REVENUE ACCELERATORS SECTION -->
+<section class="accelerators-section" appScrollReveal>
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">Revenue Accelerators</h2>
+      <p class="section-subtitle">Powerful systems that can be added to any Bleval solution to increase visibility, conversions, and operational efficiency.</p>
+    </div>
+    
+    <div class="accelerators-grid">
+      <div class="accelerator-card" *ngFor="let accelerator of revenueAccelerators; let i = index"
+           [class.expanded]="expandedAcceleratorIndex === i">
+        
+        <div class="card-header" (click)="toggleAccelerator(i)">
+          <div class="card-label">{{ accelerator.label }}</div>
+          <h3 class="card-title">{{ accelerator.title }}</h3>
+          <span class="expand-icon">{{ expandedAcceleratorIndex === i ? '−' : '+' }}</span>
+        </div>
+        
+        <div class="card-content" [class.open]="expandedAcceleratorIndex === i">
+          <div class="features-list">
+            <span class="feature-item" *ngFor="let feature of accelerator.features">{{ feature }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS SECTION -->
+<section class="process-section" appScrollReveal>
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">How We Work</h2>
+    </div>
+    
+    <div class="process-timeline">
+      <div class="process-step" appScrollReveal>
+        <div class="step-label">01</div>
+        <h3 class="step-title">Discover</h3>
+        <p class="step-description">We audit your business, goals, and existing systems.</p>
+      </div>
+      
+      <div class="process-step" appScrollReveal>
+        <div class="step-label">02</div>
+        <h3 class="step-title">Design</h3>
+        <p class="step-description">We map out the most effective solution for your business.</p>
+      </div>
+      
+      <div class="process-step" appScrollReveal>
+        <div class="step-label">03</div>
+        <h3 class="step-title">Deploy</h3>
+        <p class="step-description">We build, test, and launch the complete system.</p>
+      </div>
+      
+      <div class="process-step" appScrollReveal>
+        <div class="step-label">04</div>
+        <h3 class="step-title">Optimise</h3>
+        <p class="step-description">We continuously improve performance and results.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA SECTION -->
+<section class="final-cta-section" appScrollReveal>
+  <div class="container">
+    <div class="cta-card">
+      <h2 class="cta-title">Ready To Build A Better System?</h2>
+      <p class="cta-subtitle">Explore our packages and find the solution that fits your business.</p>
+      <div class="cta-actions">
+        <a routerLink="/pricing" class="btn-primary">Explore Plans</a>
+        <a routerLink="/contact" fragment="contact-form" class="btn-outline">Book Free Audit</a>
+      </div>
+    </div>
+  </div>
+</section>
