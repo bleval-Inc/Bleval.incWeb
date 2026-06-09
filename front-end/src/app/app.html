@@ -30,40 +30,27 @@
   <app-chatbot></app-chatbot>
 
   <!-- BOOKING BUTTON -->
-  <button
-    class="fab fab-booking"
-    type="button"
-    title="Book a service"
-    aria-label="Book a service"
-    (click)="toggleBookingPopup()"
-  >
+  <button class="fab fab-booking" type="button" title="Book a service" aria-label="Book a service"
+    (click)="toggleBookingPopup()">
     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1 .9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zm-7-9h5v5h-5z"/>
+      <path
+        d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1 .9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zm-7-9h5v5h-5z" />
     </svg>
   </button>
 
   <!-- CONTACT BUTTON -->
-  <a
-    routerLink="/contact"
-    class="fab fab-contact"
-    title="Contact us"
-    aria-label="Contact us"
-  >
+  <a routerLink="/contact" class="fab fab-contact" title="Contact us" aria-label="Contact us">
     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+      <path
+        d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
     </svg>
   </a>
 
   <!-- SCROLL -->
-  <button
-    class="fab fab-scroll"
-    title="Scroll to top"
-    (click)="scrollToTop()"
-    [class.visible]="isScrolled()"
-    aria-label="Scroll to top"
-  >
+  <button class="fab fab-scroll" title="Scroll to top" (click)="scrollToTop()" [class.visible]="isScrolled()"
+    aria-label="Scroll to top">
     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M12 5l-7 7h4v7h6v-7h4l-7-7z"/>
+      <path d="M12 5l-7 7h4v7h6v-7h4l-7-7z" />
     </svg>
   </button>
 </div>
@@ -72,11 +59,7 @@
      BOOKING MODAL
      ═══════════════════════════════════════════════════════════════ -->
 
-<div
-  class="booking-modal-backdrop"
-  *ngIf="bookingOpen()"
-  (click)="closeBookingPopup()"
->
+<div class="booking-modal-backdrop" *ngIf="bookingOpen()" (click)="closeBookingPopup()">
   <div class="booking-modal" (click)="$event.stopPropagation()">
 
 
@@ -89,12 +72,7 @@
       </div>
 
 
-      <button
-        type="button"
-        class="modal-close"
-        aria-label="Close booking form"
-        (click)="closeBookingPopup()"
-      >
+      <button type="button" class="modal-close" aria-label="Close booking form" (click)="closeBookingPopup()">
         ×
       </button>
     </div>
@@ -107,57 +85,43 @@
         <!-- NAME -->
         <label class="field-label">
           Full Name
-          <input
-            type="text"
-            [(ngModel)]="bookingName"
-            name="bookingName"
-            placeholder="Your full name"
-            required
-          />
+          <input type="text" [(ngModel)]="bookingName" name="bookingName" placeholder="Your full name" required />
         </label>
 
         <!-- EMAIL -->
         <label class="field-label">
           Email Address
-          <input
-            type="email"
-            [(ngModel)]="bookingEmail"
-            name="bookingEmail"
-            placeholder="your@email.com"
-            required
-          />
+          <input type="email" [(ngModel)]="bookingEmail" name="bookingEmail" placeholder="your@email.com" required />
         </label>
 
         <!-- PHONE -->
         <label class="field-label">
           Contact Number
-          <input
-            type="tel"
-            [(ngModel)]="bookingPhone"
-            name="bookingPhone"
-            placeholder="+27 67 000 0000"
-            required
-          />
+          <input type="tel" [(ngModel)]="bookingPhone" name="bookingPhone" placeholder="+27 67 000 0000" required />
         </label>
 
         <!-- SERVICE -->
         <label class="field-label">
           Service Required
-          <select
-            [(ngModel)]="bookingService"
-            name="bookingService"
-            required
-          >
-            <option value="" disabled selected>
+
+          <select [(ngModel)]="bookingService" name="bookingService" required style="
+      color: #ffffff;
+      background: rgba(255,255,255,0.04);
+    ">
+            <option value="" disabled selected style="
+        background:#0c0a14;
+        color:#94a3b8;
+      ">
               Select a service
             </option>
 
-            <option
-              *ngFor="let option of serviceOptions"
-              [value]="option"
-            >
+            <option *ngFor="let option of serviceOptions" [value]="option" style="
+        background:#0c0a14;
+        color:#ffffff;
+      ">
               {{ option }}
             </option>
+
           </select>
         </label>
 
@@ -167,35 +131,26 @@
         <!-- PROJECT DETAILS -->
         <label class="field-label">
           Project Details
-          <textarea
-            [(ngModel)]="bookingMessage"
-            name="bookingMessage"
-            placeholder="Tell us about your project"
-            rows="5"
-            required
-          ></textarea>
+          <textarea [(ngModel)]="bookingMessage" name="bookingMessage" placeholder="Tell us about your project" rows="5"
+            required></textarea>
         </label>
 
         <!-- SUBMIT -->
 
-        <button
-          type="submit"
-          class="btn btn-primary booking-submit"
-          [disabled]="
+        <button type="submit" class="btn btn-primary booking-submit" [disabled]="
             bookingLoading() ||
             !bookingName?.trim() ||
             !bookingEmail?.trim() ||
             !bookingPhone?.trim() ||
             !bookingService ||
             !bookingMessage?.trim()
-          "
-        >
+          ">
           {{
-            bookingLoading()
-              ? 'Submitting...'
-              : bookingSuccess()
-              ? 'Request Submitted'
-              : 'Submit Booking'
+          bookingLoading()
+          ? 'Submitting...'
+          : bookingSuccess()
+          ? 'Request Submitted'
+          : 'Submit Booking'
           }}
         </button>
 
@@ -203,23 +158,17 @@
       </form>
 
       <!-- SUCCESS -->
-      <div
-        class="booking-feedback success"
-        *ngIf="bookingSuccess()"
-      >
+      <div class="booking-feedback success" *ngIf="bookingSuccess()">
         <p>
           Thank you for your enquiry.
-           <!-- Your booking request has been received successfully
+          <!-- Your booking request has been received successfully
           and a Bleval.inc strategist will review your submission shortly.
           We will contact you via email or phone within 1–2 business days to discuss your project and next steps. -->
         </p>
-      </div> 
+      </div>
 
       <!-- ERROR -->
-      <div
-        class="booking-feedback error"
-        *ngIf="bookingError()"
-      >
+      <div class="booking-feedback error" *ngIf="bookingError()">
         <p>
           We were unable to submit your booking request.
           Please try again or contact us directly at bleval.inc@gmail.com.
